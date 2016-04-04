@@ -72,4 +72,7 @@ fclean: clean
 	/bin/rm -f $(NAME)
 	$(MAKE) -C libft fclean
 
+cclean: clean
+	/bin/rm -f $(NAME)
+
 re: fclean all
