@@ -1,5 +1,0 @@
-Une ligne simple.
-
-Une autre ligne simple, avec cette fois-ci plus de 32 characteres.
-Une autre ligne encore.
-Ok, fin !
