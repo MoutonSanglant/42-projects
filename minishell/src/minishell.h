@@ -69,19 +69,31 @@ typedef struct	s_sh_datas
 */
 
 /*
-**										: cd.c :
+**									: builtins.c :
 */
-int		cd(char *path, t_sh_datas *sh_datas);
+int		check_builtins(char **argv);
 
 /*
-**										: environ.c :
+**									: environ.c :
 */
 void	init_environ();
 void	print_environ();
 
 /*
-**										: prompt.c :
+**										: cd.c :
+*/
+int		cd(char *path, t_sh_datas *sh_datas);
+
+/*
+********************************************************************************
+**									:: Prompt ::							   *
+********************************************************************************
+*/
+
+/*
+**									: prompt.c :
 */
 void	set_prompt(t_sh_datas *sh_datas);
+
 
 #endif

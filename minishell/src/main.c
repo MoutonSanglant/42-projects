@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 02:12:22 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/04 19:32:38 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/04 21:06:03 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,45 +72,47 @@ char	*look_in_path(char *program_name, char **path)
 
 int		parse_command(char *command, t_sh_datas *sh_datas)
 {
+	extern char		**environ;
 	char	**argv;
-	char	**env = { NULL };
 	char	**path;
 	char	*program_name;
 	char	*full_path;
 	pid_t	fork_id;
 	int		a;
 
-	path = fetch_path();
-	while (*command == ' ')
-		command++;
+	int ret_val;
+
+	// Split the command
+	argv = ft_strsplit(command, ' ');
+	//if (ret_val = check_builtin(argv))
+	//	return(ret_val);
 	if (*command == '\0')
 		return (0);
-	else if (ft_strnequ(command, "env", 3))
+	else if (ft_strequ(argv[0], "env"))
 	{
 		print_environ();
 		return (0);
 	}
-	else if (ft_strnequ(command, "cd", 2))
+	else if (ft_strequ(argv[0], "cd"))
 	{
-		cd(&command[3], sh_datas);
+		cd(argv[1], sh_datas);
 		return (0);
 	}
-	else if (ft_strnequ(command, "exit", 4))
+	else if (ft_strequ(argv[0], "exit"))
 	{
 		//get exit value
 		exit(0);
 	}
-	// Split the command
-	argv = ft_strsplit(command, ' ');
 	program_name = ft_strdup(argv[0]);
 	//argv[0] = ft_strdup("");
+	path = fetch_path();
 	full_path = look_in_path(program_name, path);
 	if (full_path)
 	{
 		fork_id = fork();
 		if (fork_id == 0)
 		{
-			if (execve(full_path, argv, env))
+			if (execve(full_path, argv, environ))
 				ft_printf("ERROR: Something went bad...\n");
 		}
 		else
@@ -124,27 +126,21 @@ int		parse_command(char *command, t_sh_datas *sh_datas)
 	return (0);
 }
 
-void	get_user_command(t_sh_datas *sh_datas)
-{
-	char	*line;
-
-	if (get_next_line(1, &line))
-	{
-		parse_command(line, sh_datas);
-		ft_strdel(&line);
-	}
-}
-
 int		main(void)
 {
+	char		*line;
 	t_sh_datas	sh_datas;
 
-	set_prompt(&sh_datas);
 	init_environ();
+	set_prompt(&sh_datas);
 	while (1)
 	{
 		ft_putstr(sh_datas.prompt);
-		get_user_command(&sh_datas);
+		if (get_next_line(1, &line))
+		{
+			parse_command(line, &sh_datas);
+			ft_strdel(&line);
+		}
 	}
 	return (0);
 }
