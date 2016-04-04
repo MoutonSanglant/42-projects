@@ -57,4 +57,31 @@
 **	*kill
 */
 
+typedef struct	s_sh_datas
+{
+	char	*prompt;
+}				t_sh_datas;
+
+/*
+********************************************************************************
+**									:: Built-ins ::							   *
+********************************************************************************
+*/
+
+/*
+**										: cd.c :
+*/
+int		cd(char *path, t_sh_datas *sh_datas);
+
+/*
+**										: environ.c :
+*/
+void	init_environ();
+void	print_environ();
+
+/*
+**										: prompt.c :
+*/
+void	set_prompt(t_sh_datas *sh_datas);
+
 #endif
