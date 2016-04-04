@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 02:12:22 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/03 20:17:45 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/04 19:32:38 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ char	**fetch_path()
 
 	i = 0;
 	out = NULL;
-	ft_printf("initial environement:\n");
 	while (environ[i])
 	{
 		tmp = ft_strnstr(environ[i++], "PATH", 4);
@@ -37,16 +36,6 @@ char	**fetch_path()
 	return (out);
 }
 
-void	print_env()
-{
-	extern char		**environ;
-	int				i;
-
-	i = 0;
-	while (environ[i])
-		ft_printf("%s\n", environ[i++]);
-}
-
 char	*look_in_path(char *program_name, char **path)
 {
 	char	*out;
@@ -54,10 +43,14 @@ char	*look_in_path(char *program_name, char **path)
 	int		amode;
 	int		i;
 
-	amode = F_OK | X_OK;
 	i = 0;
-	if (access(program_name, amode) >= 0)
-		return (program_name);
+	amode = F_OK | X_OK;
+	if (!path)
+	{
+		if (access(program_name, amode) >= 0)
+			return (program_name);
+		return (NULL);
+	}
 	while (path[i])
 	{
 		out = ft_strjoin(path[i], "/");
@@ -72,10 +65,12 @@ char	*look_in_path(char *program_name, char **path)
 		ft_strdel(&full_path);
 		i++;
 	}
+	if (!out && access(program_name, amode) >= 0)
+		return (program_name);
 	return (out);
 }
 
-int		parse_command(char *command)
+int		parse_command(char *command, t_sh_datas *sh_datas)
 {
 	char	**argv;
 	char	**env = { NULL };
@@ -90,15 +85,25 @@ int		parse_command(char *command)
 		command++;
 	if (*command == '\0')
 		return (0);
-	else if (ft_strequ(command, "env"))
-		print_env();
-	else if (ft_strequ(command, "exit"))
+	else if (ft_strnequ(command, "env", 3))
 	{
+		print_environ();
+		return (0);
+	}
+	else if (ft_strnequ(command, "cd", 2))
+	{
+		cd(&command[3], sh_datas);
+		return (0);
+	}
+	else if (ft_strnequ(command, "exit", 4))
+	{
+		//get exit value
 		exit(0);
 	}
+	// Split the command
 	argv = ft_strsplit(command, ' ');
 	program_name = ft_strdup(argv[0]);
-	argv[0] = ft_strdup("");
+	//argv[0] = ft_strdup("");
 	full_path = look_in_path(program_name, path);
 	if (full_path)
 	{
@@ -119,56 +124,27 @@ int		parse_command(char *command)
 	return (0);
 }
 
-void	get_user_command(void)
+void	get_user_command(t_sh_datas *sh_datas)
 {
 	char	*line;
 
 	if (get_next_line(1, &line))
 	{
-		parse_command(line);
+		parse_command(line, sh_datas);
 		ft_strdel(&line);
-	}
-}
-
-void	show_prompt(void)
-{
-	while (1)
-	{
-		ft_putstr("$> ");
-		get_user_command();
 	}
 }
 
 int		main(void)
 {
-	show_prompt();
-	return (0);
+	t_sh_datas	sh_datas;
 
-	char			*cwd;
-	char			buf[1024];
-	//pid_t			fork_id;
-	struct stat		st_stat;
-	int				fd;
-	char			*args[] = { "ls", "-a", "-l", "--color", NULL };
-	char			*env[] = { NULL };
-
-	cwd = getcwd(buf, 1024);
-	ft_printf("Current working directory: %s\n", cwd);
-	ft_printf("Buffer: %s\n", buf);
-	ft_printf("Change directory to: 'toto'\n", buf);
-	chdir("toto");
-	cwd = getcwd(buf, 1024);
-	ft_printf("Current working directory: %s\n", cwd);
-	ft_printf("Buffer: %s\n", buf);
-	ft_printf("Opening file: 'testfile'\n");
-	fd = open("testfile", O_RDONLY);
-	fstat(fd, &st_stat);
-	execve("/bin/ls", args, env);
-	/*
-	ft_printf("Forking...\n");
-	fork_id = fork();
-	ft_printf("Fork %i !\n", fork_id);
-	ft_printf("Number of hard links: %i\n", st_stat.st_nlink);
-	*/
+	set_prompt(&sh_datas);
+	init_environ();
+	while (1)
+	{
+		ft_putstr(sh_datas.prompt);
+		get_user_command(&sh_datas);
+	}
 	return (0);
 }

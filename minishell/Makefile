@@ -30,7 +30,7 @@ endif
 SRC_PREFIX	= ./src/
 OBJ_PREFIX	= ./obj/
 
-SRC	= main get_next_line
+SRC	= main get_next_line cd environ prompt
 
 ifeq ($(BUILD), Debug)
 	SRC +=
@@ -72,7 +72,10 @@ fclean: clean
 	/bin/rm -f $(NAME)
 	$(MAKE) -C libft fclean
 
-cclean: clean
+cclean:
+	/bin/rm -rf $(OBJ_PREFIX)
 	/bin/rm -f $(NAME)
 
 re: fclean all
+
+rre: cclean all
