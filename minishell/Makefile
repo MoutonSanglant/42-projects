@@ -30,7 +30,7 @@ endif
 SRC_PREFIX	= ./src/
 OBJ_PREFIX	= ./obj/
 
-SRC	= main get_next_line cd environ prompt
+SRC	= main get_next_line cd environ prompt builtins
 
 ifeq ($(BUILD), Debug)
 	SRC +=
