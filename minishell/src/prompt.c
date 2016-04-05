@@ -6,13 +6,13 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 19:32:16 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/04 19:33:46 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/05 21:22:12 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void set_prompt(t_sh_datas *sh_datas)
+void	set_prompt(t_sh_datas *sh_datas)
 {
 	char		*cwd;
 	char		buf[1024];

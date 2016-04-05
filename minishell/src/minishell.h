@@ -13,11 +13,13 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <sys/wait.h>
-#include <includes/libft.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <sys/stat.h>
+# include <sys/wait.h>
+# include <includes/libft.h>
+
+# define PROGRAM_NAME "minishell"
 
 /*
 ** Consignes
@@ -26,7 +28,8 @@
 ** Attente d'entree utilisateur
 ** Prompt affiche a nouveau apres execution de la commande
 ** Les executables sont ceux que l'on trouve dans PATH
-** Si l'executable n'est pas trouve, afficher un message d'erreur (ne pas utiliser errno)
+** Si l'executable n'est pas trouve, afficher un message
+**	d'erreur (ne pas utiliser errno)
 ** Utiliser char **environ system pour gerer le PATH et l'environnement
 ** builtins a gerer: cd, setenv, unsetenv, env, exit
 ** Fonctions
@@ -59,6 +62,7 @@
 
 typedef struct	s_sh_datas
 {
+	char	**environ;
 	char	*prompt;
 }				t_sh_datas;
 
@@ -71,18 +75,20 @@ typedef struct	s_sh_datas
 /*
 **									: builtins.c :
 */
-int		check_builtins(char **argv);
+int				check_builtins(char **argv, t_sh_datas *sh_datas);
 
 /*
 **									: environ.c :
 */
-void	init_environ();
-void	print_environ();
+char			**init_environ();
+char			**set_environ(char **environ, const char *name,
+						const char *value, int override);
+char			**unset_environ(char **environ, const char *name);
 
 /*
 **										: cd.c :
 */
-int		cd(char *path, t_sh_datas *sh_datas);
+int				cd(char *path, t_sh_datas *sh_datas);
 
 /*
 ********************************************************************************
@@ -93,7 +99,6 @@ int		cd(char *path, t_sh_datas *sh_datas);
 /*
 **									: prompt.c :
 */
-void	set_prompt(t_sh_datas *sh_datas);
-
+void			set_prompt(t_sh_datas *sh_datas);
 
 #endif
