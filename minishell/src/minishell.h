@@ -15,6 +15,7 @@
 
 # include <unistd.h>
 # include <fcntl.h>
+# include <signal.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <includes/libft.h>
@@ -68,17 +69,17 @@ typedef struct	s_sh_datas
 
 /*
 ********************************************************************************
-**									:: Built-ins ::							   *
+**								:: Built-ins ::								   *
 ********************************************************************************
 */
 
 /*
-**									: builtins.c :
+**								: builtins.c :
 */
 int				check_builtins(char **argv, t_sh_datas *sh_datas);
 
 /*
-**									: environ.c :
+**								: environ.c :
 */
 char			**init_environ();
 char			**set_environ(char **environ, const char *name,
@@ -86,18 +87,29 @@ char			**set_environ(char **environ, const char *name,
 char			**unset_environ(char **environ, const char *name);
 
 /*
-**										: cd.c :
+**									: cd.c :
 */
 int				cd(char *path, t_sh_datas *sh_datas);
 
 /*
 ********************************************************************************
-**									:: Prompt ::							   *
+**								:: Processes ::								   *
 ********************************************************************************
 */
 
 /*
-**									: prompt.c :
+**								: process.c :
+*/
+void			run_process(char *path, char **argv, char **environ);
+
+/*
+********************************************************************************
+**								:: Prompt ::								   *
+********************************************************************************
+*/
+
+/*
+**								: prompt.c :
 */
 void			set_prompt(t_sh_datas *sh_datas);
 
