@@ -6,20 +6,11 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 21:04:51 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/06 14:16:04 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/07 12:54:38 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void		print_environ(char **environ)
-{
-	int		i;
-
-	i = 0;
-	while (environ[i])
-		ft_printf("%s\n", environ[i++]);
-}
 
 static void		quit(int errno, t_sh_datas *sh_datas)
 {
@@ -74,12 +65,7 @@ int				check_builtins(char **argv, t_sh_datas *sh_datas)
 	if (!ft_strcmp(argv[0], "cd"))
 		cd(argv[1], sh_datas);
 	else if (!ft_strcmp(argv[0], "env"))
-	{
-		if (argv[1])
-			run_process(argv[n], &argv[n + 1], sh_datas->environ);
-		else
-			print_environ(sh_datas->environ);
-	}
+		env (argv, sh_datas);
 	else if (!ft_strcmp(argv[0], "setenv"))
 	{
 		if (!(argv[1] && argv[2]))
