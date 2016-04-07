@@ -6,13 +6,34 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 14:13:27 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/06 14:13:38 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/07 16:25:06 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <errno.h>
+static char		*look_in_path(char *program_name, char **path, int amode)
+{
+	char	*full_path;
+	char	*tmp;
+	int		i;
 
-void	run_process(char *path, char **argv, char **environ)
+	i = 0;
+	while (path[i])
+	{
+		tmp = ft_strjoin(path[i], "/");
+		full_path = ft_strjoin(tmp, program_name);
+		ft_strdel(&tmp);
+		if (access(full_path, amode) >= 0)
+			return (full_path);
+		ft_strdel(&full_path);
+		i++;
+	}
+	return (NULL);
+}
+
+
+static void		run_process(char *path, char **argv, char **environ)
 {
 	pid_t			fork_id;
 	int				pid;
@@ -28,4 +49,26 @@ void	run_process(char *path, char **argv, char **environ)
 	}
 	else
 		wait(&pid);
+}
+
+int			run_exec(char **argv, t_sh_datas *sh_datas, char **exec_environ)
+{
+	char	**path;
+	char	*program_name;
+	char	*full_path;
+
+	path = get_environ(sh_datas->environ, "PATH=", 5);
+	program_name = ft_strdup(argv[0]);
+	full_path = (path) ? look_in_path(program_name, path, F_OK | X_OK) : NULL;
+	if (!full_path && access(program_name, F_OK | X_OK) < 0)
+	{
+		ft_printf("%s: %s: command not found\n", PROGRAM_NAME, program_name);
+		return (-1);
+	}
+	if (exec_environ)
+		run_process((full_path) ? full_path : program_name, argv, exec_environ);
+	else
+		run_process((full_path) ? full_path : program_name, argv, sh_datas->environ);
+	ft_strdel(&full_path);
+	return (0);
 }

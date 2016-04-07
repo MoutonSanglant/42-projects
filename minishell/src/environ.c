@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 19:25:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/05 21:24:38 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/07 11:58:05 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,36 +52,28 @@ static char		**remove_environ(char **environ, int idx)
 	return (env_cpy);
 }
 
-char			**init_environ(void)
+char	**get_environ(char **environ, const char *name, const int len)
 {
-	extern char		**environ;
-	char			**env_cpy;
-	int				i;
+	int		i;
 
 	i = 0;
 	while (environ[i])
-		i++;
-	env_cpy = ft_memalloc(sizeof(char *) * (i + 1));
-	i = 0;
-	while (environ[i])
 	{
-		env_cpy[i] = ft_strdup(environ[i]);
+		if (!ft_strncmp(environ[i], name, len))
+			return (ft_strsplit(ft_strdup(&environ[i][len]), ':'));
 		i++;
 	}
-	env_cpy[i] = NULL;
-	env_cpy = set_environ(env_cpy, "SHLVL", "1", 0);
-	env_cpy = set_environ(env_cpy, "PWD", "", 0);
-	env_cpy = set_environ(env_cpy, "PATH",
-					"/usr/gnu/bin:/usr/local/bin:/usr/bin:/bin:.", 0);
-	return (env_cpy);
+	return (NULL);
 }
+
+
 
 char			**set_environ(char **environ, const char *name,
 						const char *value, int override)
 {
-	char			*str;
-	size_t			len;
-	int				i;
+	char		*str;
+	size_t		len;
+	int			i;
 
 	i = 0;
 	len = ft_strlen(name);
@@ -107,8 +99,8 @@ char			**set_environ(char **environ, const char *name,
 
 char			**unset_environ(char **environ, const char *name)
 {
-	size_t			len;
-	int				i;
+	size_t		len;
+	int			i;
 
 	i = 0;
 	while (environ[i])
