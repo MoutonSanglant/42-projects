@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 02:12:22 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/07 16:02:58 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/08 20:01:09 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,13 @@ int		parse_command(char **argv, t_sh_datas *sh_datas)
 
 int		main(void)
 {
-	char		**argv;
-	char		*line;
-	t_sh_datas	sh_datas;
-	int			i;
+	extern char		**environ;
+	char			**argv;
+	char			*line;
+	t_sh_datas		sh_datas;
+	int				i;
 
-	sh_datas.environ = init_environ();
+	sh_datas.environ = cpy_environ(environ);
 	set_prompt(&sh_datas);
 	while (1)
 	{

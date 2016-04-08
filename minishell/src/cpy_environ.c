@@ -1,33 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_environ.c                                     :+:      :+:    :+:   */
+/*   cpy_environ.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/04/07 11:58:10 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/07 11:58:50 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/04/08 20:02:51 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/04/08 20:44:14 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char			**init_environ(void)
+char			**cpy_environ(char **environ)
 {
-	extern char		**environ;
 	char			**env_cpy;
 	int				i;
 
 	i = 0;
-	while (environ[i])
-		i++;
-	env_cpy = ft_memalloc(sizeof(char *) * (i + 1));
-	i = 0;
-	while (environ[i])
+	if (environ)
 	{
-		env_cpy[i] = ft_strdup(environ[i]);
-		i++;
+		while (environ[i])
+			i++;
+		env_cpy = ft_memalloc(sizeof(char *) * (i + 1));
+		i = 0;
+		while (environ[i])
+		{
+			env_cpy[i] = ft_strdup(environ[i]);
+			i++;
+		}
 	}
+	else
+		env_cpy = ft_memalloc(sizeof(char *));
 	env_cpy[i] = NULL;
 	env_cpy = set_environ(env_cpy, "SHLVL", "1", 0);
 	env_cpy = set_environ(env_cpy, "PWD", "", 0);

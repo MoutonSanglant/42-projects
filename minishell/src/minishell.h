@@ -73,6 +73,14 @@ typedef struct	s_env_datas
 	char	**utility;
 }				t_env_datas;
 
+typedef enum	e_env_error
+{
+	ENVERR_VERB,
+	ENVERR_PATH,
+	ENVERR_SPLIT,
+	ENVERR_UNSET
+}				t_env_error;
+
 /*
 ********************************************************************************
 **								:: Built-ins ::								   *
@@ -96,11 +104,12 @@ char			**unset_environ(char **environ, const char *name);
 **									: env.c :
 */
 void			env(char **argv, t_sh_datas *sh_datas);
+int				env_error(t_env_error err);
 
 /*
-**								: init_environ.c :
+**								: cpy_environ.c :
 */
-char			**init_environ(void);
+char			**cpy_environ(char **environ);
 
 /*
 **									: cd.c :
