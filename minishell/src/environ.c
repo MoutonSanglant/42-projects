@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 19:25:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/07 11:58:05 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/08 16:56:24 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ char			**unset_environ(char **environ, const char *name)
 	size_t		len;
 	int			i;
 
+	if (!name)
+		return (environ);
 	i = 0;
 	while (environ[i])
 	{

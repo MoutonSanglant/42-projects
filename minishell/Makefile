@@ -30,7 +30,8 @@ endif
 SRC_PREFIX	= ./src/
 OBJ_PREFIX	= ./obj/
 
-SRC	= main get_next_line cd env environ init_environ prompt builtins process
+SRC	= main get_next_line cd env env_error environ cpy_environ prompt builtins \
+	process
 
 ifeq ($(BUILD), Debug)
 	SRC +=
