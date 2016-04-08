@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/01 20:40:28 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/03/02 21:50:41 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/08 19:53:08 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,17 @@
 
 static int		convert(unsigned char *h, char *str, wchar_t c)
 {
-	int		i;
+	const int	mask12 = 0b00000000000000000001000000000000;
+	const int	mask16 = 0b00000000000000010000000000000000;
+	int			i;
 
 	i = 0;
-	if (c < (1 << 11))
+	if (c < mask12)
 		str[i++] = ((((*h & 0b11000000) >> 6) | ((*(h + 1) << 2)
 						& 0b00011111)) | 0b11000000);
 	else
 	{
-		if (c < (1 << 16))
+		if (c < mask16)
 			str[i++] = (((*(h + 1) & 0b11110000) >> 4) | 0b11100000);
 		else
 		{
@@ -62,7 +64,7 @@ static int		debug_ft_putwchar(wchar_t *unicode_point)
 
 	len = 0;
 	c = *unicode_point;
-	if (c < (1 << 7))
+	if (c < 128)
 	{
 		str = ft_strnew(1);
 		str[0] = *((unsigned char *)unicode_point);
