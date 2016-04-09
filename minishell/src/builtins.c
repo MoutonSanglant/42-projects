@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 21:04:51 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/07 12:54:38 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/09 15:21:07 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,7 @@ static int		builtin_exit(char **argv, t_sh_datas *sh_datas)
 
 int				check_builtins(char **argv, t_sh_datas *sh_datas)
 {
-	int n;
 
-	n = 2;
 	if (!argv[0])
 		return (0);
 	if (!ft_strcmp(argv[0], "cd"))
