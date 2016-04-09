@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 19:25:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/08 16:56:24 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/09 14:10:10 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,13 @@ static char		**remove_environ(char **environ, int idx)
 	return (env_cpy);
 }
 
-char	**get_environ(char **environ, const char *name, const int len)
+char	**get_environ(char **environ, const char *name)
 {
+	int		len;
 	int		i;
 
 	i = 0;
+	len = ft_strlen(name);
 	while (environ[i])
 	{
 		if (!ft_strncmp(environ[i], name, len))

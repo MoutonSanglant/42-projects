@@ -95,7 +95,7 @@ int				check_builtins(char **argv, t_sh_datas *sh_datas);
 /*
 **								: environ.c :
 */
-char			**get_environ(char **environ, const char *name, const int len);
+char			**get_environ(char **environ, const char *name);
 char			**set_environ(char **environ, const char *name,
 								const char *value, int override);
 char			**unset_environ(char **environ, const char *name);
@@ -110,6 +110,11 @@ int				env_error(t_env_error err);
 **								: cpy_environ.c :
 */
 char			**cpy_environ(char **environ);
+
+/*
+**								: create_default_environ.c :
+*/
+char			**create_default_environ(char **environ);
 
 /*
 **									: cd.c :

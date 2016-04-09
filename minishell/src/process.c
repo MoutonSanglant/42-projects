@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 14:13:27 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/07 16:25:06 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/09 14:09:38 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int			run_exec(char **argv, t_sh_datas *sh_datas, char **exec_environ)
 	char	*program_name;
 	char	*full_path;
 
-	path = get_environ(sh_datas->environ, "PATH=", 5);
+	path = get_environ(sh_datas->environ, "PATH=");
 	program_name = ft_strdup(argv[0]);
 	full_path = (path) ? look_in_path(program_name, path, F_OK | X_OK) : NULL;
 	if (!full_path && access(program_name, F_OK | X_OK) < 0)
