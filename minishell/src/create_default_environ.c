@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/09 13:23:00 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/09 13:25:14 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/09 20:05:21 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static char		**set_default_vars(char **env_cpy)
 			ft_strcpy(str, "SHLVL=");
 			ft_strcpy(&str[6], depth_str);
 			env_cpy[i] = str;
+			ft_strdel(&depth_str);
 		}
 		i++;
 	}

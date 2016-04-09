@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 21:04:51 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/09 15:21:07 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/09 21:19:27 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void		quit(int errno, t_sh_datas *sh_datas)
 		i++;
 	}
 	ft_memdel((void **)&sh_datas->environ);
+	ft_strdel(&sh_datas->prompt);
 	exit(errno);
 }
 
@@ -57,13 +58,12 @@ static int		builtin_exit(char **argv, t_sh_datas *sh_datas)
 
 int				check_builtins(char **argv, t_sh_datas *sh_datas)
 {
-
 	if (!argv[0])
 		return (0);
 	if (!ft_strcmp(argv[0], "cd"))
 		cd(argv[1], sh_datas);
 	else if (!ft_strcmp(argv[0], "env"))
-		env (argv, sh_datas);
+		env(argv, sh_datas);
 	else if (!ft_strcmp(argv[0], "setenv"))
 	{
 		if (!(argv[1] && argv[2]))

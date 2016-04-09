@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 02:12:22 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/09 16:32:44 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/09 21:17:42 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static t_list	*del_elem(t_list *elem)
 
 static char		**remove_escape_characters(char **str)
 {
+	char	**out;
 	char	*new_str;
 	int		count;
 	int		i;
@@ -61,7 +62,18 @@ static char		**remove_escape_characters(char **str)
 		str[i] = new_str;
 		i++;
 	}
-	return (str);
+	out = (char **)ft_memalloc(sizeof(char *) * (i + 1));
+	while (str[i])
+		ft_strdel(&str[i++]);
+	i = 0;
+	while (str[i])
+	{
+		out[i] = str[i];
+		i++;
+	}
+	out[i] = NULL;
+	ft_memdel((void **)&str);
+	return (out);
 }
 
 static char		**parse_input(char *command)
@@ -79,7 +91,7 @@ static char		**parse_input(char *command)
 	if (*command == '\0')
 	{
 		out = (char **)ft_memalloc(sizeof(char *));
-		out [0] = NULL;
+		out[0] = NULL;
 		return (out);
 	}
 	i = 0;
@@ -97,14 +109,15 @@ static char		**parse_input(char *command)
 			word = NULL;
 			if (!start)
 			{
-				word_list = ft_lstnew((void *)tmp, i);
+				word_list = ft_lstnew((void *)tmp, i + 1);
 				start = word_list;
 			}
 			else
 			{
-				word_list->next = ft_lstnew((void *)tmp, i);
+				word_list->next = ft_lstnew((void *)tmp, i + 1);
 				word_list = word_list->next;
 			}
+			ft_strdel(&tmp);
 			command = &command[i + 1];
 			i = 0;
 			if (command[i] == '\0')
@@ -114,7 +127,7 @@ static char		**parse_input(char *command)
 		i++;
 	}
 	word_list = start;
-	out = (char **)ft_memalloc(sizeof(char *) * ft_lstsize(start) + 1);
+	out = (char **)ft_memalloc(sizeof(char *) * (ft_lstsize(start) + 1));
 	i = 0;
 	while (word_list)
 	{
@@ -122,7 +135,7 @@ static char		**parse_input(char *command)
 		word_list = del_elem(word_list);
 		i++;
 	}
-	out [i] = NULL;
+	out[i] = NULL;
 	out = remove_escape_characters(out);
 	return (out);
 }
@@ -130,12 +143,21 @@ static char		**parse_input(char *command)
 static int		read_input(char **argv, t_sh_datas *sh_datas)
 {
 	int		ret_val;
+	int		i;
 
+	ret_val = 0;
 	if ((ret_val = check_builtins(argv, sh_datas)) >= 0)
-		return (ret_val);
+		;
 	else
-		return (run_exec(argv, sh_datas, NULL));
-	return (0);
+		ret_val = run_exec(argv, sh_datas, NULL);
+	if (argv)
+	{
+		i = 0;
+		while (argv[i])
+			ft_strdel(&argv[i++]);
+		ft_memdel((void **)&argv);
+	}
+	return (ret_val);
 }
 
 int				main(void)
@@ -144,8 +166,8 @@ int				main(void)
 	char			**argv;
 	char			*line;
 	t_sh_datas		sh_datas;
-	int				i;
 
+	sh_datas.prompt = NULL;
 	sh_datas.environ = create_default_environ(environ);
 	set_prompt(&sh_datas);
 	while (1)
@@ -154,12 +176,8 @@ int				main(void)
 		if (get_next_line(1, &line))
 		{
 			argv = parse_input(line);
-			read_input(argv, &sh_datas);
-			i = 0;
-			while (argv[i])
-				ft_strdel(&argv[i++]);
-			ft_memdel((void **)&argv);
 			ft_strdel(&line);
+			read_input(argv, &sh_datas);
 		}
 	}
 	return (0);

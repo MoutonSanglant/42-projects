@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 18:23:37 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/09 14:22:10 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/09 21:22:25 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,28 +37,42 @@ static char	*get_home_path(t_sh_datas *sh_datas)
 {
 	char	**path_env;
 	char	*home;
+	int		i;
 
+	i = 0;
 	home = NULL;
 	if ((path_env = get_environ(sh_datas->environ, "HOME=")))
-		home = path_env[0];
+		home = ft_strdup(path_env[0]);
+	while (path_env[i])
+		ft_strdel(&path_env[i++]);
+	ft_memdel((void **)&path_env);
 	return (home);
 }
 
 int		cd(char *path, t_sh_datas *sh_datas)
 {
+	char	*p;
+
+	p = NULL;
 	if (!path || path[0] == '~')
 	{
-		if (!(path = get_home_path(sh_datas)))
+		if (!(p = get_home_path(sh_datas)))
 		{
 			ft_printf("cd: HOME not set\n");
 			return (1);
 		}
 	}
+	if (p)
+		path = p;
 	if (chdir(path) < 0)
 	{
 		print_error(path);
+		if (p)
+			ft_strdel(&p);
 		return (1);
 	}
+	if (p)
+		ft_strdel(&p);
 	set_prompt(sh_datas);
 	return (0);
 }

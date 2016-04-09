@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 19:25:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/09 14:10:10 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/09 21:05:16 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ static char		**remove_environ(char **environ, int idx)
 
 char	**get_environ(char **environ, const char *name)
 {
+	char	**split;
+	char	*str;
 	int		len;
 	int		i;
 
@@ -62,13 +64,16 @@ char	**get_environ(char **environ, const char *name)
 	while (environ[i])
 	{
 		if (!ft_strncmp(environ[i], name, len))
-			return (ft_strsplit(ft_strdup(&environ[i][len]), ':'));
+		{
+			str = ft_strdup(&environ[i][len]);
+			split = ft_strsplit(str, ':');
+			ft_strdel(&str);
+			return (split);
+		}
 		i++;
 	}
 	return (NULL);
 }
-
-
 
 char			**set_environ(char **environ, const char *name,
 						const char *value, int override)
