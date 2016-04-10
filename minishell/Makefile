@@ -30,8 +30,8 @@ endif
 SRC_PREFIX	= ./src/
 OBJ_PREFIX	= ./obj/
 
-SRC	= main cd env env_error environ cpy_environ create_default_environ \
-	  prompt builtins process get_next_line
+SRC	= main sh_exit cd env env_error environ cpy_environ create_default_environ \
+	  parser prompt builtins process get_next_line unescape
 
 ifeq ($(BUILD), Debug)
 	SRC +=

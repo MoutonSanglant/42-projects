@@ -93,6 +93,11 @@ typedef enum	e_env_error
 int				check_builtins(char **argv, t_sh_datas *sh_datas);
 
 /*
+**								: exit.c :
+*/
+void			sh_exit(char **argv, t_sh_datas *sh_datas);
+
+/*
 **								: environ.c :
 */
 char			**get_environ(char **environ, const char *name);
@@ -123,6 +128,17 @@ int				cd(char *path, t_sh_datas *sh_datas);
 
 /*
 ********************************************************************************
+**								:: Parser ::								   *
+********************************************************************************
+*/
+
+/*
+**								: parser.c :
+*/
+char			**parse_input(char *command);
+
+/*
+********************************************************************************
 **								:: Processes ::								   *
 ********************************************************************************
 */
@@ -130,7 +146,7 @@ int				cd(char *path, t_sh_datas *sh_datas);
 /*
 **								: process.c :
 */
-int				run_exec(char **argv, t_sh_datas *sh_datas, char **exec_environ);
+int				run_exec(char **argv, t_sh_datas *sh_datas, char **exec_env);
 
 /*
 ********************************************************************************
@@ -142,5 +158,16 @@ int				run_exec(char **argv, t_sh_datas *sh_datas, char **exec_environ);
 **								: prompt.c :
 */
 void			set_prompt(t_sh_datas *sh_datas);
+
+/*
+********************************************************************************
+**								:: Helpers ::								   *
+********************************************************************************
+*/
+
+/*
+**								: unescape.c :
+*/
+char			**unescape(char **input_blocks);
 
 #endif

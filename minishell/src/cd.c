@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 18:23:37 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/09 21:22:25 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/10 14:36:55 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,12 @@ static void		print_error(char *path)
 			error_msg = ft_strdup("not a directory");
 		else if (access(path, R_OK) < 0)
 			error_msg = ft_strdup("permission denied");
-
 	}
 	ft_printf("cd: %s: %s\n", error_msg, path);
 	ft_strdel(&error_msg);
 }
 
-static char	*get_home_path(t_sh_datas *sh_datas)
+static char		*get_home_path(t_sh_datas *sh_datas)
 {
 	char	**path_env;
 	char	*home;
@@ -49,7 +48,7 @@ static char	*get_home_path(t_sh_datas *sh_datas)
 	return (home);
 }
 
-int		cd(char *path, t_sh_datas *sh_datas)
+int				cd(char *path, t_sh_datas *sh_datas)
 {
 	char	*p;
 

@@ -6,23 +6,19 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/09 13:23:00 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/09 20:05:21 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/10 14:35:25 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char		**set_default_vars(char **env_cpy)
+static void		set_shlvl(char **env_cpy)
 {
 	char	*depth_str;
 	char	*str;
 	int		depth;
 	int		i;
 
-	env_cpy = set_environ(env_cpy, "SHLVL", "0", 0);
-	env_cpy = set_environ(env_cpy, "PWD", "", 0);
-	env_cpy = set_environ(env_cpy, "PATH",
-							"/usr/gnu/bin:/usr/local/bin:/usr/bin:/bin:.", 0);
 	i = 0;
 	while (env_cpy[i])
 	{
@@ -40,11 +36,19 @@ static char		**set_default_vars(char **env_cpy)
 		}
 		i++;
 	}
+}
+
+static char		**set_default_vars(char **env_cpy)
+{
+	env_cpy = set_environ(env_cpy, "SHLVL", "0", 0);
+	env_cpy = set_environ(env_cpy, "PWD", "", 0);
+	env_cpy = set_environ(env_cpy, "PATH",
+							"/usr/gnu/bin:/usr/local/bin:/usr/bin:/bin:.", 0);
+	set_shlvl(env_cpy);
 	return (env_cpy);
 }
 
-
-char	**create_default_environ(char **environ)
+char			**create_default_environ(char **environ)
 {
 	char	**env_cpy;
 

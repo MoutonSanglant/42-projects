@@ -6,54 +6,19 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 21:04:51 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/09 21:19:27 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/10 16:53:35 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void		quit(int errno, t_sh_datas *sh_datas)
+int				call_builtin_exit(char **argv, t_sh_datas *sh_datas)
 {
-	int		i;
-
-	i = 0;
-	while (sh_datas->environ[i])
-	{
-		ft_strdel(&sh_datas->environ[i]);
-		i++;
-	}
-	ft_memdel((void **)&sh_datas->environ);
-	ft_strdel(&sh_datas->prompt);
-	exit(errno);
-}
-
-static int		builtin_exit(char **argv, t_sh_datas *sh_datas)
-{
-	int		i;
-
-	ft_putendl("exit");
-	if (argv[1])
-	{
-		i = 0;
-		while (argv[1][i])
-		{
-			if (!ft_isdigit(argv[1][i]))
-			{
-				ft_printf("%s: quit: %s: numeric argument required\n",
-							PROGRAM_NAME, argv[1]);
-				quit(255, sh_datas);
-			}
-			i++;
-		}
-		if (argv[2])
-		{
-			ft_printf("%s: quit: too many arguments\n", PROGRAM_NAME);
-			return (1);
-		}
-		quit(ft_atoi(argv[1]), sh_datas);
-	}
-	quit(0, sh_datas);
-	return (0);
+	if (!(argv[1] && argv[2]))
+		sh_exit(argv, sh_datas);
+	else
+		ft_printf("%s: quit: too many arguments\n", PROGRAM_NAME);
+	return (1);
 }
 
 int				check_builtins(char **argv, t_sh_datas *sh_datas)
@@ -77,7 +42,7 @@ int				check_builtins(char **argv, t_sh_datas *sh_datas)
 		sh_datas->environ = unset_environ(sh_datas->environ, argv[1]);
 	}
 	else if (!ft_strcmp(argv[0], "exit"))
-		return (builtin_exit(argv, sh_datas));
+		return (call_builtin_exit(argv, sh_datas));
 	else
 		return (-1);
 	return (0);

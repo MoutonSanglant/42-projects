@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 19:25:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/09 21:05:16 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/10 16:56:39 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static char		**remove_environ(char **environ, int idx)
 	return (env_cpy);
 }
 
-char	**get_environ(char **environ, const char *name)
+char			**get_environ(char **environ, const char *name)
 {
 	char	**split;
 	char	*str;

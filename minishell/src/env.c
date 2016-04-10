@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/07 12:05:01 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/09 13:16:16 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/10 17:15:35 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int		fetch_pairs(char **argv, t_env_datas *env_datas)
 	clear_environ(env_datas->environ);
 	env_datas->environ = cpy_environ(NULL);
 	i = 0;
-	while (argv[i] && (pos = (size_t)ft_strchr(argv[i], '=')))
+	while (argv[i] && (pos = (size_t)ft_strchr(&argv[i][1], '=')))
 	{
 		len = pos - (size_t)&argv[i][0];
 		name = ft_strnew(len);
@@ -78,8 +78,9 @@ static int		read_flags(char **argv, t_env_datas *env_datas)
 			env_datas->environ = unset_environ(env_datas->environ, argv[++i]);
 		i++;
 	}
-	if (argv[i + pairs])
-		env_datas->utility = &argv[i + pairs];
+	i += pairs;
+	if (argv[i])
+		env_datas->utility = &argv[i];
 	return (0);
 }
 
@@ -95,7 +96,7 @@ void			env(char **argv, t_sh_datas *sh_datas)
 		run_exec(env_datas.utility, sh_datas,
 				(env_datas.environ) ? env_datas.environ : NULL);
 	else
-		print_environ((env_datas.environ) ? env_datas.environ : sh_datas->environ);
+		print_environ((env_datas.environ)
+						? env_datas.environ : sh_datas->environ);
 	clear_environ(env_datas.environ);
-
 }
