@@ -1,7 +1,7 @@
 NAME	= fillit
 
 CC	= gcc
-CFLAGS	= -Wall -Werror -Wextra -I./include
+CFLAGS	= -Wall -Werror -Wextra -I./includes
 LDFLAGS	= -L./lib -lft
 LDLIBS	=
 
