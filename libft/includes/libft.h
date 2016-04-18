@@ -97,6 +97,7 @@ int				ft_strequ(const char *s1, const char *s2);
 int				ft_strnequ(const char *s1, const char *s2, size_t n);
 char			*ft_strsub(const char *s, unsigned int start, size_t len);
 char			*ft_strjoin(const char *s1, const char *s2);
+char			*ft_strnjoin(const char *s1, const char *s2, int n);
 char			*ft_strtrim(const char *s);
 char			**ft_strsplit(const char *s, char c);
 char			*ft_itoa(int n);
@@ -105,6 +106,8 @@ char			*ft_itoa_base(intmax_t n, int base);
 char			*ft_imaxtoa(intmax_t n);
 char			*ft_uitoa(uintmax_t n);
 
+char			*ft_strconcat(char *s1, const char *s2);
+char			*ft_strnconcat(char *s1, const char *s2, int n);
 void			ft_strprepend(char **str, char *prefix);
 char			*ft_strpbrk(const char *s1, const char *s2);
 
@@ -149,6 +152,11 @@ int				ft_putunbr(unsigned int n);
 int				ft_putaddr(const void *addr);
 
 int				ft_printf(const char *restrict format, ...);
+int				ft_fprintf(int fd, const char *restrict format, ...);
+int				ft_sprintf(const char *restrict format, ...);
+int				ft_vprintf(const char *restrict format, va_list *ap);
+int				ft_vfprintf(int fd, const char *restrict format, va_list *ap);
+int				ft_vsprintf(const char *restrict format, va_list *ap);
 
 /*
 **	FORWARD LISTS

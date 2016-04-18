@@ -1,34 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_strnconcat.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/04/18 20:30:37 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/18 21:38:35 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/04/18 22:23:41 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/04/18 22:25:51 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "ft_printf.h"
 
-/*
-**	#define ft_printf(format, ...) ft_fprintf(stdout, format, __VA_ARGS__)
-*/
-
-int					ft_vprintf(const char *restrict format, va_list *ap)
+char	*ft_strnconcat(char *s1, char const *s2, int n)
 {
-	return (ft_vfprintf(1, format, ap));
-}
+	char	*tmp;
 
-int					ft_printf(const char *restrict format, ...)
-{
-	va_list		ap;
-	int			count;
-
-	va_start(ap, format);
-	count = ft_vprintf(format, &ap);
-	va_end(ap);
-	return (count);
+	tmp = s1;
+	s1 = ft_strnjoin(s1, s2, n);
+	ft_strdel(&tmp);
+	return (s1);
 }

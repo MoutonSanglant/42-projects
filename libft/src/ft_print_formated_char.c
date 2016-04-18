@@ -6,16 +6,23 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/24 09:45:47 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/03/24 14:52:04 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/18 22:07:39 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "ft_printf.h"
 
+
+
 static void		justify(wint_t *c, t_fdata *fdatas)
 {
+//	char		*tmp;
+
 	if (fdatas->flag & FLAG_SPACE)
+//		tmp = fdatas.output;
+//		fdatas.output = ft_strnjoin(fdatas.output, from_ptr, (to_ptr - from_ptr));
+//		ft_strdel(&tmp);
 		fdatas->bcount += write(1, " ", 1);
 	if (fdatas->length == LENGTH_L)
 		fdatas->bcount += ft_putwchar((wchar_t *)c);

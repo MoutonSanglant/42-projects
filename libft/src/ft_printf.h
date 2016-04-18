@@ -41,6 +41,7 @@ typedef enum	e_flength
 typedef struct	s_fdata
 {
 	const char	*format;
+	char		*output;
 	t_fflag		flag;
 	t_flength	length;
 	int			width;
@@ -48,6 +49,7 @@ typedef struct	s_fdata
 	int			bcount;
 	char		fill_char;
 }				t_fdata;
+
 
 void			ft_print_formated_char(va_list *ap, t_fdata *fdatas);
 void			ft_print_formated_string(va_list *ap, t_fdata *fdatas, char *s);

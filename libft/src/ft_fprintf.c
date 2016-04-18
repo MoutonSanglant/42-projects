@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_fprintf.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/04/18 20:30:37 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/18 21:38:35 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/04/18 20:40:22 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/04/18 21:34:45 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "ft_printf.h"
 
-/*
-**	#define ft_printf(format, ...) ft_fprintf(stdout, format, __VA_ARGS__)
-*/
 
-int					ft_vprintf(const char *restrict format, va_list *ap)
+int			ft_vfprintf(int fd, const char *restrict format, va_list *ap)
 {
-	return (ft_vfprintf(1, format, ap));
+	(void)fd;
+	return (ft_vsprintf(format, ap));
 }
 
-int					ft_printf(const char *restrict format, ...)
+int			ft_fprintf(int fd, const char *restrict format, ...)
 {
 	va_list		ap;
 	int			count;
 
 	va_start(ap, format);
-	count = ft_vprintf(format, &ap);
+	count = ft_vfprintf(fd, format, &ap);
 	va_end(ap);
 	return (count);
 }

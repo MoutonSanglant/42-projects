@@ -38,17 +38,17 @@ OBJ_PREFIX = ./obj/
 SRC		= memset bzero memcpy memccpy memmove memchr memcmp strdup strcpy strncpy \
 strcat strncat strlcat strchr strrchr strstr strnstr strcmp strncmp atoi \
 isalpha isdigit isalnum isascii isprint toupper tolower memalloc memdel strnew \
-strdel strclr striter striteri strmap strmapi strequ strnequ strsub strjoin \
+strdel strclr striter striteri strmap strmapi strequ strnequ strsub strjoin strnjoin \
 strtrim strsplit itoa strlen putchar putstr putnbr putunbr putendl putchar_fd putstr_fd \
 putnbr_fd putendl_fd lstnew lstdelone lstdel lstadd lstiter lstmap isupper \
 islower isspace pow lstsize dl_lstnew dl_lstfront dl_lstback dl_lstpushfront \
 dl_lstpushback dl_lstpopfront dl_lstpopback dl_lstiter dl_lstmap dl_lstsize \
 dl_lstclear queuenew queuefront queueback queuepush queuepop queuesize \
-stacknew stackpush stackpop stacksize lstgetat putaddr itoa_base printf imaxtoa \
+stacknew stackpush stackpop stacksize lstgetat putaddr itoa_base imaxtoa \
 uitoa strprepend print_formated_string print_formated_digit print_formated_hex \
 print_formated_unsigned print_formated_space print_formated_char \
 print_formated_octal print_formated_pointer strpbrk putwchar debug_error_param \
-lstsort debug_error_free
+lstsort debug_error_free printf fprintf sprintf strconcat strnconcat
 
 SRC := $(addsuffix .c, $(SRC))
 SRC := $(addprefix $(SRC_PREFIX)ft_, $(SRC))
