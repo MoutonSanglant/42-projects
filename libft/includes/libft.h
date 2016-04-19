@@ -143,7 +143,7 @@ int				ft_putstr(const char *s);
 void			ft_putendl(const char *s);
 int				ft_putnbr(int n);
 void			ft_putchar_fd(char c, int fd);
-void			ft_putstr_fd(const char *s, int fd);
+int				ft_putstr_fd(const char *s, int fd);
 void			ft_putendl_fd(const char *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
 
@@ -153,11 +153,13 @@ int				ft_putunbr(unsigned int n);
 int				ft_putaddr(const void *addr);
 
 int				ft_printf(const char *restrict format, ...);
+int				ft_eprintf(const char *restrict format, ...);
 int				ft_fprintf(int fd, const char *restrict format, ...);
-int				ft_sprintf(const char *restrict format, ...);
+char			*ft_sprintf(const char *restrict format, ...);
 int				ft_vprintf(const char *restrict format, va_list *ap);
+int				ft_veprintf(const char *restrict format, va_list *ap);
 int				ft_vfprintf(int fd, const char *restrict format, va_list *ap);
-int				ft_vsprintf(const char *restrict format, va_list *ap);
+char			*ft_vsprintf(const char *restrict format, va_list *ap);
 
 /*
 **	FORWARD LISTS

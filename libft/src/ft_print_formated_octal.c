@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/24 09:47:23 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/19 16:52:12 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/19 19:30:07 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ static void		justify(char *str, t_fdata *fdatas)
 {
 	while (fdatas->precision-- > 0)
 		fdatas->output = ft_strconcat(fdatas->output, "0");
-		//fdatas->bcount += write(1, "0", 1);
-	fdatas->bcount += ft_putstr(str);
+	fdatas->output = ft_strconcat(fdatas->output, str);
 }
 
 static char		*str_from_arg(va_list *ap, t_fdata *fdatas)
@@ -47,13 +46,11 @@ static void		printf_octal_string(t_fdata *fdatas, char *str)
 		fdatas->width--;
 		if (fdatas->flag & FLAG_ZERO)
 			fdatas->output = ft_strconcat(fdatas->output, "0");
-			//fdatas->bcount += write(1, "0", 1);
 	}
 	if (fdatas->flag & FLAG_LESS)
 	{
 		if (fdatas->flag & FLAG_NUMBERSIGN && !(fdatas->flag & FLAG_ZERO))
 			fdatas->output = ft_strconcat(fdatas->output, "0");
-			//fdatas->bcount += write(1, "0", 1);
 		justify(str, fdatas);
 	}
 	while (fdatas->width > 0)
@@ -61,14 +58,12 @@ static void		printf_octal_string(t_fdata *fdatas, char *str)
 		if (!(fdatas->flag & FLAG_MORE
 					|| fdatas->flag & FLAG_SPACE) || fdatas->width > 1)
 			fdatas->output = ft_strnconcat(fdatas->output, &fdatas->fill_char, 1);
-			//fdatas->bcount += write(1, &fdatas->fill_char, 1);
 		fdatas->width--;
 	}
 	if (!(fdatas->flag & FLAG_LESS))
 	{
 		if (fdatas->flag & FLAG_NUMBERSIGN && !(fdatas->flag & FLAG_ZERO))
 			fdatas->output = ft_strconcat(fdatas->output, "0");
-			//fdatas->bcount += write(1, "0", 1);
 		justify(str, fdatas);
 	}
 }

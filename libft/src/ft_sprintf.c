@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/18 20:30:45 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/18 22:25:14 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/19 19:26:31 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,46 +156,34 @@ static const char	*read_arg(va_list *ap,
 	return (spec);
 }
 
-int					ft_vsprintf(const char *restrict format, va_list *ap)
+char				*ft_vsprintf(const char *restrict format, va_list *ap)
 {
 	const char	*from_ptr;
 	const char	*to_ptr;
 	t_fdata		fdatas;
-	int			bwrite;
 
-	bwrite = 0;
 	fdatas.output = ft_strnew(1);
-
 	fdatas.bcount = 0;
 	from_ptr = format;
 	while ((to_ptr = ft_strchr(from_ptr, '%')))
 	{
 		fdatas.output = ft_strnconcat(fdatas.output, from_ptr, (to_ptr - from_ptr));
-		//tmp = fdatas.output;
-		//fdatas.output = ft_strnjoin(fdatas.output, from_ptr, (to_ptr - from_ptr));
-		//ft_strdel(&tmp);
-		//fdatas.bcount += write(1, from_ptr, (to_ptr - from_ptr));
 		to_ptr = read_arg(ap, (to_ptr + 1), &fdatas) + 1;
 		if (fdatas.flag & FLAG_FORMAT_ERROR)
-			return (fdatas.bcount);
+			return (fdatas.output);
 		from_ptr = to_ptr;
 	}
 	fdatas.output = ft_strconcat(fdatas.output, from_ptr);
-	//fdatas.bcount += write(1, from_ptr, ft_strlen(from_ptr));
-	//return (fdatas.bcount);
-	bwrite += ft_putstr(fdatas.output);
-	// This line should ne moved to fprinft & printf
-	ft_strdel(&fdatas.output);
-	return (bwrite);
+	return (fdatas.output);
 }
 
-int					ft_sprintf(const char *restrict format, ...)
+char				*ft_sprintf(const char *restrict format, ...)
 {
 	va_list		ap;
-	int			count;
+	char		*output;
 
 	va_start(ap, format);
-	count = ft_vsprintf(format, &ap);
+	output = ft_vsprintf(format, &ap);
 	va_end(ap);
-	return (count);
+	return (output);
 }
