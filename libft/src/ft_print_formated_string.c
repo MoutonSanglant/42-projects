@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/23 16:07:37 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/03/24 14:52:56 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/19 19:06:28 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,17 @@ static void		print_formated_string(t_fdata *fdatas, char *str)
 	fdatas->precision = (fdatas->precision < len) ? fdatas->precision : len;
 	fdatas->width = fdatas->width - fdatas->precision;
 	if (fdatas->flag & FLAG_LESS)
-		fdatas->bcount += write(1, str, fdatas->precision);
+		fdatas->output = ft_strnconcat(fdatas->output, str, fdatas->precision);
+		//fdatas->bcount += write(1, str, fdatas->precision);
 	while (fdatas->width > 0)
 	{
-		fdatas->bcount += write(1, &fdatas->fill_char, 1);
+		fdatas->output = ft_strnconcat(fdatas->output, &fdatas->fill_char, 1);
+		//fdatas->bcount += write(1, &fdatas->fill_char, 1);
 		fdatas->width--;
 	}
 	if (!(fdatas->flag & FLAG_LESS))
-		fdatas->bcount += write(1, str, fdatas->precision);
+		fdatas->output = ft_strnconcat(fdatas->output, str, fdatas->precision);
+		//fdatas->bcount += write(1, str, fdatas->precision);
 }
 
 static int		justify_long_string(wchar_t *wstr, t_fdata *fdatas, int dry)
@@ -56,7 +59,8 @@ static int		justify_long_string(wchar_t *wstr, t_fdata *fdatas, int dry)
 			break ;
 		}
 		else if (!dry)
-			fdatas->bcount += ft_putwchar(&wstr[r_bytes]);
+			fdatas->output = ft_strconcat(fdatas->output, ft_towstr(&wstr[r_bytes]));
+			//fdatas->bcount += ft_putwchar(&wstr[r_bytes]);
 	}
 	return (w_bytes);
 }
@@ -72,7 +76,8 @@ static void		print_formated_long_string(t_fdata *fdatas, wchar_t *wstr)
 	fdatas->width = (fdatas->width > 0) ? fdatas->width : 0;
 	fdatas->width -= w_bytes;
 	while (fdatas->width-- > 0)
-		fdatas->bcount += write(1, &fdatas->fill_char, 1);
+		fdatas->output = ft_strnconcat(fdatas->output, &fdatas->fill_char, 1);
+		//fdatas->bcount += write(1, &fdatas->fill_char, 1);
 	if (!(fdatas->flag & FLAG_LESS))
 		justify_long_string(wstr, fdatas, 0);
 }

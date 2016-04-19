@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/24 09:44:05 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/03/02 20:18:35 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/19 16:54:37 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@
 static void		justify(char c, t_fdata *fdatas)
 {
 	if (fdatas->flag & FLAG_SPACE)
-		fdatas->bcount += write(1, " ", 1);
+		fdatas->output = ft_strconcat(fdatas->output, " ");
+		//fdatas->bcount += write(1, " ", 1);
 	if (ft_isprint(c))
-		fdatas->bcount += write(1, &c, 1);
+		fdatas->output = ft_strnconcat(fdatas->output, &c, 1);
+		//fdatas->bcount += write(1, &c, 1);
 }
 
 static int		format_error(const char *format, t_fdata *fdatas)
@@ -47,7 +49,8 @@ void			ft_print_formated_space(const char *format, t_fdata *fdatas)
 	while (fdatas->width > 0)
 	{
 		if (!(fdatas->flag & FLAG_MORE) || fdatas->width > 1)
-			fdatas->bcount += write(1, &fdatas->fill_char, 1);
+			fdatas->output = ft_strnconcat(fdatas->output, &fdatas->fill_char, 1);
+			//fdatas->bcount += write(1, &fdatas->fill_char, 1);
 		fdatas->width--;
 	}
 	if (!(fdatas->flag & FLAG_LESS))

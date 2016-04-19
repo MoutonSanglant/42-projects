@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/24 09:32:47 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/03/24 14:53:54 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/19 16:48:21 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,16 @@ static void		print_prefixes(char **str, t_fdata *fdatas)
 	if ((*str)[0] == '-')
 	{
 		(*str)++;
-		fdatas->bcount += write(1, "-", 1);
+		fdatas->output = ft_strconcat(fdatas->output, "-");
+		//fdatas->bcount += write(1, "-", 1);
 		fdatas->flag ^= (fdatas->flag & FLAG_MORE) ? FLAG_MORE : FLAG_NONE;
 	}
 	else if (fdatas->flag & FLAG_MORE)
-		fdatas->bcount += write(1, "+", 1);
+		fdatas->output = ft_strconcat(fdatas->output, "+");
+		//fdatas->bcount += write(1, "+", 1);
 	else if (fdatas->flag & FLAG_SPACE)
-		fdatas->bcount += write(1, " ", 1);
+		fdatas->output = ft_strconcat(fdatas->output, " ");
+		//fdatas->bcount += write(1, " ", 1);
 }
 
 static void		justify_left(t_fdata *fdatas, char *str)
@@ -32,10 +35,12 @@ static void		justify_left(t_fdata *fdatas, char *str)
 	if (str[0] == '-' || (fdatas->flag & (FLAG_MORE | FLAG_SPACE)))
 		print_prefixes(&str, fdatas);
 	while (fdatas->precision-- > 0)
-		fdatas->bcount += write(1, "0", 1);
+		fdatas->output = ft_strconcat(fdatas->output, "0");
+		//fdatas->bcount += write(1, "0", 1);
 	fdatas->bcount += ft_putstr(str);
 	while (fdatas->width-- > 0)
-		fdatas->bcount += write(1, &fdatas->fill_char, 1);
+		fdatas->output = ft_strconcat(fdatas->output, &fdatas->fill_char);
+		//fdatas->bcount += write(1, &fdatas->fill_char, 1);
 }
 
 static void		justify_right(t_fdata *fdatas, char *str)
@@ -55,8 +60,10 @@ static void		justify_right(t_fdata *fdatas, char *str)
 			print_prefixes(&str, fdatas);
 	}
 	while (fdatas->precision-- > 0)
-		fdatas->bcount += write(1, "0", 1);
-	fdatas->bcount += ft_putstr(str);
+		fdatas->output = ft_strconcat(fdatas->output, "0");
+		//fdatas->bcount += write(1, "0", 1);
+	fdatas->output = ft_strconcat(fdatas->output, str);
+	//fdatas->bcount += ft_putstr(str);
 }
 
 static char		*str_from_arg(va_list *ap, t_fdata *fdatas)

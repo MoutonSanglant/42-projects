@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/24 09:45:47 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/18 22:07:39 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/19 19:06:02 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,16 @@
 
 static void		justify(wint_t *c, t_fdata *fdatas)
 {
-//	char		*tmp;
 
 	if (fdatas->flag & FLAG_SPACE)
-//		tmp = fdatas.output;
-//		fdatas.output = ft_strnjoin(fdatas.output, from_ptr, (to_ptr - from_ptr));
-//		ft_strdel(&tmp);
-		fdatas->bcount += write(1, " ", 1);
+		fdatas->output = ft_strconcat(fdatas->output, " ");
+		//fdatas->bcount += write(1, " ", 1);
 	if (fdatas->length == LENGTH_L)
-		fdatas->bcount += ft_putwchar((wchar_t *)c);
+		fdatas->output = ft_strconcat(fdatas->output, ft_towstr((wchar_t *)c));
+		//fdatas->bcount += ft_putwchar((wchar_t *)c);
 	else
-		fdatas->bcount += write(1, (char *)c, 1);
+		fdatas->output = ft_strnconcat(fdatas->output, (char *)c, 1);
+		//fdatas->bcount += write(1, (char *)c, 1);
 }
 
 static int		unicode_length(t_fdata *fdatas, wint_t c)
@@ -67,7 +66,8 @@ void			ft_print_formated_char(va_list *ap, t_fdata *fdatas)
 	while (fdatas->width > 0)
 	{
 		if (!(fdatas->flag & FLAG_MORE) || fdatas->width > 1)
-			fdatas->bcount += write(1, &fdatas->fill_char, 1);
+			fdatas->output = ft_strnconcat(fdatas->output, &fdatas->fill_char, 1);
+		//	fdatas->bcount += write(1, &fdatas->fill_char, 1);
 		fdatas->width--;
 	}
 	if (!(fdatas->flag & FLAG_LESS))
