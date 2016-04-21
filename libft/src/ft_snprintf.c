@@ -1,32 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_fprintf.c                                       :+:      :+:    :+:   */
+/*   ft_snprintf.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/04/18 20:40:22 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/22 00:20:44 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/04/22 00:23:39 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/04/22 00:40:08 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "ft_printf.h"
 
-#ifdef FORBIDDEN
-int			ft_vfprintf(FILE *stream, const char *restrict format, va_list *ap)
+char	*ft_vsnprintf(size_t size, const char *restrict format, va_list *ap)
 {
-	return (ft_putstr_fd(ft_vdprintf(fileno(stream), format, ap), fd));
+	char	*sprintf_out;
+	char	*output;
+	size_t	len;
+
+	sprintf_out = ft_vsprintf(format, ap);
+	len = ft_strlen(sprintf_out);
+	size = (size < len) ? size : len;
+	output = ft_strnew(size);
+	output = ft_strncpy(output, sprintf_out, size);
+	ft_strdel(&sprintf_out);
+	return (output);
 }
 
-int			ft_fprintf(FILE *stream, const char *restrict format, ...)
+char	*ft_snprintf(size_t size, const char *restrict format, ...)
 {
 	va_list		ap;
-	int			count;
+	char		*output;
 
 	va_start(ap, format);
-	count = ft_vfprintf(stream, format, &ap);
+	output = ft_vsnprintf(size, format, &ap);
 	va_end(ap);
-	return (count);
+	return (output);
 }
-#endif

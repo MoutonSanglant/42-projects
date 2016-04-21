@@ -13,8 +13,8 @@ else
 SUFFIX	= .o
 endif
 
-#NAME	= libftprintf.a
-NAME	= libft.a
+NAME	= libftprintf.a
+#NAME	= libft.a
 
 # Get system and set specific flags accordingly
 
@@ -49,7 +49,8 @@ stacknew stackpush stackpop stacksize lstgetat putaddr itoa_base imaxtoa \
 uitoa strprepend print_formated_string print_formated_digit print_formated_hex \
 print_formated_unsigned print_formated_space print_formated_char print_formated_widechar \
 print_formated_octal print_formated_pointer strpbrk putwchar debug_error_param \
-lstsort debug_error_free printf eprintf fprintf sprintf strconcat strnconcat towstr
+lstsort debug_error_free printf eprintf dprintf fprintf sprintf snprintf \
+strconcat strnconcat towstr
 
 SRC := $(addsuffix .c, $(SRC))
 SRC := $(addprefix $(SRC_PREFIX)ft_, $(SRC))

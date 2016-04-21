@@ -154,8 +154,13 @@ int				ft_putaddr(const void *addr);
 
 int				ft_printf(const char *restrict format, ...);
 int				ft_eprintf(const char *restrict format, ...);
-int				ft_fprintf(int fd, const char *restrict format, ...);
+int				ft_dprintf(int fd, const char *restrict format, ...);
 char			*ft_sprintf(const char *restrict format, ...);
+char			*ft_snprintf(size_t size, const char *restrict format, ...);
+
+# ifdef FORBIDDEN
+int				ft_fprintf(FILE *stream, const char *restrict format, ...);
+# endif
 
 /*
 **	FORWARD LISTS

@@ -52,8 +52,9 @@ typedef struct	s_fdata
 
 int				ft_vprintf(const char *restrict format, va_list *ap);
 int				ft_veprintf(const char *restrict format, va_list *ap);
-int				ft_vfprintf(int fd, const char *restrict format, va_list *ap);
+int				ft_vdprintf(int fd, const char *restrict format, va_list *ap);
 char			*ft_vsprintf(const char *restrict format, va_list *ap);
+char			*ft_vsnprintf(size_t size, const char *restrict format, va_list *ap);
 
 void			ft_print_formated_char(va_list *ap, t_fdata *fdatas);
 void			ft_print_formated_widechar(va_list *ap, t_fdata *fdatas);
@@ -65,5 +66,9 @@ void			ft_print_formated_hex(va_list *ap, t_fdata *fdatas,
 															char specifier);
 void			ft_print_formated_unsigned(va_list *ap, t_fdata *fdatas);
 void			ft_print_formated_space(const char *format, t_fdata *fdatas);
+
+# ifdef FORBIDDEN
+int				ft_vfprintf(FILE *stream, const char *restrict format, va_list *ap);
+# endif
 
 #endif
