@@ -50,6 +50,10 @@ typedef struct	s_fdata
 	char		fill_char;
 }				t_fdata;
 
+int				ft_vprintf(const char *restrict format, va_list *ap);
+int				ft_veprintf(const char *restrict format, va_list *ap);
+int				ft_vfprintf(int fd, const char *restrict format, va_list *ap);
+char			*ft_vsprintf(const char *restrict format, va_list *ap);
 
 void			ft_print_formated_char(va_list *ap, t_fdata *fdatas);
 void			ft_print_formated_widechar(va_list *ap, t_fdata *fdatas);

@@ -156,10 +156,6 @@ int				ft_printf(const char *restrict format, ...);
 int				ft_eprintf(const char *restrict format, ...);
 int				ft_fprintf(int fd, const char *restrict format, ...);
 char			*ft_sprintf(const char *restrict format, ...);
-int				ft_vprintf(const char *restrict format, va_list *ap);
-int				ft_veprintf(const char *restrict format, va_list *ap);
-int				ft_vfprintf(int fd, const char *restrict format, va_list *ap);
-char			*ft_vsprintf(const char *restrict format, va_list *ap);
 
 /*
 **	FORWARD LISTS
