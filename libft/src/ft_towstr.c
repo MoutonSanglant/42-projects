@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/19 19:00:23 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/19 19:04:17 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/21 21:54:16 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,14 @@
 **	|11110www|10zzzzzz|10yyyyyy|10xxxxxx|
 */
 
+/*
+**	mask12 = 0b00000000000000000000100000000000; <=> (1 << 11)
+**	mask16 = 0b00000000000000010000000000000000; <=> (1 << 16)
+*/
+
 static int		convert(unsigned char *h, char *str, wchar_t c)
 {
-	const int	mask12 = 0b00000000000000000001000000000000;
+	const int	mask12 = 0b00000000000000000000100000000000;
 	const int	mask16 = 0b00000000000000010000000000000000;
 	int			i;
 
@@ -56,32 +61,29 @@ static int		convert(unsigned char *h, char *str, wchar_t c)
 
 #ifdef DEBUG
 
-static char		*debug_ft_towstr(wchar_t *unicode_point)
+static char		*debug_ft_towstr(wchar_t *unicode_point, int *len)
 {
 	char	*str;
-	int		len;
 	wchar_t	c;
 
-	len = 0;
+	*len = 0;
 	c = *unicode_point;
 	if (c < 128)
 	{
 		str = ft_strnew(1);
 		str[0] = *((unsigned char *)unicode_point);
-		len = 1;
+		*len = 1;
 	}
 	else
 	{
 		str = ft_strnew(4);
-		len = convert((unsigned char *)unicode_point, str, c);
+		*len = convert((unsigned char *)unicode_point, str, c);
 	}
-	str[len] = '\0';
-	//ft_putstr(str);
-	//ft_strdel(&str);
+	str[*len] = '\0';
 	return (str);
 }
 
-char			*ft_towstr(wchar_t *unicode_point)
+char			*ft_towstr(wchar_t *unicode_point, int *len)
 {
 	if (!unicode_point)
 	{
@@ -93,28 +95,25 @@ char			*ft_towstr(wchar_t *unicode_point)
 
 #else
 
-char			*ft_towstr(wchar_t *unicode_point)
+char			*ft_towstr(wchar_t *unicode_point, int *len)
 {
 	char	*str;
-	int		len;
 	wchar_t	c;
 
-	len = 0;
+	*len = 0;
 	c = *unicode_point;
-	if (c < (1 << 7))
+	if (c < 128)
 	{
 		str = ft_strnew(1);
 		str[0] = *((unsigned char *)unicode_point);
-		len = 1;
+		*len = 1;
 	}
 	else
 	{
 		str = ft_strnew(4);
-		len = convert((unsigned char *)unicode_point, str, c);
+		*len = convert((unsigned char *)unicode_point, str, c);
 	}
-	str[len] = '\0';
-	//ft_putstr(str);
-	//ft_strdel(&str);
+	str[*len] = '\0';
 	return (str);
 }
 #endif

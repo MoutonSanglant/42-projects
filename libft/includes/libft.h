@@ -148,7 +148,7 @@ void			ft_putendl_fd(const char *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
 
 int				ft_putwchar(wchar_t *unicode_point);
-char			*ft_towstr(wchar_t *unicode_point);
+char			*ft_towstr(wchar_t *unicode_point, int *len);
 int				ft_putunbr(unsigned int n);
 int				ft_putaddr(const void *addr);
 

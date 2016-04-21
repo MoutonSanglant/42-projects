@@ -22,6 +22,7 @@ vgcore.*
 
 ### Libraries ###
 libft/libft.a
+libft/libftprintf.a
 printf/libftprintf.a
 
 

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/23 16:07:37 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/19 19:54:58 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/21 21:00:59 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static int		justify_long_string(wchar_t *wstr, t_fdata *fdatas, int dry)
 	int		r_bytes;
 	int		w_bytes;
 	int		n;
+	int		len;
 
 	r_bytes = -1;
 	w_bytes = 0;
@@ -56,7 +57,7 @@ static int		justify_long_string(wchar_t *wstr, t_fdata *fdatas, int dry)
 			break ;
 		}
 		else if (!dry)
-			fdatas->output = ft_strconcat(fdatas->output, ft_towstr(&wstr[r_bytes]));
+			fdatas->output = ft_strconcat(fdatas->output, ft_towstr(&wstr[r_bytes], &len));
 	}
 	return (w_bytes);
 }

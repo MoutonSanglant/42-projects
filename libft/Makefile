@@ -13,7 +13,7 @@ else
 SUFFIX	= .o
 endif
 
-NAME	= libft.a
+NAME	= libftprintf.a
 
 # Get system and set specific flags accordingly
 
@@ -46,7 +46,7 @@ dl_lstpushback dl_lstpopfront dl_lstpopback dl_lstiter dl_lstmap dl_lstsize \
 dl_lstclear queuenew queuefront queueback queuepush queuepop queuesize \
 stacknew stackpush stackpop stacksize lstgetat putaddr itoa_base imaxtoa \
 uitoa strprepend print_formated_string print_formated_digit print_formated_hex \
-print_formated_unsigned print_formated_space print_formated_char \
+print_formated_unsigned print_formated_space print_formated_char print_formated_widechar \
 print_formated_octal print_formated_pointer strpbrk putwchar debug_error_param \
 lstsort debug_error_free printf eprintf fprintf sprintf strconcat strnconcat towstr
 

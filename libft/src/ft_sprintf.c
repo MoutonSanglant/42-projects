@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/18 20:30:45 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/19 19:26:31 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/21 20:54:18 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,8 +149,10 @@ static const char	*read_arg(va_list *ap,
 		ft_print_formated_unsigned(ap, fdatas);
 	else if (*spec == 'x' || *spec == 'X')
 		ft_print_formated_hex(ap, fdatas, *spec);
-	else if (*spec == 'c' || *spec == 'C')
+	else if (*spec == 'c')
 		ft_print_formated_char(ap, fdatas);
+	else if (*spec == 'C')
+		ft_print_formated_widechar(ap, fdatas);
 	else
 		ft_print_formated_space(spec, fdatas);
 	return (spec);
