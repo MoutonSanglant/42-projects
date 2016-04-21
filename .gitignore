@@ -32,6 +32,8 @@ printf/libftprintf.a
 /fdf/fdf*
 /ls/ft_ls*
 /minishell/minishell*
+/42sh/42sh*
+
 
 ### Temporary files ###
 _*
