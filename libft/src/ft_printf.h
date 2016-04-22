@@ -16,6 +16,11 @@
 # include <wchar.h>
 # include <stdarg.h>
 
+# define MASK11 0b00000000000000000000011111111111
+# define MASK16 0b00000000000000001111111111111111
+# define MASK21 0b00000000000111111111111111111111
+# define HEX_CHECK(s) (s == 'x') ? "0x" : "0X"
+
 typedef enum	e_fflag
 {
 	FLAG_NONE = 0x0,
@@ -41,23 +46,27 @@ typedef enum	e_flength
 typedef struct	s_fdata
 {
 	const char	*format;
-	char		*output;
+	char		*out;
 	t_fflag		flag;
 	t_flength	length;
 	int			width;
 	int			precision;
 	int			bcount;
-	char		fill_char;
+	char		*fill_char;
 }				t_fdata;
+
+const char		*ft_get_formated_argument(va_list *ap,
+									const char *format, t_fdata *fdatas);
 
 int				ft_vprintf(const char *restrict format, va_list *ap);
 int				ft_veprintf(const char *restrict format, va_list *ap);
 int				ft_vdprintf(int fd, const char *restrict format, va_list *ap);
 char			*ft_vsprintf(const char *restrict format, va_list *ap);
-char			*ft_vsnprintf(size_t size, const char *restrict format, va_list *ap);
+char			*ft_vsnprintf(size_t size, const char *restrict format,
+																va_list *ap);
 
-void			ft_print_formated_char(va_list *ap, t_fdata *fdatas);
-void			ft_print_formated_widechar(va_list *ap, t_fdata *fdatas);
+int				ft_print_formated_char(va_list *ap, t_fdata *fdatas);
+int				ft_print_formated_widechar(va_list *ap, t_fdata *fdatas);
 void			ft_print_formated_string(va_list *ap, t_fdata *fdatas, char *s);
 void			ft_print_formated_pointer(va_list *ap, t_fdata *fdatas);
 void			ft_print_formated_digit(va_list *ap, t_fdata *fdatas);
@@ -68,7 +77,9 @@ void			ft_print_formated_unsigned(va_list *ap, t_fdata *fdatas);
 void			ft_print_formated_space(const char *format, t_fdata *fdatas);
 
 # ifdef FORBIDDEN
-int				ft_vfprintf(FILE *stream, const char *restrict format, va_list *ap);
+
+int				ft_vfprintf(FILE *stream, const char *restrict format,
+																va_list *ap);
 # endif
 
 #endif

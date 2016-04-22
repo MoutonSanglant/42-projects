@@ -159,7 +159,9 @@ char			*ft_sprintf(const char *restrict format, ...);
 char			*ft_snprintf(size_t size, const char *restrict format, ...);
 
 # ifdef FORBIDDEN
+
 int				ft_fprintf(FILE *stream, const char *restrict format, ...);
+
 # endif
 
 /*

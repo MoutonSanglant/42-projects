@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/24 09:41:18 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/19 19:55:07 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/22 19:41:33 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,19 @@
 static void		justify_left(t_fdata *fdatas, char *str)
 {
 	while (fdatas->precision-- > 0)
-		fdatas->output = ft_strconcat(fdatas->output, "0");
-	fdatas->output = ft_strconcat(fdatas->output, str);
+		fdatas->out = ft_strconcat(fdatas->out, "0");
+	fdatas->out = ft_strconcat(fdatas->out, str);
 	while (fdatas->width-- > 0)
-		fdatas->output = ft_strnconcat(fdatas->output, &fdatas->fill_char, 1);
+		fdatas->out = ft_strnconcat(fdatas->out, fdatas->fill_char, 1);
 }
 
 static void		justify_right(t_fdata *fdatas, char *str)
 {
 	while (fdatas->width-- > 0)
-		fdatas->output = ft_strnconcat(fdatas->output, &fdatas->fill_char, 1);
+		fdatas->out = ft_strnconcat(fdatas->out, fdatas->fill_char, 1);
 	while (fdatas->precision-- > 0)
-		fdatas->output = ft_strconcat(fdatas->output, "0");
-	fdatas->output = ft_strconcat(fdatas->output, str);
+		fdatas->out = ft_strconcat(fdatas->out, "0");
+	fdatas->out = ft_strconcat(fdatas->out, str);
 }
 
 static char		*str_from_arg(va_list *ap, t_fdata *fdatas)
@@ -59,7 +59,7 @@ void			ft_print_formated_unsigned(va_list *ap, t_fdata *fdatas)
 	if (str[0] == '0' && fdatas->precision == 0)
 		str[0] = '\0';
 	if (fdatas->precision >= 0)
-		fdatas->fill_char = ' ';
+		fdatas->fill_char = " ";
 	len = ft_strlen(str);
 	fdatas->precision = fdatas->precision - len;
 	fdatas->precision = (fdatas->precision > 0) ? fdatas->precision : 0;

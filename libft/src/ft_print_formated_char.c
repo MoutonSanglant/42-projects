@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/24 09:45:47 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/21 20:57:18 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/22 19:39:10 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@
 static void		justify(wint_t *c, t_fdata *fdatas)
 {
 	if (fdatas->flag & FLAG_SPACE)
-		fdatas->output = ft_strconcat(fdatas->output, " ");
+		fdatas->out = ft_strconcat(fdatas->out, " ");
 	else
-		fdatas->output = ft_strnconcat(fdatas->output, (char *)c, 1);
+		fdatas->out = ft_strnconcat(fdatas->out, (char *)c, 1);
 }
 
-void			ft_print_formated_char(va_list *ap, t_fdata *fdatas)
+int				ft_print_formated_char(va_list *ap, t_fdata *fdatas)
 {
 	wint_t	c;
 
@@ -35,8 +35,9 @@ void			ft_print_formated_char(va_list *ap, t_fdata *fdatas)
 		c = (wint_t)va_arg(*ap, int);
 	else if (fdatas->length == LENGTH_L)
 	{
-		ft_print_formated_widechar(ap, fdatas);
-		return ;
+		if (ft_print_formated_widechar(ap, fdatas) < 0)
+			return (-1);
+		return (0);
 	}
 	fdatas->flag ^= (fdatas->flag & FLAG_SPACE) ? FLAG_SPACE : FLAG_NONE;
 	fdatas->flag ^= (fdatas->flag & FLAG_MORE) ? FLAG_MORE : FLAG_NONE;
@@ -46,9 +47,10 @@ void			ft_print_formated_char(va_list *ap, t_fdata *fdatas)
 	while (fdatas->width > 0)
 	{
 		if (!(fdatas->flag & FLAG_MORE) || fdatas->width > 1)
-			fdatas->output = ft_strnconcat(fdatas->output, &fdatas->fill_char, 1);
+			fdatas->out = ft_strnconcat(fdatas->out, fdatas->fill_char, 1);
 		fdatas->width--;
 	}
 	if (!(fdatas->flag & FLAG_LESS))
 		justify(&c, fdatas);
+	return (0);
 }

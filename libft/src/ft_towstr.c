@@ -6,11 +6,12 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/19 19:00:23 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/21 21:54:16 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/22 19:17:15 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "ft_printf.h"
 
 /*
 **	h
@@ -34,17 +35,17 @@
 
 static int		convert(unsigned char *h, char *str, wchar_t c)
 {
-	const int	mask12 = 0b00000000000000000000100000000000;
-	const int	mask16 = 0b00000000000000010000000000000000;
 	int			i;
 
 	i = 0;
-	if (c < mask12)
+	if (c > MASK21 || c < 0)
+		return (-1);
+	if (c < MASK11)
 		str[i++] = ((((*h & 0b11000000) >> 6) | ((*(h + 1) << 2)
 						& 0b00011111)) | 0b11000000);
 	else
 	{
-		if (c < mask16)
+		if (c < MASK16)
 			str[i++] = (((*(h + 1) & 0b11110000) >> 4) | 0b11100000);
 		else
 		{
@@ -78,6 +79,11 @@ static char		*debug_ft_towstr(wchar_t *unicode_point, int *len)
 	{
 		str = ft_strnew(4);
 		*len = convert((unsigned char *)unicode_point, str, c);
+		if (*len < 0)
+		{
+			ft_strdel(&str);
+			return (NULL);
+		}
 	}
 	str[*len] = '\0';
 	return (str);
@@ -112,6 +118,11 @@ char			*ft_towstr(wchar_t *unicode_point, int *len)
 	{
 		str = ft_strnew(4);
 		*len = convert((unsigned char *)unicode_point, str, c);
+		if (*len < 0)
+		{
+			ft_strdel(&str);
+			return (NULL);
+		}
 	}
 	str[*len] = '\0';
 	return (str);

@@ -6,11 +6,12 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/01 20:40:28 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/08 19:53:08 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/22 19:17:01 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "ft_printf.h"
 
 /*
 **	h
@@ -29,17 +30,17 @@
 
 static int		convert(unsigned char *h, char *str, wchar_t c)
 {
-	const int	mask12 = 0b00000000000000000001000000000000;
-	const int	mask16 = 0b00000000000000010000000000000000;
 	int			i;
 
 	i = 0;
-	if (c < mask12)
+	if (c > MASK21 || c < 0)
+		return (-1);
+	if (c < MASK11)
 		str[i++] = ((((*h & 0b11000000) >> 6) | ((*(h + 1) << 2)
 						& 0b00011111)) | 0b11000000);
 	else
 	{
-		if (c < mask16)
+		if (c < MASK16)
 			str[i++] = (((*(h + 1) & 0b11110000) >> 4) | 0b11100000);
 		else
 		{
@@ -73,7 +74,11 @@ static int		debug_ft_putwchar(wchar_t *unicode_point)
 	else
 	{
 		str = ft_strnew(4);
-		len = convert((unsigned char *)unicode_point, str, c);
+		if ((len = convert((unsigned char *)unicode_point, str, c)) < 0)
+		{
+			ft_strdel(&str);
+			return (-1);
+		}
 	}
 	str[len] = '\0';
 	ft_putstr(str);
@@ -110,7 +115,11 @@ int				ft_putwchar(wchar_t *unicode_point)
 	else
 	{
 		str = ft_strnew(4);
-		len = convert((unsigned char *)unicode_point, str, c);
+		if ((len = convert((unsigned char *)unicode_point, str, c)) < 0)
+		{
+			ft_strdel(&str);
+			return (-1);
+		}
 	}
 	str[len] = '\0';
 	ft_putstr(str);

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/24 09:32:47 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/19 19:57:12 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/22 19:40:28 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ static void		print_prefixes(char **str, t_fdata *fdatas)
 	if ((*str)[0] == '-')
 	{
 		(*str)++;
-		fdatas->output = ft_strconcat(fdatas->output, "-");
+		fdatas->out = ft_strconcat(fdatas->out, "-");
 		fdatas->flag ^= (fdatas->flag & FLAG_MORE) ? FLAG_MORE : FLAG_NONE;
 	}
 	else if (fdatas->flag & FLAG_MORE)
-		fdatas->output = ft_strconcat(fdatas->output, "+");
+		fdatas->out = ft_strconcat(fdatas->out, "+");
 	else if (fdatas->flag & FLAG_SPACE)
-		fdatas->output = ft_strconcat(fdatas->output, " ");
+		fdatas->out = ft_strconcat(fdatas->out, " ");
 }
 
 static void		justify_left(t_fdata *fdatas, char *str)
@@ -32,10 +32,10 @@ static void		justify_left(t_fdata *fdatas, char *str)
 	if (str[0] == '-' || (fdatas->flag & (FLAG_MORE | FLAG_SPACE)))
 		print_prefixes(&str, fdatas);
 	while (fdatas->precision-- > 0)
-		fdatas->output = ft_strconcat(fdatas->output, "0");
-	fdatas->output = ft_strconcat(fdatas->output, str);
+		fdatas->out = ft_strconcat(fdatas->out, "0");
+	fdatas->out = ft_strconcat(fdatas->out, str);
 	while (fdatas->width-- > 0)
-		fdatas->output = ft_strnconcat(fdatas->output, &fdatas->fill_char, 1);
+		fdatas->out = ft_strnconcat(fdatas->out, fdatas->fill_char, 1);
 }
 
 static void		justify_right(t_fdata *fdatas, char *str)
@@ -45,18 +45,18 @@ static void		justify_right(t_fdata *fdatas, char *str)
 		if (str[0] == '-' || (fdatas->flag & (FLAG_MORE | FLAG_SPACE)))
 			print_prefixes(&str, fdatas);
 		while (fdatas->width-- > 0)
-			fdatas->output = ft_strnconcat(fdatas->output, &fdatas->fill_char, 1);
+			fdatas->out = ft_strnconcat(fdatas->out, fdatas->fill_char, 1);
 	}
 	else
 	{
 		while (fdatas->width-- > 0)
-			fdatas->output = ft_strnconcat(fdatas->output, &fdatas->fill_char, 1);
+			fdatas->out = ft_strnconcat(fdatas->out, fdatas->fill_char, 1);
 		if (str[0] == '-' || (fdatas->flag & (FLAG_MORE | FLAG_SPACE)))
 			print_prefixes(&str, fdatas);
 	}
 	while (fdatas->precision-- > 0)
-		fdatas->output = ft_strconcat(fdatas->output, "0");
-	fdatas->output = ft_strconcat(fdatas->output, str);
+		fdatas->out = ft_strconcat(fdatas->out, "0");
+	fdatas->out = ft_strconcat(fdatas->out, str);
 }
 
 static char		*str_from_arg(va_list *ap, t_fdata *fdatas)
@@ -95,7 +95,7 @@ void			ft_print_formated_digit(va_list *ap, t_fdata *fdatas)
 	if (fdatas->flag & (FLAG_MORE | FLAG_SPACE))
 		fdatas->width--;
 	if (fdatas->precision >= 0)
-		fdatas->fill_char = ' ';
+		fdatas->fill_char = " ";
 	len = ft_strlen(str);
 	fdatas->precision = fdatas->precision - len;
 	fdatas->precision = (fdatas->precision > 0) ? fdatas->precision : 0;

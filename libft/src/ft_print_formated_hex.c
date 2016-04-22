@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/24 09:37:24 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/19 19:29:30 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/22 19:40:38 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 static void		justify(char *str, t_fdata *fdatas)
 {
 	while (fdatas->precision-- > 0)
-		fdatas->output = ft_strconcat(fdatas->output, "0");
-	fdatas->output = ft_strconcat(fdatas->output, str);
+		fdatas->out = ft_strconcat(fdatas->out, "0");
+	fdatas->out = ft_strconcat(fdatas->out, str);
 }
 
 static char		*str_from_arg(va_list *ap, t_fdata *fdatas)
@@ -45,25 +45,25 @@ static void		print_hex_string(t_fdata *fdatas, char *str, char specifier)
 	{
 		fdatas->width -= 2;
 		if (fdatas->flag & FLAG_ZERO)
-			fdatas->output = ft_strconcat(fdatas->output, (specifier == 'x') ? "0x" : "0X");
+			fdatas->out = ft_strconcat(fdatas->out, HEX_CHECK(specifier));
 	}
 	if (fdatas->flag & FLAG_LESS)
 	{
 		if (fdatas->flag & FLAG_NUMBERSIGN && !(fdatas->flag & FLAG_ZERO))
-			fdatas->output = ft_strconcat(fdatas->output, (specifier == 'x') ? "0x" : "0X");
+			fdatas->out = ft_strconcat(fdatas->out, HEX_CHECK(specifier));
 		justify(str, fdatas);
 	}
 	while (fdatas->width > 0)
 	{
 		if (!(fdatas->flag & FLAG_MORE || fdatas->flag & FLAG_SPACE)
 				|| fdatas->width > 1)
-			fdatas->output = ft_strnconcat(fdatas->output, &fdatas->fill_char, 1);
+			fdatas->out = ft_strnconcat(fdatas->out, fdatas->fill_char, 1);
 		fdatas->width--;
 	}
 	if (!(fdatas->flag & FLAG_LESS))
 	{
 		if (fdatas->flag & FLAG_NUMBERSIGN && !(fdatas->flag & FLAG_ZERO))
-			fdatas->output = ft_strconcat(fdatas->output, (specifier == 'x') ? "0x" : "0X");
+			fdatas->out = ft_strconcat(fdatas->out, HEX_CHECK(specifier));
 		justify(str, fdatas);
 	}
 }

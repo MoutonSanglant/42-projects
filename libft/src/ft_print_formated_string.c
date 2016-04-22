@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/23 16:07:37 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/21 21:00:59 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/22 19:41:07 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ static void		print_formated_string(t_fdata *fdatas, char *str)
 	fdatas->precision = (fdatas->precision < len) ? fdatas->precision : len;
 	fdatas->width = fdatas->width - fdatas->precision;
 	if (fdatas->flag & FLAG_LESS)
-		fdatas->output = ft_strnconcat(fdatas->output, str, fdatas->precision);
+		fdatas->out = ft_strnconcat(fdatas->out, str, fdatas->precision);
 	while (fdatas->width > 0)
 	{
-		fdatas->output = ft_strnconcat(fdatas->output, &fdatas->fill_char, 1);
+		fdatas->out = ft_strnconcat(fdatas->out, fdatas->fill_char, 1);
 		fdatas->width--;
 	}
 	if (!(fdatas->flag & FLAG_LESS))
-		fdatas->output = ft_strnconcat(fdatas->output, str, fdatas->precision);
+		fdatas->out = ft_strnconcat(fdatas->out, str, fdatas->precision);
 }
 
 static int		justify_long_string(wchar_t *wstr, t_fdata *fdatas, int dry)
@@ -44,20 +44,18 @@ static int		justify_long_string(wchar_t *wstr, t_fdata *fdatas, int dry)
 	while (wstr[++r_bytes])
 	{
 		n = 4;
-		if (wstr[r_bytes] < (1 << 7))
+		if (wstr[r_bytes] < 128)
 			n = 1;
-		else if (wstr[r_bytes] < (1 << 11))
+		else if (wstr[r_bytes] < MASK11)
 			n = 2;
-		else if (wstr[r_bytes] < (1 << 16))
+		else if (wstr[r_bytes] < MASK16)
 			n = 3;
 		w_bytes += n;
 		if (w_bytes > fdatas->precision)
-		{
-			w_bytes -= n;
-			break ;
-		}
+			return (w_bytes - n);
 		else if (!dry)
-			fdatas->output = ft_strconcat(fdatas->output, ft_towstr(&wstr[r_bytes], &len));
+			fdatas->out = ft_strconcat(fdatas->out,
+							ft_towstr(&wstr[r_bytes], &len));
 	}
 	return (w_bytes);
 }
@@ -73,7 +71,7 @@ static void		print_formated_long_string(t_fdata *fdatas, wchar_t *wstr)
 	fdatas->width = (fdatas->width > 0) ? fdatas->width : 0;
 	fdatas->width -= w_bytes;
 	while (fdatas->width-- > 0)
-		fdatas->output = ft_strnconcat(fdatas->output, &fdatas->fill_char, 1);
+		fdatas->out = ft_strnconcat(fdatas->out, fdatas->fill_char, 1);
 	if (!(fdatas->flag & FLAG_LESS))
 		justify_long_string(wstr, fdatas, 0);
 }
