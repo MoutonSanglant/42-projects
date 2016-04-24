@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/04/22 21:15:58 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/22 21:19:44 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/04/24 19:34:40 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/04/24 22:29:55 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hotrace.h"
 
-int		strlength(const char *str)
+int		str_len(const char *str)
 {
 	int		i;
 
@@ -22,12 +22,31 @@ int		strlength(const char *str)
 	return (i);
 }
 
-char	*strjoin(char const *s1, char const *s2)
+char	*str_dup(char *src)
+{
+	char	*dst;
+	int		i;
+
+	dst = (char *)memalloc(sizeof(char) * (str_len(src) + 1));
+	i = 0;
+	while (src[i])
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (dst);
+}
+
+char	*strjoin(char *s1, const char *s2)
 {
 	char	*str_new;
 	char	*ptr;
+	char	*ptr_s1;
 
-	str_new = (char *)memalloc(strlength(s1) + strlength(s2));
+	ptr_s1 = s1;
+	str_new = (char *)memalloc(sizeof(char)
+								* (str_len(s1) + str_len(s2) + 1));
 	if (str_new)
 	{
 		ptr = str_new;
@@ -42,5 +61,5 @@ char	*strjoin(char const *s1, char const *s2)
 
 void	putstr(char *str)
 {
-	write(1, str, strlength(str));
+	write(1, str, str_len(str));
 }

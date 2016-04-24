@@ -1,5 +1,5 @@
 CC		= gcc
-CFLAGS	= -Wall -Werror -Wextra -I./libft -D BONUS
+CFLAGS	= -Wall -Werror -Wextra -D BONUS
 LDFLAGS	=
 LDLIBS	=
 
@@ -30,7 +30,7 @@ endif
 SRC_PREFIX	= ./src/
 OBJ_PREFIX	= ./obj/
 
-SRC	= main memalloc memdel str read_stdin
+SRC	= main mem str read_stdin trie_create trie_search error
 
 ifeq ($(BUILD), Debug)
 	SRC +=
