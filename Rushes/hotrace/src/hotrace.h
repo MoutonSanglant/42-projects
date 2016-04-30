@@ -36,7 +36,6 @@ typedef struct	s_node
 	int				not_leaf;
 	void			**children;
 	char			value;
-	char			*leaf;
 }				t_node;
 
 typedef struct	s_list

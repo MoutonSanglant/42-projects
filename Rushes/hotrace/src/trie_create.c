@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/23 18:15:20 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/24 22:53:04 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/01 01:53:27 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ static void		add_leaf(t_node *parent, char *leaf)
 {
 	parent->not_leaf = 0;
 	parent->children = NULL;
-	if (parent->leaf)
-		memdel((void *)&parent->leaf);
-	parent->leaf = leaf;
+	if ((char *)parent->children)
+		memdel((void *)&parent->children);
+	parent->children = (void **)leaf;
 }
 
 static void		create_node(t_node **parent, char value)
@@ -29,7 +29,6 @@ static void		create_node(t_node **parent, char value)
 	child->not_leaf = 1;
 	child->children = NULL;
 	child->value = value;
-	child->leaf = NULL;
 	(*parent)->children = (void **)memalloc(sizeof(t_node *) * 2);
 	(*parent)->children[0] = (void *)child;
 	(*parent)->children[1] = NULL;
@@ -52,7 +51,6 @@ static t_node	*realloc_node_list(t_node *parent, char value)
 	new_child->not_leaf = 1;
 	new_child->children = NULL;
 	new_child->value = value;
-	new_child->leaf = NULL;
 	new_size = list_end - list_start;
 	new_list = (t_node **)memalloc(sizeof(t_node *) * (new_size + 1));
 	new_list = mem_move(new_list, list_start, sizeof(t_node *) * new_size);

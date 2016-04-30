@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/23 18:16:14 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/24 21:11:15 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/01 01:51:50 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char			*get_value_from_key(const t_node *root, char *key)
 				if (child->not_leaf)
 					return (NULL);
 				else
-					return (str_dup(child->leaf));
+					return (str_dup((char *)child->children));
 			}
 			parent = child;
 		}

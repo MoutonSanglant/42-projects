@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 19:34:40 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/24 22:29:55 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/01 01:50:07 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,7 @@ char	*strjoin(char *s1, const char *s2)
 {
 	char	*str_new;
 	char	*ptr;
-	char	*ptr_s1;
 
-	ptr_s1 = s1;
 	str_new = (char *)memalloc(sizeof(char)
 								* (str_len(s1) + str_len(s2) + 1));
 	if (str_new)
