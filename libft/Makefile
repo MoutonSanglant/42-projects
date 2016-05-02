@@ -13,8 +13,8 @@ else
 SUFFIX	= .o
 endif
 
-NAME	= libftprintf.a
-#NAME	= libft.a
+#NAME	= libftprintf.a
+NAME	= libft.a
 
 # Get system and set specific flags accordingly
 
