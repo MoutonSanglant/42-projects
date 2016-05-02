@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/22 20:37:14 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/24 22:42:52 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/01 01:51:10 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,6 @@ int		main(void)
 	root.not_leaf = 1;
 	root.value = '\0';
 	root.children = NULL;
-	root.leaf = NULL;
 	get_key_value_pairs(&root);
 	get_keywords(&root);
 	return (0);
