@@ -6,11 +6,11 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/08 15:59:48 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/08 16:14:26 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/25 16:46:04 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "sh.h"
 
 int		env_error(t_env_error err)
 {

@@ -6,11 +6,11 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 14:13:27 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/10 17:16:52 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/25 17:03:03 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "sh.h"
 
 static char		*look_in_path(char *program_name, char **path, int amode)
 {
@@ -51,7 +51,7 @@ static void		run_process(char *path, char **argv, char **environ)
 		wait(&pid);
 }
 
-static void		clear(char **split)
+static void		clear_string_array(char **split)
 {
 	int		i;
 
@@ -70,7 +70,7 @@ int				run_exec(char **argv, t_sh_datas *sh_datas, char **exec_env)
 	path = get_environ(sh_datas->environ, "PATH=");
 	program_name = ft_strdup((argv[0][0] != '=') ? &argv[0][0] : &argv[0][1]);
 	full_path = (path) ? look_in_path(program_name, path, F_OK | X_OK) : NULL;
-	clear(path);
+	clear_string_array(path);
 	if (!full_path && access(program_name, F_OK | X_OK) < 0)
 	{
 		ft_printf("%s: %s: command not found\n", PROGRAM_NAME, program_name);

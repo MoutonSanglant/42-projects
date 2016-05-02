@@ -6,11 +6,11 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/10 14:42:15 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/10 16:45:15 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/25 16:46:25 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "sh.h"
 
 static void			keep_content(void *content, size_t size)
 {

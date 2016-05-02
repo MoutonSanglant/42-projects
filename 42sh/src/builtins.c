@@ -6,11 +6,11 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 21:04:51 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/10 16:53:35 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/25 16:44:22 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "sh.h"
 
 int				call_builtin_exit(char **argv, t_sh_datas *sh_datas)
 {

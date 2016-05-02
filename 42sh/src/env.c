@@ -6,11 +6,11 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/07 12:05:01 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/10 17:15:35 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/25 16:46:00 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "sh.h"
 
 static void		clear_environ(char **environ)
 {

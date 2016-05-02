@@ -6,11 +6,11 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 18:23:37 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/10 14:36:55 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/25 16:45:47 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "sh.h"
 
 static void		print_error(char *path)
 {

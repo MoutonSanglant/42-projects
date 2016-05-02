@@ -6,11 +6,11 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/09 13:23:00 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/10 14:35:25 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/25 16:45:57 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "sh.h"
 
 static void		set_shlvl(char **env_cpy)
 {

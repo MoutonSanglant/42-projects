@@ -6,11 +6,11 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 02:12:22 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/10 16:43:22 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/25 17:00:16 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "sh.h"
 #include "get_next_line.h"
 
 static int		read_input(char **argv, t_sh_datas *sh_datas)
@@ -40,7 +40,9 @@ int				main(void)
 	char			*line;
 	t_sh_datas		sh_datas;
 	int				gnl_ret;
+	struct termios	term;
 
+	termcaps_init(&term);
 	sh_datas.prompt = NULL;
 	sh_datas.environ = create_default_environ(environ);
 	set_prompt(&sh_datas);

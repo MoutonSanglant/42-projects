@@ -6,11 +6,11 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 19:25:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/10 16:56:39 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/25 16:46:07 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "sh.h"
 
 static char		**add_environ(char **environ, const char *name,
 								const char *value, int old_size)

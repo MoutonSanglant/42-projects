@@ -13,6 +13,10 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <curses.h>
+# include <term.h>
+# include <termios.h>
+
 # include <unistd.h>
 # include <fcntl.h>
 # include <signal.h>
@@ -21,45 +25,6 @@
 # include <includes/libft.h>
 
 # define PROGRAM_NAME "minishell"
-
-/*
-** Consignes
-** =========
-** Affiche un prompt (par exemple '$> ')
-** Attente d'entree utilisateur
-** Prompt affiche a nouveau apres execution de la commande
-** Les executables sont ceux que l'on trouve dans PATH
-** Si l'executable n'est pas trouve, afficher un message
-**	d'erreur (ne pas utiliser errno)
-** Utiliser char **environ system pour gerer le PATH et l'environnement
-** builtins a gerer: cd, setenv, unsetenv, env, exit
-** Fonctions
-** =========
-**	opendir
-**	readdir
-**	closedir
-**	malloc
-**	free
-**	exit
-**	*getcwd
-**	*chdir
-**	*fork
-**	stat
-**	lstat
-**	*fstat
-**	open
-**	close
-**	read
-**	write
-**	*execve
-**	*access
-**	*wait
-**	*waitpid
-**	*wait3
-**	*wait4
-**	*signal
-**	*kill
-*/
 
 typedef struct	s_sh_datas
 {
@@ -158,6 +123,17 @@ int				run_exec(char **argv, t_sh_datas *sh_datas, char **exec_env);
 **								: prompt.c :
 */
 void			set_prompt(t_sh_datas *sh_datas);
+
+/*
+********************************************************************************
+**								:: Termcaps ::								   *
+********************************************************************************
+*/
+
+/*
+**								: termcaps.c :
+*/
+int		termcaps_init(struct termios *term);
 
 /*
 ********************************************************************************

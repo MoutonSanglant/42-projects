@@ -6,11 +6,11 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 19:32:16 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/09 20:30:14 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/04/25 16:46:33 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "sh.h"
 
 void	set_prompt(t_sh_datas *sh_datas)
 {

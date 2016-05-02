@@ -1,7 +1,7 @@
 CC		= gcc
 CFLAGS	= -Wall -Werror -Wextra -I./libft -D BONUS
 LDFLAGS	= -L./libft
-LDLIBS	= -lft
+LDLIBS	= -lft -ltermcap
 
 ifeq ($(BUILD), Debug)
 	CFLAGS	+= -g -O0 -D DEBUG
@@ -31,7 +31,7 @@ SRC_PREFIX	= ./src/
 OBJ_PREFIX	= ./obj/
 
 SRC	= main sh_exit cd env env_error environ cpy_environ create_default_environ \
-	  parser prompt builtins process get_next_line unescape
+	  parser prompt builtins process get_next_line unescape termcaps
 
 ifeq ($(BUILD), Debug)
 	SRC +=
