@@ -6,14 +6,13 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 16:54:03 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/03 18:34:55 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/04 00:35:05 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void	draw_image(t_mlx_sess *mlx_sess, void *img, int *x, int *y)
+void	draw_image(t_mlx_st *mlx, void *img, int *x, int *y)
 {
-	mlx_put_image_to_window(mlx_sess->sess, mlx_sess->win, img, *x, *y);
-	mlx_string_put(mlx_sess->sess, mlx_sess->win, 0, 0, 0x00ff0000, "Hello");
+	mlx_put_image_to_window(mlx->sess, mlx->win, img, *x, *y);
 }

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:31:10 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/03 18:34:55 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/04 00:03:36 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int		expose(void *p)
 {
-	t_mlx_sess	*sess;
+	t_mlx_st	*mlx;
 
-	sess = (t_mlx_sess *)p;
-	sess->need_update = 1;
+	mlx = (t_mlx_st *)p;
+	mlx->need_update = 1;
 	return (0);
 }

@@ -6,53 +6,58 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:02:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/03 20:36:41 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/04 01:26:52 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-static void		init_buffers(t_mlx_sess *sess)
+static t_image	*new_mlx_canvas(t_mlx_st *mlx, t_vec2 size)
 {
-	sess->img = (t_image *)ft_memalloc(sizeof(t_image));
-	if (!sess->img)
-		alloc_error("sess->img", sizeof(t_image));
-	sess->img->img = mlx_new_image(sess->sess, sess->width, sess->height);
-	if (!sess->img->img)
-		alloc_error("sess->img->img", sizeof(int) * sess->width * sess->height);
-	sess->img->data = mlx_get_data_addr(sess->img->img, &sess->img->bpp,
-										&sess->img->sl, &sess->img->endian);
-	//sess->img->filename = filename;
-	sess->zbuffer = (float *)ft_memalloc(sizeof(float)
-											* sess->width * sess->height);
-	if (!sess->zbuffer)
-		alloc_error("sess->zbuffer", sizeof(float)
-										* sess->width * sess->height);
+	t_image		*canvas;
+
+	canvas = (t_image *)ft_memalloc(sizeof(t_image));
+	canvas->width = size.x;
+	canvas->height = size.y;
+	if (!canvas)
+		alloc_error("canvas", sizeof(t_image));
+	canvas->img = mlx_new_image(mlx->sess, canvas->width, canvas->height);
+	if (!canvas->img)
+		alloc_error("canvas->img", sizeof(int) * canvas->width * canvas->height);
+	canvas->data = mlx_get_data_addr(canvas->img, &canvas->bpp,
+										&canvas->sl, &canvas->endian);
+	//canvas->filename = filename;
+	mlx->zbuffer = (float *)ft_memalloc(sizeof(float)
+											* canvas->width * canvas->height);
+	if (!mlx->zbuffer)
+		alloc_error("mlx->zbuffer", sizeof(float)
+										* canvas->width * canvas->height);
+	return(canvas);
 }
 
-static void		init_vertex_grid(t_mlx_sess *sess, t_vert **vertmap,
+static void		init_vertex_grid(t_mlx_st *mlx, t_vert **vertmap,
 									int x, int y)
 {
 	t_mat4x4	trans;
 	t_vec3f		loc;
 
-	if (!(sess->grid = (t_grid *)ft_memalloc(sizeof(t_grid))))
-		alloc_error("sess->grid", sizeof(t_grid));
+	if (!(mlx->grid = (t_grid *)ft_memalloc(sizeof(t_grid))))
+		alloc_error("mlx->grid", sizeof(t_grid));
 	if (vertmap)
-		init_grid_from_vertmap(sess->grid, vertmap, x, y);
+		init_grid_from_vertmap(mlx->grid, vertmap, x, y);
 	else
 	{
 		ft_putendl_fd("No input file, making a 2x2 flat grid.", 1);
-		init_grid(sess->grid, 2, 2);
+		init_grid(mlx->grid, 2, 2);
 	}
-	identity_matrix4(&sess->m_model);
+	identity_matrix4(&mlx->m_model);
 	identity_matrix4(&trans);
-	loc.x = -sess->grid->width * .5f;
-	loc.y = -sess->grid->height * .5f;
+	loc.x = -mlx->grid->width * .5f;
+	loc.y = -mlx->grid->height * .5f;
 	loc.z = 0;
 	translation_matrix4(&trans, loc);
-	matrix4_product(&trans, &sess->m_model);
-	sess->options.distance = (int)fmaxf(sess->grid->width, sess->grid->height);
+	matrix4_product(&trans, &mlx->m_model);
+	mlx->options.distance = (int)fmaxf(mlx->grid->width, mlx->grid->height);
 }
 
 static void		get_size(int argc, char **argv, t_vec2 *screen_size)
@@ -94,7 +99,7 @@ int				main(int argc, char **argv)
 {
 	t_vert		**vertmap;
 	//char		*filepath;
-	t_mlx_sess	*sess;
+	t_mlx_st	*mlx;
 	t_vec2		vertmap_size;
 	t_vec2		screen_size;
 
@@ -111,13 +116,12 @@ int				main(int argc, char **argv)
 		//vertmap = get_vertmap_from_file(argv[1],
 		//								&vertmap_size.x, &vertmap_size.y);
 	}
-	sess = new_mlx_sess();
-	sess->name = ft_strdup("Fract'ol");
-	sess->width = screen_size.x;
-	sess->height = screen_size.y;
-	init_mlx_sess(sess);
-	init_buffers(sess);
-	init_vertex_grid(sess, vertmap, vertmap_size.x, vertmap_size.y);
-	start_mlx_sess(sess);
+	mlx = new_mlx_sess();
+	mlx->name = ft_strdup("Fract'ol");
+	mlx->draw_fn = &draw_koch;
+	mlx->canvas = new_mlx_canvas(mlx, screen_size);
+	init_mlx_sess(mlx);
+	init_vertex_grid(mlx, vertmap, vertmap_size.x, vertmap_size.y);
+	start_mlx_sess(mlx);
 	return (0);
 }

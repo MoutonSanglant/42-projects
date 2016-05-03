@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:14:47 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/03 18:34:55 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/04 00:02:59 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 int		keypress(int key, void *p)
 {
-	t_mlx_sess	*sess;
+	t_mlx_st	*mlx;
 
-	sess = (t_mlx_sess *)p;
+	mlx = (t_mlx_st *)p;
 	if (key == KEY_ESCAPE)
 	{
-		destroy_mlx_sess(sess);
+		destroy_mlx_sess(mlx);
 		exit(0);
 	}
 	return (0);

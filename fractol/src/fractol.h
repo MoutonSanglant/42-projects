@@ -197,16 +197,6 @@ typedef struct	s_grid
 	t_tri	*triangles;
 }				t_grid;
 
-typedef struct	s_image
-{
-	void	*img;
-	char	*data;
-	char	*filename;
-	int		sl;
-	int		bpp;
-	int		endian;
-}				t_image;
-
 typedef struct	s_camera
 {
 	float	angle_of_view;
@@ -236,13 +226,34 @@ typedef struct	s_options // settings
 	int				fill_faces;
 }				t_options;
 
-typedef struct	s_mlx_sess
+typedef struct	s_image
+{
+	void		*img;
+	char		*data;
+	char		*filename;
+	int			sl;
+	int			bpp;
+	int			endian;
+	uint32_t	width;
+	uint32_t	height;
+}				t_image;
+
+typedef struct	s_viewport
+{
+	t_vec2		pos;
+}				t_viewport;
+
+typedef struct	s_mlx_st
 {
 	void			*name;
 	void			*sess;
 	void			*win;
-	t_image			*img;
+	t_image			*canvas;
 	float			*zbuffer;
+
+	t_viewport		viewport;
+
+	void			(*draw_fn)(struct s_mlx_st *);
 
 	t_camera		camera;
 	t_mat4x4		*world;
@@ -251,8 +262,6 @@ typedef struct	s_mlx_sess
 	t_mat4x4		*world_to_camera;
 	t_mat4x4		m_model;
 	t_options		options;
-	uint32_t		width;
-	uint32_t		height;
 	struct timeval	last_tval;
 	int				need_update;
 	int				system_endian;
@@ -260,7 +269,7 @@ typedef struct	s_mlx_sess
 	// TODO
 	// discard:
 	t_grid			*grid;
-}				t_mlx_sess;
+}				t_mlx_st;
 
 typedef struct	s_bresenham
 {
@@ -278,6 +287,15 @@ typedef struct	s_bresenham
 	int			inc2;
 }				t_bresenham;
 
+typedef struct	s_tree
+{
+	int	degree;
+}				t_tree;
+
+typedef struct	s_fract
+{
+	int			ready;
+}				t_fract;
 
 // TODO:
 // Survey
@@ -287,19 +305,21 @@ float			hex_to_float(char *hex);
 /*
 **	RENDERING
 */
-void			draw_3dgrid(t_mlx_sess *sess);
-void			rasterize(t_mlx_sess *p, t_tri *triangle);
+void			draw_3dgrid(t_mlx_st *mlx);
+void			rasterize(t_mlx_st *p, t_tri *triangle);
 
 /*
 **	DRAWING
 */
-void			bresenham_draw_line(t_mlx_sess *sess, t_vec2 *from, t_vec2 *to);
-void			draw_square(t_mlx_sess *sess, int color,
+void			bresenham_draw_line(t_mlx_st *mlx, t_vec2 *from, t_vec2 *to);
+void			draw_square(t_mlx_st *mlx, int color,
 							t_vec2f *from, t_vec2f *to);
-void			draw_picture(t_mlx_sess *sess);
+void			draw_gui(t_mlx_st *mlx);
+//void			draw_image(t_mlx_st *mlx);
+void			draw_image(t_mlx_st *mlx, void *img, int *x, int *y);
 
-void			clear_canvas(t_mlx_sess *sess, int color);
-void			set_image_pixel(t_mlx_sess *sess, t_image *img, int color,
+void			clear_canvas(t_mlx_st *mlx, int color);
+void			set_image_pixel(t_mlx_st *mlx, t_image *img, int color,
 								t_vec2ui32 *xy);
 
 /*
@@ -319,20 +339,20 @@ void			init_grid_from_vertmap(t_grid *grid, t_vert **vertmap,
 /*
 **							: new_mlx_sess.c :
 */
-t_mlx_sess		*new_mlx_sess();
+t_mlx_st		*new_mlx_sess();
 
 /*
-**							: init_mlx_sess.c :
+**							: init_mlx_st.c :
 */
-void			init_mlx_sess(t_mlx_sess *sess);
+void			init_mlx_sess(t_mlx_st *mlx);
 /*
-**							: start_mlx_sess.c :
+**							: start_mlx_st.c :
 */
-void			start_mlx_sess(t_mlx_sess *sess);
+void			start_mlx_sess(t_mlx_st *mlx);
 /*
 **						   : destroy_mlx_sess.c :
 */
-void			destroy_mlx_sess(t_mlx_sess	*sess);
+void			destroy_mlx_sess(t_mlx_st	*mlx);
 
 /*
 ********************************************************************************
@@ -402,14 +422,25 @@ t_vec3f			apply_matrix4(t_vec3f vec, t_mat4x4 *mat);
 
 /*
 ********************************************************************************
-**								:: Matrices ::								   *
+**								 :: Camera ::								   *
 ********************************************************************************
 */
 
 /*
 **								: camera.c :
 */
-void			camera(t_mlx_sess *sess, char *str);
+void			camera(t_mlx_st *mlx, char *str);
+
+/*
+********************************************************************************
+**								:: Fractals ::								   *
+********************************************************************************
+*/
+
+/*
+**								 : draw_koch.c :
+*/
+void	draw_koch();
 
 /*
 ********************************************************************************
@@ -426,13 +457,13 @@ void			alloc_error(char *error_obj, size_t alloc_size);
 **	EXTRA
 */
 
-void			set_color_scheme(t_mlx_sess *sess, int lines_color,
+void			set_color_scheme(t_mlx_st *mlx, int lines_color,
 									int faces_color, int bg_color);
 void			change_grid_z(t_grid *grid, float factor);
 
 # ifdef DEBUG
 
 void			output_image_info(t_image *image);
-void			draw_debug_gui(t_mlx_sess *sess);
+void			draw_debug_gui(t_mlx_st *mlx);
 # endif
 #endif

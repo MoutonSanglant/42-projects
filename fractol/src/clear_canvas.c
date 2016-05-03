@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 16:54:45 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/03 18:34:55 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/04 01:15:13 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,20 @@
 
 #ifdef BONUS
 
-void	clear_canvas(t_mlx_sess *p, int clear_color)
+void	clear_canvas(t_mlx_st *mlx, int clear_color)
 {
 	t_vec2ui32	xy;
+	t_image		*canvas;
 
 	xy.x = 0;
-	while (xy.x < p->width)
+	canvas = mlx->canvas;
+	while (xy.x < canvas->width)
 	{
 		xy.y = 0;
-		while (xy.y < p->height)
+		while (xy.y < canvas->height)
 		{
-			set_image_pixel(p, p->img, clear_color, &xy);
-			p->zbuffer[xy.x + xy.y * (p->width)] = FLT_MAX;
+			set_image_pixel(mlx, mlx->canvas, clear_color, &xy);
+			mlx->zbuffer[xy.x + xy.y * (canvas->width)] = FLT_MAX;
 			xy.y++;
 		}
 		xy.x++;
@@ -34,17 +36,19 @@ void	clear_canvas(t_mlx_sess *p, int clear_color)
 
 #else
 
-void	clear_canvas(t_mlx_sess *p, int clear_color)
+void	clear_canvas(t_mlx_st *mlx, int clear_color)
 {
 	t_vec2ui32	xy;
+	t_image		*canvas;
 
 	xy.x = 0;
-	while (xy.x < p->width)
+	canvas = mlx->canvas;
+	while (xy.x < canvas->width)
 	{
 		xy.y = 0;
-		while (xy.y < p->height)
+		while (xy.y < canvas->height)
 		{
-			set_image_pixel(p, p->img, clear_color, &xy);
+			set_image_pixel(mlx, mlx->canvas, clear_color, &xy);
 			xy.y++;
 		}
 		xy.x++;

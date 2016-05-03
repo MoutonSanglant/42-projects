@@ -30,13 +30,36 @@ endif
 SRC_PREFIX	= ./src/
 OBJ_PREFIX	= ./obj/
 
-SRC	= main draw_3dgrid set_image_pixel init_grid init_grid_from_vertmap \
-	matrix matrix_math \
-	rasterize camera inverse_matrix projection_matrix identity_matrix \
-	change_grid_z draw_square draw_image clear_canvas bresenham_draw_line \
-	keydown keypress draw_loop expose new_mlx_sess init_mlx_sess \
-	start_mlx_sess alloc_error set_color_scheme destroy_mlx_sess \
-	hex_to_float
+SRC	=	main \
+		alloc_error \
+		new_mlx_sess \
+		init_mlx_sess \
+		start_mlx_sess \
+		destroy_mlx_sess \
+		draw_loop \
+		draw_square \
+		draw_image \
+		draw_gui \
+		draw_koch \
+		clear_canvas \
+		set_image_pixel \
+		keydown \
+		keypress \
+		expose \
+		bresenham_draw_line \
+		draw_3dgrid \
+		init_grid \
+		init_grid_from_vertmap \
+		matrix \
+		matrix_math \
+		rasterize \
+		camera \
+		inverse_matrix \
+		projection_matrix \
+		identity_matrix \
+		change_grid_z \
+		set_color_scheme \
+		hex_to_float
 
 ifeq ($(BUILD), Debug)
 SRC += draw_debug_gui

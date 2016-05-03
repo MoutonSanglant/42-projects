@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 14:41:41 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/03 18:34:55 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/04 00:44:05 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void		draw_image_info(void *s, void *w, t_image *img, int *l)
 **	/!\ Memory of 'camera' will be definetly lost
 */
 
-static void		draw_camera_info(t_mlx_sess *sess, void *s, void *w, int *line)
+static void		draw_camera_info(t_mlx_st *mlx, void *s, void *w, int *line)
 {
 	static char *camera[3];
 	int			i;
@@ -76,7 +76,7 @@ static void		draw_camera_info(t_mlx_sess *sess, void *s, void *w, int *line)
 	i = 0;
 	while (i < 3)
 	{
-		ft_strncpy(&camera[i][5], ft_itoa((int)(*sess->world)[3 + i * 4]), 3);
+		ft_strncpy(&camera[i][5], ft_itoa((int)(*mlx->world)[3 + i * 4]), 3);
 		camera[i][8] = '\0';
 		mlx_string_put(s, w, 5, *line * GUI_LINE_HEIGHT, 0x00ffffff, camera[i]);
 		*line = *line + 1;
@@ -84,19 +84,19 @@ static void		draw_camera_info(t_mlx_sess *sess, void *s, void *w, int *line)
 	}
 }
 
-void			draw_debug_gui(t_mlx_sess *sess)
+void			draw_debug_gui(t_mlx_st *mlx)
 {
 	void	*s;
 	void	*w;
 	int		line;
 
 	line = 0;
-	s = sess->sess;
-	w = sess->win;
+	s = mlx->sess;
+	w = mlx->win;
 	mlx_string_put(s, w, 5, line++ * GUI_LINE_HEIGHT,
 								0x00ffffff, "DEBUG CONSOLE");
 	mlx_string_put(s, w, 5, line++ * GUI_LINE_HEIGHT, 0x00ffffff, "Image");
-	draw_image_info(s, w, sess->img, &line);
+	draw_image_info(s, w, mlx->canvas, &line);
 	mlx_string_put(s, w, 5, line++ * GUI_LINE_HEIGHT, 0x00ffffff, "Camera");
-	draw_camera_info(sess, s, w, &line);
+	draw_camera_info(mlx, s, w, &line);
 }

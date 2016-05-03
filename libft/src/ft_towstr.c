@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/19 19:00:23 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/22 19:17:15 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/04 01:19:28 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ char			*ft_towstr(wchar_t *unicode_point, int *len)
 		ERROR_PARAM("ft_towstr");
 		return (0);
 	}
-	return (debug_ft_towstr(unicode_point));
+	return (debug_ft_towstr(unicode_point, len));
 }
 
 #else

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/21 21:02:09 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/22 19:41:44 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/03 21:44:21 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void		justify(wint_t *c, t_fdata *fdatas)
 
 static int		unicode_length(t_fdata *fdatas, wint_t c)
 {
-	if (c > MASK21 || c < 0)
+	if (c > MASK21)
 		return (-1);
 	else if (c < 128)
 	{

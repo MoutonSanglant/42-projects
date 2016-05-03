@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 16:53:27 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/03 18:34:55 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/04 00:44:02 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ static void		bresenham_init(t_bresenham *bres)
 	bres->xy.y = bres->y1;
 }
 
-static void		bresenham_x_bigger_than_y(t_bresenham *bres, t_mlx_sess *sess,
+static void		bresenham_x_bigger_than_y(t_bresenham *bres, t_mlx_st *mlx,
 											t_image *img, int color)
 {
 	int			i;
 
-	set_image_pixel(sess, img, color, &bres->xy);
+	set_image_pixel(mlx, img, color, &bres->xy);
 	bres->e = 2 * bres->dy - bres->dx;
 	bres->inc1 = 2 * (bres->dy - bres->dx);
 	bres->inc2 = 2 * bres->dy;
@@ -50,17 +50,17 @@ static void		bresenham_x_bigger_than_y(t_bresenham *bres, t_mlx_sess *sess,
 		else
 			bres->e += bres->inc2;
 		bres->xy.x += bres->incx;
-		set_image_pixel(sess, img, color, &bres->xy);
+		set_image_pixel(mlx, img, color, &bres->xy);
 		i++;
 	}
 }
 
-static void		bresenham_y_bigger_than_x(t_bresenham *bres, t_mlx_sess *sess,
+static void		bresenham_y_bigger_than_x(t_bresenham *bres, t_mlx_st *mlx,
 											t_image *img, int color)
 {
 	int			i;
 
-	set_image_pixel(sess, img, color, &bres->xy);
+	set_image_pixel(mlx, img, color, &bres->xy);
 	bres->e = 2 * bres->dx - bres->dy;
 	bres->inc1 = 2 * (bres->dx - bres->dy);
 	bres->inc2 = 2 * bres->dx;
@@ -75,24 +75,24 @@ static void		bresenham_y_bigger_than_x(t_bresenham *bres, t_mlx_sess *sess,
 		else
 			bres->e += bres->inc2;
 		bres->xy.y += bres->incy;
-		set_image_pixel(sess, img, color, &bres->xy);
+		set_image_pixel(mlx, img, color, &bres->xy);
 		i++;
 	}
 }
 
-void			bresenham_draw_line(t_mlx_sess *sess, t_vec2 *from, t_vec2 *to)
+void			bresenham_draw_line(t_mlx_st *mlx, t_vec2 *from, t_vec2 *to)
 {
 	t_bresenham	bres;
 	int			color;
 
-	color = mlx_get_color_value(sess->sess, sess->options.lines_color);
+	color = mlx_get_color_value(mlx->sess, mlx->options.lines_color);
 	bres.x1 = from->x;
 	bres.x2 = to->x;
 	bres.y1 = from->y;
 	bres.y2 = to->y;
 	bresenham_init(&bres);
 	if (bres.dx > bres.dy)
-		bresenham_x_bigger_than_y(&bres, sess, sess->img, color);
+		bresenham_x_bigger_than_y(&bres, mlx, mlx->canvas, color);
 	else
-		bresenham_y_bigger_than_x(&bres, sess, sess->img, color);
+		bresenham_y_bigger_than_x(&bres, mlx, mlx->canvas, color);
 }

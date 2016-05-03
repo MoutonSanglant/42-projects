@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:16:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/03 18:34:55 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/04 00:03:19 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,80 +14,22 @@
 
 #ifdef BONUS
 
-static void	draw_help_tooltip(void *s, void *w, int line)
-{
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[+] Zoom in");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[-] Zoom out");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[Arrows] Pan");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE,
-					"[W/A/S/D/Q/E] Rotate");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE,
-					"[PAGE UP/DOWN] Rise/Lower vertices");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[O]rthographic");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[P]erspective");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE,
-					"[B]ackface culling");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE,
-					"[I]nvert colors");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[Z]-Buffer");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[F]ill faces");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE,
-					"[*] Line weight");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE,
-					"[0-4] Color schemes");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[ESC] Exit");
-}
-
-# ifdef DEBUG
-
-static void	draw_gui(t_mlx_sess *p)
-{
-	(void)draw_help_tooltip;
-	draw_debug_gui(p);
-}
-
-# else
-
-static void	draw_gui(t_mlx_sess *p)
-{
-	void	*s;
-	void	*w;
-	int		line;
-
-	if (!p->options.tooltip)
-		return ;
-	line = 1;
-	s = p->sess;
-	w = p->win;
-	if (p->img->filename)
-	{
-		mlx_string_put(s, w, 5, line * GUI_LINE_HEIGHT, WHITE, "Source file: ");
-		mlx_string_put(s, w, 155, line++ * GUI_LINE_HEIGHT, WHITE,
-														p->img->filename);
-	}
-	mlx_string_put(s, w, 5, line++ * GUI_LINE_HEIGHT, 0x00ffffff, "[H]elp");
-	draw_help_tooltip(s, w, line);
-}
-
-# endif
-
 int			draw_loop(void *p)
 {
-	t_mlx_sess		*sess;
+	t_mlx_st		*mlx;
 	struct timeval	tval_now;
 	struct timeval	tval_tic;
 
-	sess = (t_mlx_sess *)p;
+	mlx = (t_mlx_st *)p;
 	gettimeofday(&tval_now, NULL);
-	timersub(&tval_now, &sess->last_tval, &tval_tic);
-	if (tval_tic.tv_usec > FPS && sess->need_update)
+	timersub(&tval_now, &mlx->last_tval, &tval_tic);
+	if (tval_tic.tv_usec > FPS && mlx->need_update)
 	{
-		gettimeofday(&sess->last_tval, NULL);
-		clear_canvas(sess, sess->options.bg_color);
-		draw_3dgrid(sess);
-		mlx_put_image_to_window(sess->sess, sess->win, sess->img->img, 0, 0);
-		draw_gui(sess);
-		sess->need_update = 0;
+		gettimeofday(&mlx->last_tval, NULL);
+		clear_canvas(mlx, mlx->options.bg_color);
+		mlx->draw_fn(mlx);
+		//draw_3dgrid(mlx);
+		mlx->need_update = 0;
 	}
 	return (0);
 }
@@ -96,15 +38,15 @@ int			draw_loop(void *p)
 
 int			draw_loop(void *p)
 {
-	t_mlx_sess		*sess;
+	t_mlx_st		*mlx;
 
-	sess = (t_mlx_sess *)p;
-	if (sess->need_update)
+	mlx = (t_mlx_st *)p;
+	if (mlx->need_update)
 	{
-		clear_canvas(sess, sess->options.bg_color);
-		draw_3dgrid(sess);
-		mlx_put_image_to_window(sess->sess, sess->win, sess->img->img, 0, 0);
-		sess->need_update = 0;
+		clear_canvas(mlx, mlx->options.bg_color);
+		mlx->draw_fn(mlx);
+		//draw_3dgrid(mlx);
+		mlx->need_update = 0;
 	}
 	return (0);
 }

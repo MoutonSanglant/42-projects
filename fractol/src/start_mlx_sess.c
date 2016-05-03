@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   start_mlx_sess.c                                   :+:      :+:    :+:   */
+/*   start_mlx_mlx.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:40:41 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/03 18:34:55 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/04 00:05:08 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,29 +22,29 @@ static int		close_button(int e, void *p)
 
 #ifdef BONUS
 
-static void		set_mlx_hooks(t_mlx_sess *sess)
+static void		set_mlx_hooks(t_mlx_st *mlx)
 {
-	mlx_hook(sess->win, 17, 0, &close_button, (void *)sess);
-	mlx_hook(sess->win, KEYPRESS, KEYPRESSMASK, &keydown, (void *)sess);
-	mlx_key_hook(sess->win, &keypress, (void *)sess);
-	mlx_expose_hook(sess->win, &expose, (void *)sess);
-	mlx_loop_hook(sess->sess, &draw_loop, (void *)sess);
+	mlx_hook(mlx->win, 17, 0, &close_button, (void *)mlx);
+	mlx_hook(mlx->win, KEYPRESS, KEYPRESSMASK, &keydown, (void *)mlx);
+	mlx_key_hook(mlx->win, &keypress, (void *)mlx);
+	mlx_expose_hook(mlx->win, &expose, (void *)mlx);
+	mlx_loop_hook(mlx->sess, &draw_loop, (void *)mlx);
 }
 
 #else
 
-static void		set_mlx_hooks(t_mlx_sess *sess)
+static void		set_mlx_hooks(t_mlx_st *mlx)
 {
-	mlx_key_hook(sess->win, &keypress, (void *)sess);
-	mlx_expose_hook(sess->win, &expose, (void *)sess);
-	mlx_loop_hook(sess->sess, &draw_loop, (void *)sess);
+	mlx_key_hook(mlx->win, &keypress, (void *)mlx);
+	mlx_expose_hook(mlx->win, &expose, (void *)mlx);
+	mlx_loop_hook(mlx->sess, &draw_loop, (void *)mlx);
 }
 
 #endif
 
-void			start_mlx_sess(t_mlx_sess *sess)
+void			start_mlx_sess(t_mlx_st *mlx)
 {
-	camera(sess, "orthographic");
-	set_mlx_hooks(sess);
-	mlx_loop(sess->sess);
+	camera(mlx, "orthographic");
+	set_mlx_hooks(mlx);
+	mlx_loop(mlx->sess);
 }
