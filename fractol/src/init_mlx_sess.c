@@ -6,11 +6,11 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:39:50 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/03 20:25:35 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/03 20:32:11 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "fractol.h"
 
 /*
 **	World, View & Projection matrices
@@ -57,7 +57,6 @@ static void	init_camera(t_mlx_sess *sess)
 static void	draw_settings(t_mlx_sess *sess)
 {
 	sess->options.tooltip = 1;
-	sess->options.bresenham = 1;
 	sess->options.fill_faces = 0;
 	sess->options.line_width = .02f;
 	sess->options.lines_color = 0x00ffffff;
@@ -81,21 +80,10 @@ static int	get_system_endian(void)
 	return (0);
 }
 
-t_mlx_sess	*init_mlx_sess(int width, int height)
+void		init_mlx_sess(t_mlx_sess *sess)
 {
-	t_mlx_sess	*sess;
-
-	if (!(sess = (t_mlx_sess *)ft_memalloc(sizeof(t_mlx_sess))))
-		alloc_error("sess", sizeof(t_mlx_sess));
-	if (!(sess->sess = mlx_init()))
-	{
-		ft_memdel((void **)&sess);
-		alloc_error("sess->sess", sizeof(t_mlx_sess));
-	}
-	sess->width = width;
-	sess->height = height;
 	if (!(sess->win = mlx_new_window(sess->sess, sess->width,
-										sess->height, "FdF")))
+										sess->height, sess->name)))
 	{
 		ft_memdel((void **)&sess);
 		alloc_error("sess->win", sizeof(int) * sess->width * sess->height);
@@ -107,5 +95,4 @@ t_mlx_sess	*init_mlx_sess(int width, int height)
 	init_matrices(sess);
 	init_camera(sess);
 	draw_settings(sess);
-	return (sess);
 }
