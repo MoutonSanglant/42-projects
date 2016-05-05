@@ -4,7 +4,7 @@ LDFLAGS	= -L./lib -L./libft
 LDLIBS	= -lft -lm
 
 ifeq ($(BUILD), Debug)
-CFLAGS	+= -g -O0 -D DEBUG
+CFLAGS	+= -g -O0 -fsanitize=address -D DEBUG
 SUFFIX	= .debug.o
 NAME	= fdf.debug
 else
