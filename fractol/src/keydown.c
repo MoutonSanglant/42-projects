@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:03:16 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/03 23:56:29 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/05 17:40:39 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,11 @@ static void	translation_events(t_mlx_st *mlx, int key)
 	loc.z = 0;
 	identity_matrix4(&m_loc);
 	if (key == KEY_NUMPAD_MORE)
-		loc.y = -1 * mlx->options.distance;
+		mlx->viewport.zoom_level *= 2.f;
+		//loc.y = -1 * mlx->options.distance;
 	else if (key == KEY_NUMPAD_LESS)
-		loc.y = 1 * mlx->options.distance;
+		mlx->viewport.zoom_level *= .5f;
+		//loc.y = 1 * mlx->options.distance;
 	else if (key == KEY_LEFT)
 		loc.x = -1;
 	else if (key == KEY_RIGHT)

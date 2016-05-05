@@ -18,12 +18,15 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <math.h>
+# include <complex.h>
+# include <setjmp.h>
 
 # include <includes/libft.h>
 
 # define USAGE_MSG "Usage: fdf [Path] [Width] [Height]"
 
 # define BUFF_SIZE 32
+# define BLACK	0x00000000
 # define WHITE	0x00ffffff
 # define RED	0x00ff0000
 # define GREEN	0x0000ff00
@@ -160,6 +163,13 @@ typedef struct	s_vec2f
 	float		y;
 }				t_vec2f;
 
+typedef struct	s_vec2d
+{
+	double		x;
+	double		y;
+}				t_vec2d;
+
+
 typedef struct	s_vec3f
 {
 	float		x;
@@ -238,10 +248,17 @@ typedef struct	s_image
 	uint32_t	height;
 }				t_image;
 
+// viewport range is [-1, 1]
 typedef struct	s_viewport
 {
 	t_vec2		pos;
+	double		zoom_level;
 }				t_viewport;
+
+typedef struct	s_fractol_st
+{
+	int a;
+}				t_fractol_st;
 
 typedef struct	s_mlx_st
 {
@@ -251,6 +268,7 @@ typedef struct	s_mlx_st
 	t_image			*canvas;
 	float			*zbuffer;
 
+	void			*datas;
 	t_viewport		viewport;
 
 	void			(*draw_fn)(struct s_mlx_st *);

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:02:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/04 01:26:52 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/05 17:39:05 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,9 @@ int				main(int argc, char **argv)
 	mlx = new_mlx_sess();
 	mlx->name = ft_strdup("Fract'ol");
 	mlx->draw_fn = &draw_koch;
+	mlx->datas = malloc(sizeof(t_fractol_st));
 	mlx->canvas = new_mlx_canvas(mlx, screen_size);
+	mlx->viewport.zoom_level = 1.f;
 	init_mlx_sess(mlx);
 	init_vertex_grid(mlx, vertmap, vertmap_size.x, vertmap_size.y);
 	start_mlx_sess(mlx);
