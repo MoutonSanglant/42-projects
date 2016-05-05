@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/09 16:32:24 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/03/17 14:26:05 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/04 16:03:51 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,27 @@ static char		*indent_str(char *dst, size_t len, int c, int reverse)
 static void		print_left(const t_ls_datas *ls_datas,
 							const struct stat *st_stat)
 {
-	char	mode_str[12];
-	char	*links_str;
-	char	*username;
-	char	*groupname;
+	char			mode_str[12];
+	char			*links_str;
+	char			*username;
+	char			*groupname;
+	struct group	*group;
+	struct passwd	*passwd;
 
 	file_mode_str(st_stat->st_mode, mode_str);
 	links_str = ft_uitoa((unsigned)st_stat->st_nlink);
 	links_str = indent_str(links_str, ls_datas->col_links_width, ' ', 1);
-	username = ft_strdup(getpwuid(st_stat->st_uid)->pw_name);
+	group = getgrgid(st_stat->st_gid);
+	passwd = getpwuid(st_stat->st_uid);
+	if (passwd)
+		username = ft_strdup(passwd->pw_name);
+	else
+		username = ft_itoa(st_stat->st_uid);
+	if (group)
+		groupname = ft_strdup(group->gr_name);
+	else
+		groupname = ft_itoa(st_stat->st_gid);
 	username = indent_str(username, ls_datas->col_user_width, ' ', 0);
-	groupname = ft_strdup(getgrgid(st_stat->st_gid)->gr_name);
 	groupname = indent_str(groupname, ls_datas->col_group_width, ' ', 0);
 	ft_printf("%s %s %s  %s  ", mode_str, links_str, username, groupname);
 	ft_strdel(&links_str);

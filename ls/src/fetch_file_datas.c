@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/10 21:50:47 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/04/03 12:24:25 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/04 16:01:21 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,25 @@ static int		max(int x, int y)
 static void		store_col_width_infos(t_ls_datas *ls_datas,
 										struct stat *st_stat)
 {
-	char	*username;
-	char	*groupname;
-	char	*str_links;
-	char	*str_size;
-	int		len;
+	char			*username;
+	char			*groupname;
+	char			*str_links;
+	char			*str_size;
+	int				len;
+	struct passwd	*passwd;
+	struct group	*group;
 
 	ls_datas->total_blocks_count += st_stat->st_blocks;
-	username = getpwuid(st_stat->st_uid)->pw_name;
-	groupname = getgrgid(st_stat->st_gid)->gr_name;
+	passwd = getpwuid(st_stat->st_uid);
+	group = getgrgid(st_stat->st_gid);
+	if (passwd)
+		username = passwd->pw_name;
+	else
+		username = ft_itoa(st_stat->st_uid);
+	if (group)
+		groupname = group->gr_name;
+	else
+		groupname = ft_itoa(st_stat->st_gid);
 	str_links = ft_uitoa((unsigned)st_stat->st_nlink);
 	str_size = ft_uitoa((size_t)st_stat->st_size);
 	ls_datas->col_user_width =
@@ -46,6 +56,10 @@ static void		store_col_width_infos(t_ls_datas *ls_datas,
 		ls_datas->col_size_width = len;
 	ft_strdel(&str_links);
 	ft_strdel(&str_size);
+	if (!group)
+		ft_strdel(&groupname);
+	if (!passwd)
+		ft_strdel(&username);
 }
 
 static void		set_path(t_file_datas *file_data, const char *folder_name)
