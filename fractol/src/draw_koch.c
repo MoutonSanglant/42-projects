@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/03 23:24:21 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/05 18:40:41 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/05 20:03:09 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,21 +125,34 @@ static void	draw_mandel(t_mlx_st *mlx)
 	double complex	Z;
 	double complex	C;
 
+	double		zoom;
+	double		x_min;
+	double		x_max;
+	double		y_min;
+	double		y_max;
+	double		step;
+
+	zoom = mlx->viewport.zoom_level;
+	x_min = -1.f / zoom;
+	x_max = 1.f / zoom;
+	y_min = -1.f / zoom;
+	y_max = 1.f / zoom;
+	step = .001f;
 	C = CMPLX(0, 0);
 
-	i = -1.f;
-	while (i < 1.f)
+	i = x_min;
+	while (i < x_max)
 	{
-		j = -1.f;
-		while (j < 1.f)
+		j = y_min;
+		while (j < y_max)
 		{
 			//col = mandel(0, i * j * im, 0);
 			Z = CMPLX(i, j);
 			col = mandel(C, Z, 0);
 			draw_viewport_point(mlx, i, j, col);
-			j += .001f;
+			j += step;
 		}
-		i += .001f;
+		i += step;
 	}
 }
 
