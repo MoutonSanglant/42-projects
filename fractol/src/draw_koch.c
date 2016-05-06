@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/03 23:24:21 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/06 04:28:57 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/06 18:39:35 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,32 +40,55 @@ void	draw_viewport_point(t_mlx_st *mlx, double x, double y, int color)
 {
 	t_vec2ui32	pos;
 	double		zoom;
-//	double		x_min;
+	double		x_min;
 	double		x_max;
-//	double		y_min;
+	double		y_min;
 	double		y_max;
 
+	/*
 	zoom = mlx->viewport.zoom_level;
 
+	// X
 	// range
 //	x_min = -1 / zoom;
 	x_max = 1 / zoom;
 //	y_min = -1 / zoom;
 	y_max = 1 / zoom;
+*/
+
+	zoom = mlx->viewport.zoom_level;
+	x_min = mlx->viewport.pos.x;
+	x_min /= zoom;
+	x_max = mlx->viewport.pos.x + mlx->viewport.size.x;
+	x_max /= zoom;
+	y_min = mlx->viewport.pos.y;
+	y_min /= zoom;
+	y_max = mlx->viewport.pos.y + mlx->viewport.size.y;
+	y_max /= zoom;
 
 	// discard the point if it is out of bounds
 	// TODO
 	// 1.f should vary with zoom level
-	if (fabs(x) >= x_max || fabs(y) >= y_max)
+	if (x <= x_min || x >= x_max || y <= y_min || y >= y_max)
 		return;
-	// convert to image coord
+	//if (x_min < -1.f)
+	//	printf("x: %f, y: %f\nx_min: %f, x_max: %f\ny_min: %f, y_max: %f\n", x, y, x_min, x_max, y_min, y_max);
 
-	pos.x = floor((x + x_max) * (double)mlx->canvas->width * (.5f * zoom));
-	pos.y = floor((y + y_max) * (double)mlx->canvas->height * (.5f * zoom));
+	// convert to image coord
+	pos.x = floor((x - x_min) * (double)mlx->canvas->width * (.5f * zoom));
+	pos.y = floor((y - y_min) * (double)mlx->canvas->height * (.5f * zoom));
 	//if (zoom > 1)
+	//if (x_min < -1.f)
 	//	printf("x: %f -> %i, y: %f -> %i\n", x, pos.x, y, pos.y);
 	set_image_pixel(mlx, mlx->canvas, color, &pos);
 }
+
+//
+// x_min:
+// -1
+//
+// -2
+//
 
 // range [-0.5, 0.5]
 // -0.5
@@ -130,14 +153,21 @@ static void	draw_mandel(t_mlx_st *mlx)
 	double		x_max;
 	double		y_min;
 	double		y_max;
-	double		step;
+	double		step_x;
+	double		step_y;
 
 	zoom = mlx->viewport.zoom_level;
-	x_min = -1.f / zoom;
-	x_max = 1.f / zoom;
-	y_min = -1.f / zoom;
-	y_max = 1.f / zoom;
-	step = .001f;
+	x_min = mlx->viewport.pos.x;
+	x_min /= zoom;
+	x_max = mlx->viewport.pos.x + mlx->viewport.size.x;
+	x_max /= zoom;
+	y_min = mlx->viewport.pos.y;
+	y_min /= zoom;
+	y_max = mlx->viewport.pos.y + mlx->viewport.size.y;
+	y_max /= zoom;
+
+	step_x = (x_max - x_min) / mlx->canvas->width;
+	step_y = (y_max - y_min) / mlx->canvas->height;
 	C = CMPLX(0, 0);
 
 	i = x_min;
@@ -150,9 +180,9 @@ static void	draw_mandel(t_mlx_st *mlx)
 			Z = CMPLX(i, j);
 			col = mandel(C, Z, 0);
 			draw_viewport_point(mlx, i, j, col);
-			j += step;
+			j += step_y;
 		}
-		i += step;
+		i += step_x;
 	}
 }
 

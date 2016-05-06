@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:03:16 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/06 04:24:17 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/06 18:19:20 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,14 @@ int			keydown(int key, void *p)
 		mlx->viewport.zoom_level *= 2.f;
 	else if (key == KEY_NUMPAD_LESS)
 		mlx->viewport.zoom_level *= .5f;
+	else if (key == KEY_LEFT)
+		mlx->viewport.pos.x -= .1f;
+	else if (key == KEY_RIGHT)
+		mlx->viewport.pos.x += .1f;
+	else if (key == KEY_UP)
+		mlx->viewport.pos.y -= .1f;
+	else if (key == KEY_DOWN)
+		mlx->viewport.pos.y += .1f;
 	else if (key == KEY_H)
 		mlx->options.tooltip = (mlx->options.tooltip) ? 0 : 1;
 	else if (key == KEY_Z)

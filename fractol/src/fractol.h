@@ -251,7 +251,8 @@ typedef struct	s_image
 // viewport range is [-1, 1]
 typedef struct	s_viewport
 {
-	t_vec2		pos;
+	t_vec2f		pos;
+	t_vec2f		size;
 	double		zoom_level;
 }				t_viewport;
 
