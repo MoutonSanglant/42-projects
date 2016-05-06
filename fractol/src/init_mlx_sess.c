@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:39:50 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/04 01:13:36 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/06 04:20:58 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 **		Camera needs to look down (along the negative 'Z-axis')
 */
 
+/*
 static void	init_matrices(t_mlx_st *mlx)
 {
 	t_mat4x4	trans;
@@ -53,6 +54,7 @@ static void	init_camera(t_mlx_st *mlx)
 	mlx->camera.left = -mlx->camera.right;
 	mlx->camera.bottom = -mlx->camera.top;
 }
+*/
 
 static void	draw_settings(t_mlx_st *mlx)
 {
@@ -93,7 +95,7 @@ void		init_mlx_sess(t_mlx_st *mlx)
 	mlx->last_tval.tv_sec = 0;
 	mlx->last_tval.tv_usec = 0;
 	mlx->system_endian = get_system_endian();
-	init_matrices(mlx);
-	init_camera(mlx);
+	//init_matrices(mlx);
+	//init_camera(mlx);
 	draw_settings(mlx);
 }

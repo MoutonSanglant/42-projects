@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:02:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/05 17:39:05 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/06 04:27:58 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,17 @@ static t_image	*new_mlx_canvas(t_mlx_st *mlx, t_vec2 size)
 	canvas->data = mlx_get_data_addr(canvas->img, &canvas->bpp,
 										&canvas->sl, &canvas->endian);
 	//canvas->filename = filename;
+	/*
 	mlx->zbuffer = (float *)ft_memalloc(sizeof(float)
 											* canvas->width * canvas->height);
 	if (!mlx->zbuffer)
 		alloc_error("mlx->zbuffer", sizeof(float)
 										* canvas->width * canvas->height);
+	*/
 	return(canvas);
 }
 
+/*
 static void		init_vertex_grid(t_mlx_st *mlx, t_vert **vertmap,
 									int x, int y)
 {
@@ -59,6 +62,7 @@ static void		init_vertex_grid(t_mlx_st *mlx, t_vert **vertmap,
 	matrix4_product(&trans, &mlx->m_model);
 	mlx->options.distance = (int)fmaxf(mlx->grid->width, mlx->grid->height);
 }
+*/
 
 static void		get_size(int argc, char **argv, t_vec2 *screen_size)
 {
@@ -97,16 +101,16 @@ static void		arguments_count_error(void)
 
 int				main(int argc, char **argv)
 {
-	t_vert		**vertmap;
+	//t_vert		**vertmap;
 	//char		*filepath;
 	t_mlx_st	*mlx;
-	t_vec2		vertmap_size;
+	//t_vec2		vertmap_size;
 	t_vec2		screen_size;
 
 	//filepath = NULL;
-	vertmap = NULL;
-	vertmap_size.x = 0;
-	vertmap_size.y = 0;
+	//vertmap = NULL;
+	//vertmap_size.x = 0;
+	//vertmap_size.y = 0;
 	if (argc < 1 || argc > 4)
 		arguments_count_error();
 	get_size(argc, argv, &screen_size);
@@ -123,7 +127,7 @@ int				main(int argc, char **argv)
 	mlx->canvas = new_mlx_canvas(mlx, screen_size);
 	mlx->viewport.zoom_level = 1.f;
 	init_mlx_sess(mlx);
-	init_vertex_grid(mlx, vertmap, vertmap_size.x, vertmap_size.y);
+	//init_vertex_grid(mlx, vertmap, vertmap_size.x, vertmap_size.y);
 	start_mlx_sess(mlx);
 	return (0);
 }

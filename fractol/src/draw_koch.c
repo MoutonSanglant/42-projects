@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/03 23:24:21 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/05 20:03:09 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/06 04:28:57 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,17 @@ void	draw_viewport_point(t_mlx_st *mlx, double x, double y, int color)
 {
 	t_vec2ui32	pos;
 	double		zoom;
-	double		x_min;
+//	double		x_min;
 	double		x_max;
-	double		y_min;
+//	double		y_min;
 	double		y_max;
 
 	zoom = mlx->viewport.zoom_level;
 
 	// range
-	x_min = -1 / zoom;
+//	x_min = -1 / zoom;
 	x_max = 1 / zoom;
-	y_min = -1 / zoom;
+//	y_min = -1 / zoom;
 	y_max = 1 / zoom;
 
 	// discard the point if it is out of bounds

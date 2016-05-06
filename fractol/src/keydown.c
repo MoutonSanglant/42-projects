@@ -6,12 +6,13 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:03:16 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/05 17:40:39 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/06 04:24:17 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
+/*
 static void	rotate_around_center(t_mlx_st *mlx, char c, int dir)
 {
 	t_mat4x4	m_iworld;
@@ -97,6 +98,7 @@ static void	color_events(t_mlx_st *mlx, int key)
 	else if (key == KEY_F)
 		mlx->options.fill_faces = (mlx->options.fill_faces) ? 0 : 1;
 }
+*/
 
 int			keydown(int key, void *p)
 {
@@ -105,7 +107,11 @@ int			keydown(int key, void *p)
 
 	mlx = (t_mlx_st *)p;
 	mlx->need_update = 1;
-	if (key == KEY_H)
+	if (key == KEY_NUMPAD_MORE)
+		mlx->viewport.zoom_level *= 2.f;
+	else if (key == KEY_NUMPAD_LESS)
+		mlx->viewport.zoom_level *= .5f;
+	else if (key == KEY_H)
 		mlx->options.tooltip = (mlx->options.tooltip) ? 0 : 1;
 	else if (key == KEY_Z)
 		mlx->options.zdraw = (mlx->options.zdraw) ? 0 : 1;
@@ -118,9 +124,9 @@ int			keydown(int key, void *p)
 		mlx->options.faces_color = mlx->options.lines_color;
 		mlx->options.lines_color = color;
 	}
-	color_events(mlx, key);
-	matrix_events(mlx, key);
-	(*mlx->world)[7] = ((*mlx->world)[7] < mlx->options.distance) ?
-								mlx->options.distance : (*mlx->world)[7];
+	//color_events(mlx, key);
+	//matrix_events(mlx, key);
+	//(*mlx->world)[7] = ((*mlx->world)[7] < mlx->options.distance) ?
+	//							mlx->options.distance : (*mlx->world)[7];
 	return (0);
 }

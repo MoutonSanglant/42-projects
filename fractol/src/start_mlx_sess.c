@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:40:41 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/04 00:05:08 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/06 04:21:53 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void		set_mlx_hooks(t_mlx_st *mlx)
 
 void			start_mlx_sess(t_mlx_st *mlx)
 {
-	camera(mlx, "orthographic");
+	//camera(mlx, "orthographic");
 	set_mlx_hooks(mlx);
 	mlx_loop(mlx->sess);
 }
