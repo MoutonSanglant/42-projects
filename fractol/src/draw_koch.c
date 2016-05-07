@@ -6,25 +6,15 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/03 23:24:21 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/06 18:39:35 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/07 20:57:38 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-int g_degree = 0;
-int g_degree_limit = 10;
-
 /*
-** First, some reading:
+** Some reading:
 **	http://world.mathigon.org/Fractals
-** What we need:
-**	complex numbers:
-**	x (real part)
-**	is added to
-**	y * i (where i equals sqrt(-1)) (imaginary part)
-**
-**	A viewport
 */
 
 void	pixel(t_mlx_st *mlx, uint32_t x, uint32_t y)
@@ -40,48 +30,37 @@ void	draw_viewport_point(t_mlx_st *mlx, double x, double y, int color)
 {
 	t_vec2ui32	pos;
 	double		zoom;
-	double		x_min;
-	double		x_max;
-	double		y_min;
-	double		y_max;
-
-	/*
-	zoom = mlx->viewport.zoom_level;
-
-	// X
-	// range
-//	x_min = -1 / zoom;
-	x_max = 1 / zoom;
-//	y_min = -1 / zoom;
-	y_max = 1 / zoom;
-*/
+	//double		x_min;
+	//double		x_max;
+	//double		y_min;
+	//double		y_max;
 
 	zoom = mlx->viewport.zoom_level;
-	x_min = mlx->viewport.pos.x;
-	x_min /= zoom;
-	x_max = mlx->viewport.pos.x + mlx->viewport.size.x;
-	x_max /= zoom;
-	y_min = mlx->viewport.pos.y;
-	y_min /= zoom;
-	y_max = mlx->viewport.pos.y + mlx->viewport.size.y;
-	y_max /= zoom;
+	//x_min = mlx->viewport.pos.x;
+	//x_min /= zoom;
+	//x_max = mlx->viewport.pos.x + mlx->viewport.size.x;
+	//x_max /= zoom;
+	//y_min = mlx->viewport.pos.y;
+	//y_min /= zoom;
+	//y_max = mlx->viewport.pos.y + mlx->viewport.size.y;
+	//y_max /= zoom;
 
 	// discard the point if it is out of bounds
-	// TODO
-	// 1.f should vary with zoom level
-	if (x <= x_min || x >= x_max || y <= y_min || y >= y_max)
-		return;
-	//if (x_min < -1.f)
-	//	printf("x: %f, y: %f\nx_min: %f, x_max: %f\ny_min: %f, y_max: %f\n", x, y, x_min, x_max, y_min, y_max);
+	//if (x <= x_min || x >= x_max || y <= y_min || y >= y_max)
+	//	return;
 
+	// x * width/2 * zoom
+	// 1 * 512 * 1
+	// 512 * 2
 	// convert to image coord
-	pos.x = floor((x - x_min) * (double)mlx->canvas->width * (.5f * zoom));
-	pos.y = floor((y - y_min) * (double)mlx->canvas->height * (.5f * zoom));
-	//if (zoom > 1)
-	//if (x_min < -1.f)
-	//	printf("x: %f -> %i, y: %f -> %i\n", x, pos.x, y, pos.y);
+	pos.x = floor(x * (double)mlx->canvas->width * (.5f * zoom));
+	pos.y = floor(y * (double)mlx->canvas->height * (.5f * zoom));
+	if (pos.x >= mlx->canvas->width || pos.y >= mlx->canvas->height)
+		return;
 	set_image_pixel(mlx, mlx->canvas, color, &pos);
 }
+
+// 2 * 512
 
 //
 // x_min:
@@ -101,7 +80,7 @@ void	draw_viewport_point(t_mlx_st *mlx, double x, double y, int color)
 
 // 2
 // 2 + 2 = 4
-// 4 * 512 * 0.5 = 
+// 4 * 512 * 0.5 =
 
 // range:
 // [-2, 2]
@@ -131,12 +110,7 @@ static int	mandel(double complex Z, double complex C, int depth)
 		return (WHITE);
 	else if (depth < limit)
 		return (mandel(Z1, C, ++depth));
-	//else
-	//	return (WHITE);
 	return (BLACK);
-	//if (fabs(z1) - fabs(z) < EPSILON)
-	//	return (BLACK);
-	//else
 }
 
 
@@ -144,8 +118,6 @@ static void	draw_mandel(t_mlx_st *mlx)
 {
 	double	i;
 	double	j;
-	int		col;
-	double complex	Z;
 	double complex	C;
 
 	double		zoom;
@@ -155,32 +127,48 @@ static void	draw_mandel(t_mlx_st *mlx)
 	double		y_max;
 	double		step_x;
 	double		step_y;
+	double		range_x;
+	double		range_y;
+
+	double x;
+	double y;
 
 	zoom = mlx->viewport.zoom_level;
-	x_min = mlx->viewport.pos.x;
-	x_min /= zoom;
-	x_max = mlx->viewport.pos.x + mlx->viewport.size.x;
-	x_max /= zoom;
-	y_min = mlx->viewport.pos.y;
-	y_min /= zoom;
-	y_max = mlx->viewport.pos.y + mlx->viewport.size.y;
-	y_max /= zoom;
+	// GET the position
+	// 0
+	x = mlx->viewport.pos.x;
+	y = mlx->viewport.pos.y;
+	// GET the range
+	range_x = mlx->viewport.size.x / zoom;
+	range_y = mlx->viewport.size.y / zoom;
+	// APPLY range to min max
+	x_min = x - range_x / 2;
+	y_min = y - range_y / 2;
+	x_max = x + range_x / 2;
+	y_max = y + range_y / 2;
 
-	step_x = (x_max - x_min) / mlx->canvas->width;
-	step_y = (y_max - y_min) / mlx->canvas->height;
+	// SET step
+	step_x = (range_x) / mlx->canvas->width;
+	step_y = (range_y) / mlx->canvas->height;
+
 	C = CMPLX(0, 0);
-
 	i = x_min;
 	while (i < x_max)
 	{
 		j = y_min;
 		while (j < y_max)
 		{
-			//col = mandel(0, i * j * im, 0);
-			Z = CMPLX(i, j);
-			col = mandel(C, Z, 0);
-			draw_viewport_point(mlx, i, j, col);
+			if (fabs(i) - fabs(x_min + step_x * 2) > EPSILON
+					|| fabs(i) - fabs(x_max - step_x * 2) > EPSILON
+					|| fabs(j) - fabs(y_min + step_y * 2) > EPSILON
+					|| fabs(j) - fabs(y_max - step_y * 2) > EPSILON)
+				draw_viewport_point(mlx, i - x_min, j - y_min, RED);
+			else
+				draw_viewport_point(mlx, i - x_min, j - y_min, mandel(C, CMPLX(i, j), 0));
 			j += step_y;
+
+			//if (x_min > -.5f)
+			//	printf("x: %f, y: %f\nx_min: %f, x_max: %f\ny_min: %f, y_max: %f\n", i, j, x_min, x_max, y_min, y_max);
 		}
 		i += step_x;
 	}
@@ -188,50 +176,8 @@ static void	draw_mandel(t_mlx_st *mlx)
 
 void	draw_koch(t_mlx_st *mlx)
 {
-	static t_fract	koch = { 0 };
-
-	if (!koch.ready)
-	{
-		//draw_viewport_point(0, 0.1, 0);
-		//koch.ready = 1;
-		//printf("csqrt(i): %f", csqrt(-1.0));
-
-		draw_mandel(mlx);
-
-		mlx_put_image_to_window(mlx->sess, mlx->win, mlx->canvas->img, 0, 0);
-		mlx_string_put(mlx->sess, mlx->win, 30, 30, WHITE, "Please wait, computing Koch...");
-		//draw_gui(sess);
-		return;
-	}
-	else
-	{
-	}
-	t_vec2f from;
-	t_vec2f to;
-
-	double precision;
-	int color = RED;
-
-	g_degree++;
-	if (g_degree == 2)
-		color = BLUE;
-	if (g_degree == 3)
-		color = GREEN;
-	if (g_degree == 4)
-		color = RED + BLUE;
-	if (g_degree == 5)
-		color = RED + GREEN;
-	if (g_degree == 6)
-		color = GREEN + BLUE;
-
-	precision = 1 / (double)g_degree;
-	from.x = 10 * precision;
-	from.y = 10 * precision;
-	to.x = 300 * precision;
-	to.y = 300 * precision;
-	draw_square(mlx, color, &from, &to);
-	//return;
-	if (g_degree < g_degree_limit)
-		draw_koch(mlx);
-	g_degree = 0;
+	draw_mandel(mlx);
+	mlx_put_image_to_window(mlx->sess, mlx->win, mlx->canvas->img, 0, 0);
+	mlx_string_put(mlx->sess, mlx->win, 30, 30, WHITE, "Please wait, computing Koch...");
+	return;
 }

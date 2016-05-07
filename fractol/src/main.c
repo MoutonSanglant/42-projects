@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:02:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/06 18:10:33 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/07 20:50:08 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,8 @@ int				main(int argc, char **argv)
 	mlx->datas = malloc(sizeof(t_fractol_st));
 	mlx->canvas = new_mlx_canvas(mlx, screen_size);
 	mlx->viewport.zoom_level = 1.f;
-	mlx->viewport.pos.x = -1.f;
-	mlx->viewport.pos.y = -1.f;
+	mlx->viewport.pos.x = 0;
+	mlx->viewport.pos.y = 0;
 	mlx->viewport.size.x = 2.f;
 	mlx->viewport.size.y = 2.f;
 	init_mlx_sess(mlx);
