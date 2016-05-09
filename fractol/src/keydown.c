@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:03:16 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/06 18:19:20 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/09 23:11:32 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,18 +107,19 @@ int			keydown(int key, void *p)
 
 	mlx = (t_mlx_st *)p;
 	mlx->need_update = 1;
-	if (key == KEY_NUMPAD_MORE)
+	//ft_printf("key: %i\n", key);
+	if (key == KEY_NUMPAD_MORE || key == 44)
 		mlx->viewport.zoom_level *= 2.f;
-	else if (key == KEY_NUMPAD_LESS)
+	else if (key == KEY_NUMPAD_LESS || key == 47)
 		mlx->viewport.zoom_level *= .5f;
 	else if (key == KEY_LEFT)
-		mlx->viewport.pos.x -= .1f;
+		mlx->viewport.pos.x -= .1f / mlx->viewport.zoom_level;
 	else if (key == KEY_RIGHT)
-		mlx->viewport.pos.x += .1f;
+		mlx->viewport.pos.x += .1f / mlx->viewport.zoom_level;
 	else if (key == KEY_UP)
-		mlx->viewport.pos.y -= .1f;
+		mlx->viewport.pos.y -= .1f / mlx->viewport.zoom_level;
 	else if (key == KEY_DOWN)
-		mlx->viewport.pos.y += .1f;
+		mlx->viewport.pos.y += .1f / mlx->viewport.zoom_level;
 	else if (key == KEY_H)
 		mlx->options.tooltip = (mlx->options.tooltip) ? 0 : 1;
 	else if (key == KEY_Z)

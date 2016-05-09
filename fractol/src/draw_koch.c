@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/03 23:24:21 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/07 20:57:38 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/10 00:16:23 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,16 +101,29 @@ void	draw_viewport_point(t_mlx_st *mlx, double x, double y, int color)
 int limit = 20;
 #define EPSILON 0.000000001f
 
+/*
+**	Some more reading:
+**		http://linas.org/art-gallery/escape/escape.html
+*/
+
 static int	mandel(double complex Z, double complex C, int depth)
 {
-	complex double	Z1;
+	double		modulus;
+	double		escape_radius = 20.f;
+	double		z_real;
+	double		z_imaginary;
 
-	Z1 = Z * Z + C;
-	if (cabs(Z1) > 2)
-		return (WHITE);
-	else if (depth < limit)
-		return (mandel(Z1, C, ++depth));
-	return (BLACK);
+	while (1)
+	{
+		Z = Z * Z + C;
+		z_real = creal(Z);
+		z_imaginary = cimag(Z);
+		depth++;
+		modulus = sqrt(z_real * z_real + z_imaginary * z_imaginary);
+		if (modulus > escape_radius || depth > limit)
+			break;
+	}
+	return (depth);
 }
 
 
@@ -148,8 +161,8 @@ static void	draw_mandel(t_mlx_st *mlx)
 	y_max = y + range_y / 2;
 
 	// SET step
-	step_x = (range_x) / mlx->canvas->width;
-	step_y = (range_y) / mlx->canvas->height;
+	step_x = range_x / (mlx->canvas->width + 1);
+	step_y = range_y / (mlx->canvas->height + 1);
 
 	C = CMPLX(0, 0);
 	i = x_min;
@@ -158,17 +171,15 @@ static void	draw_mandel(t_mlx_st *mlx)
 		j = y_min;
 		while (j < y_max)
 		{
-			if (fabs(i) - fabs(x_min + step_x * 2) > EPSILON
-					|| fabs(i) - fabs(x_max - step_x * 2) > EPSILON
-					|| fabs(j) - fabs(y_min + step_y * 2) > EPSILON
-					|| fabs(j) - fabs(y_max - step_y * 2) > EPSILON)
-				draw_viewport_point(mlx, i - x_min, j - y_min, RED);
+			if (i < x_min + step_x * 2
+					|| i > x_max - step_x * 2
+					|| j < y_min + step_y * 2
+					|| j > y_max - step_y * 2)
+				; //draw_viewport_point(mlx, i - x_min, j - y_min, RED);
 			else
-				draw_viewport_point(mlx, i - x_min, j - y_min, mandel(C, CMPLX(i, j), 0));
+				draw_viewport_point(mlx, i - x_min, j - y_min,
+										BLACK + mandel(C, CMPLX(i, j), 0) * 10);
 			j += step_y;
-
-			//if (x_min > -.5f)
-			//	printf("x: %f, y: %f\nx_min: %f, x_max: %f\ny_min: %f, y_max: %f\n", i, j, x_min, x_max, y_min, y_max);
 		}
 		i += step_x;
 	}
