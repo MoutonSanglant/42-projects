@@ -33,6 +33,7 @@ printf/libftprintf.a
 /ls/ft_ls*
 /minishell/minishell*
 /42sh/42sh*
+/fractol/fractol*
 
 
 ### Temporary files ###
