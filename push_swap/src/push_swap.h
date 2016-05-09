@@ -15,6 +15,15 @@
 
 # include <libft.h>
 
-void	error();
+typedef struct	s_swap
+{
+	t_stack		*a;
+	t_stack		*b;
+}				t_swap;
+
+void		sa (t_swap *s);
+void		sb (t_swap *s);
+void		ss (t_swap *s);
+void		error();
 
 #endif

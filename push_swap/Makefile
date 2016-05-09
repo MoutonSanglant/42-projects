@@ -1,5 +1,5 @@
 CC		= gcc
-CFLAGS	= -Wall -Werror -Wextra -I./libft/src -D BONUS
+CFLAGS	= -fsanitize=address -Wall -Werror -Wextra -I./libft/src -D BONUS
 LDFLAGS	= -L./libft
 LDLIBS	= -lft
 
@@ -30,7 +30,7 @@ endif
 SRC_PREFIX	= ./src/
 OBJ_PREFIX	= ./obj/
 
-SRC	= main error
+SRC	= main swap error
 
 ifeq ($(BUILD), Debug)
 	SRC +=
