@@ -212,7 +212,7 @@ int				ft_queuesize(t_queue *queue);
 
 t_stack			*ft_stacknew(const void *content, size_t content_size);
 void			ft_stackpush(t_stack **astack, t_stack *new);
-void			ft_stackpop(t_stack **astack);
+t_stack			*ft_stackpop(t_stack **astack);
 int				ft_stacksize(t_stack *stack);
 
 /*

@@ -6,7 +6,7 @@
 /*   By: tdefresn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/08 14:44:33 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/03/05 23:53:14 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/10 01:05:18 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		ft_stacksize(t_stack *stack)
 		return (-1);
 	}
 	top = stack;
-	i = 0;
+	i = 1;
 	while (top->prev)
 	{
 		top = top->prev;
@@ -42,7 +42,7 @@ int		ft_stacksize(t_stack *stack)
 	int			i;
 
 	top = stack;
-	i = 0;
+	i = 1;
 	while (top->prev)
 	{
 		top = top->prev;
