@@ -1,41 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   push.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/05/07 21:04:39 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/07 21:04:39 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/05/10 16:36:51 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/05/10 17:09:45 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
+#include "push_swap.h"
 
-# include <libft.h>
-
-typedef struct	s_swap
+/*
+**	Push *
+*/
+void		pa (t_swap *s)
 {
-	t_stack		*a;
-	t_stack		*b;
-}				t_swap;
+	t_stack		*el;
 
-void		pa (t_swap *s);
-void		pb (t_swap *s);
+	ft_putstr("pa");
+	if (!s->b)
+		return ;
+	el = ft_stackpop(&s->b);
+	ft_stackpush(&s->a, el);
+}
 
-void		sa (t_swap *s);
-void		sb (t_swap *s);
-void		ss (t_swap *s);
+void		pb (t_swap *s)
+{
+	t_stack		*el;
 
-void		ra (t_swap *s);
-void		rb (t_swap *s);
-void		rr (t_swap *s);
-
-void		rra (t_swap *s);
-void		rrb (t_swap *s);
-void		rrr (t_swap *s);
-
-void		error();
-
-#endif
+	ft_putstr("pb");
+	if (!s->b)
+		return ;
+	el = ft_stackpop(&s->a);
+	ft_stackpush(&s->b, el);
+}

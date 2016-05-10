@@ -30,7 +30,7 @@ endif
 SRC_PREFIX	= ./src/
 OBJ_PREFIX	= ./obj/
 
-SRC	= main swap error
+SRC	= main push swap rotate reverse_rotate error
 
 ifeq ($(BUILD), Debug)
 	SRC +=
