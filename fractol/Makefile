@@ -59,6 +59,7 @@ SRC	=	main \
 		identity_matrix \
 		change_grid_z \
 		set_color_scheme \
+		colorsets \
 		hex_to_float
 
 ifeq ($(BUILD), Debug)

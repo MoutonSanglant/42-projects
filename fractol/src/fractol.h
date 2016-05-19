@@ -460,6 +460,8 @@ void			camera(t_mlx_st *mlx, char *str);
 **								 : draw_koch.c :
 */
 void	draw_koch();
+int		colorset_deepblue(int depth);
+int		colorset_burning(int depth);
 
 /*
 ********************************************************************************

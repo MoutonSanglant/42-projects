@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/03 23:24:21 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/10 00:16:23 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/11 13:22:08 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	pixel(t_mlx_st *mlx, uint32_t x, uint32_t y)
 	set_image_pixel(mlx, mlx->canvas, RED, &pos);
 }
 
-void	draw_viewport_point(t_mlx_st *mlx, double x, double y, int color)
+void	draw_viewport_point(t_mlx_st *mlx, double x, double y, int color, int (color_fn)(int))
 {
 	t_vec2ui32	pos;
 	double		zoom;
@@ -53,6 +53,7 @@ void	draw_viewport_point(t_mlx_st *mlx, double x, double y, int color)
 	// 1 * 512 * 1
 	// 512 * 2
 	// convert to image coord
+	color = color_fn(color);
 	pos.x = floor(x * (double)mlx->canvas->width * (.5f * zoom));
 	pos.y = floor(y * (double)mlx->canvas->height * (.5f * zoom));
 	if (pos.x >= mlx->canvas->width || pos.y >= mlx->canvas->height)
@@ -98,7 +99,7 @@ void	draw_viewport_point(t_mlx_st *mlx, double x, double y, int color)
 // 0.5 + 1 = 1.5
 // 1.5 * 512 = 768
 
-int limit = 20;
+int limit = 100;
 #define EPSILON 0.000000001f
 
 /*
@@ -146,6 +147,9 @@ static void	draw_mandel(t_mlx_st *mlx)
 	double x;
 	double y;
 
+	int			(*colorset)(int);
+
+	colorset = (int (*)(int))mlx->datas;
 	zoom = mlx->viewport.zoom_level;
 	// GET the position
 	// 0
@@ -171,14 +175,15 @@ static void	draw_mandel(t_mlx_st *mlx)
 		j = y_min;
 		while (j < y_max)
 		{
-			if (i < x_min + step_x * 2
+			/*if (i < x_min + step_x * 2
 					|| i > x_max - step_x * 2
 					|| j < y_min + step_y * 2
 					|| j > y_max - step_y * 2)
 				; //draw_viewport_point(mlx, i - x_min, j - y_min, RED);
-			else
+			else*/
+			// j - y_min & x ... could be optimized
 				draw_viewport_point(mlx, i - x_min, j - y_min,
-										BLACK + mandel(C, CMPLX(i, j), 0) * 10);
+										mandel(C, CMPLX(i, j), 0), colorset);
 			j += step_y;
 		}
 		i += step_x;
@@ -189,6 +194,7 @@ void	draw_koch(t_mlx_st *mlx)
 {
 	draw_mandel(mlx);
 	mlx_put_image_to_window(mlx->sess, mlx->win, mlx->canvas->img, 0, 0);
-	mlx_string_put(mlx->sess, mlx->win, 30, 30, WHITE, "Please wait, computing Koch...");
+	//mlx_string_put(mlx->sess, mlx->win, 30, 30, WHITE, "Please wait, computing Koch...");
+	mlx_string_put(mlx->sess, mlx->win, 10, mlx->canvas->height - 30, WHITE, "Press ? for help");
 	return;
 }
