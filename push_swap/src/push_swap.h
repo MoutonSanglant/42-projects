@@ -21,6 +21,8 @@ typedef struct	s_swap
 	t_stack		*b;
 }				t_swap;
 
+void		shell_sort(t_swap *s);
+
 void		pa (t_swap *s);
 void		pb (t_swap *s);
 

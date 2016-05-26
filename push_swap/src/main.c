@@ -6,16 +6,39 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/07 21:02:39 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/11 14:03:28 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/26 22:08:25 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	init_swap(int argc, char **argv, t_swap *swap)
+static int	isint(char *str)
 {
-	t_stack		*stack;
+	if (str[0] == '-')
+		str++;
+	return (ft_isdigit(str[0]) && ft_strlen(str) < 11);
+}
+
+static void	push_to_a(int *n, t_swap *swap)
+{
+	t_stack	*stack;
+
+	stack = swap->a;
+	while (stack)
+	{
+		if (*n == *((int *)stack->content))
+			error();
+		stack = stack->prev;
+	}
+	stack = ft_stacknew((void *)n, sizeof(int));
+	ft_stackpush(&swap->a, stack);
+	ft_memdel((void **)&n);
+}
+
+void		init_swap(int argc, char **argv, t_swap *swap)
+{
 	int			*n;
+	intmax_t	m;
 	int			i;
 
 	swap->a = NULL;
@@ -23,15 +46,17 @@ void	init_swap(int argc, char **argv, t_swap *swap)
 	i = argc - 1;
 	while (i > 0)
 	{
-		// Doesn't check if arg is not too big !!
-		if (ft_isdigit(argv[i][0]))
+		if (isint(argv[i]))
 		{
-			n = ft_memalloc((sizeof(int)));
-			*n = ft_atoi(argv[i]);
-			stack = ft_stacknew((void *)n, sizeof(int));
-			ft_memdel((void **)&n);
+			n = ft_memalloc(sizeof(int));
+			m = ft_atoimax(argv[i]);
+			if ((argv[i][0] == '-' && m < -2147483648) || m > 2147483647)
+				error();
+			*n = m;
 		}
-		ft_stackpush(&swap->a, stack);
+		else
+			error();
+		push_to_a(n, swap);
 		i--;
 	}
 }
@@ -71,39 +96,6 @@ void	_print_swap(t_swap *swap)
 	}
 }
 
-void	sort_swap(t_swap *swap)
-{
-	int sorted;
-
-	sorted = 0;
-	while (!sorted)
-	{
-		break;
-		if (*((int *)swap->a->content) > *((int *)swap->a->prev->content))
-			pb(swap);
-		else
-			rr(swap);
-		if (ft_stacksize(swap->a) < 2)
-			break ;
-		//rr(swap);
-		//if (*((int *)swap->a->content) == 6)
-		//	break ;
-		ft_putchar(' ');
-		//_print_swap(swap);
-	}
-	//sa(swap);
-	pb(swap);
-	pb(swap);
-	pb(swap);
-	pb(swap);
-	//ss(swap);
-	//sb(swap);
-	//sa(swap);
-	//rr(swap);
-	//rrr(swap);
-	//pa(swap);
-}
-
 int		main(int argc, char **argv)
 {
 	t_swap		swap;
@@ -112,7 +104,7 @@ int		main(int argc, char **argv)
 		error();
 
 	init_swap(argc, argv, &swap);
-	sort_swap(&swap);
+	shell_sort(&swap);
 	_print_swap(&swap);
 
 	return (0);
