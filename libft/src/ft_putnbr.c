@@ -6,7 +6,7 @@
 /*   By: tdefresn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/01 12:36:56 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/02/16 00:18:37 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/26 20:03:41 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int				ft_putnbr(int n)
 			print_min((int64_t)n, &bcount);
 		else
 			printnbr(-n, &bcount);
+		return (bcount);
 	}
 	printnbr(n, &bcount);
 	return (bcount);

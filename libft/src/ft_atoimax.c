@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_atoimax.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/08 21:48:42 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/26 20:03:57 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/05/26 20:40:01 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/05/26 20:41:13 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 #ifdef DEBUG
 
-int		ft_atoi(char const *str)
+intmax_t		ft_atoimax(char const *str)
 {
-	int		sign;
-	int		r;
+	int			sign;
+	intmax_t	r;
 
 	if (!str)
 	{
-		ERROR_PARAM("ft_atoi");
+		ERROR_PARAM("ft_atoimax");
 		return (0);
 	}
 	r = 0;
@@ -45,10 +45,10 @@ int		ft_atoi(char const *str)
 
 #else
 
-int		ft_atoi(char const *str)
+intmax_t		ft_atoimax(char const *str)
 {
-	int		sign;
-	int		r;
+	int			sign;
+	intmax_t	r;
 
 	r = 0;
 	sign = 1;
