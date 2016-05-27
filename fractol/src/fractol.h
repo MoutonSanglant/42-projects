@@ -23,7 +23,8 @@
 
 # include <includes/libft.h>
 
-# define USAGE_MSG "Usage: fdf [Path] [Width] [Height]"
+// TODO
+# define USAGE_MSG "Usage: fractol ...."
 
 # define BUFF_SIZE 32
 # define BLACK	0x00000000
@@ -63,6 +64,7 @@
 #  define KEY_NUMPAD_MORE	65451
 #  define KEY_NUMPAD_LESS	65453
 #  define KEY_NUMPAD_STAR	65450
+#  define KEY_NUMPAD_DIVIDE	11111
 #  define KEY_0		224
 #  define KEY_1		38
 #  define KEY_2		233
@@ -102,6 +104,7 @@
 #  define KEY_NUMPAD_MORE	69
 #  define KEY_NUMPAD_LESS	78
 #  define KEY_NUMPAD_STAR	67
+#  define KEY_NUMPAD_DIVIDE	75
 #  define KEY_0		29
 #  define KEY_1		18
 #  define KEY_2		19
@@ -258,7 +261,8 @@ typedef struct	s_viewport
 
 typedef struct	s_fractol_st
 {
-	int a;
+	int		(*color_fn)(int);
+	int		max_iterations;
 }				t_fractol_st;
 
 typedef struct	s_mlx_st
@@ -310,11 +314,6 @@ typedef struct	s_tree
 {
 	int	degree;
 }				t_tree;
-
-typedef struct	s_fract
-{
-	int			ready;
-}				t_fract;
 
 // TODO:
 // Survey

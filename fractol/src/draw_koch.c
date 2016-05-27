@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/03 23:24:21 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/11 13:22:08 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/28 01:30:06 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	pixel(t_mlx_st *mlx, uint32_t x, uint32_t y)
 
 	pos.x = x;
 	pos.y = y;
-	set_image_pixel(mlx, mlx->canvas, RED, &pos);
+	set_image_pixel(mlx, mlx->canvas, BLUE, &pos);
 }
 
 void	draw_viewport_point(t_mlx_st *mlx, double x, double y, int color, int (color_fn)(int))
@@ -99,7 +99,6 @@ void	draw_viewport_point(t_mlx_st *mlx, double x, double y, int color, int (colo
 // 0.5 + 1 = 1.5
 // 1.5 * 512 = 768
 
-int limit = 100;
 #define EPSILON 0.000000001f
 
 /*
@@ -107,7 +106,7 @@ int limit = 100;
 **		http://linas.org/art-gallery/escape/escape.html
 */
 
-static int	mandel(double complex Z, double complex C, int depth)
+static int	mandel(double complex Z, double complex C, int depth, int max_iterations)
 {
 	double		modulus;
 	double		escape_radius = 20.f;
@@ -121,7 +120,7 @@ static int	mandel(double complex Z, double complex C, int depth)
 		z_imaginary = cimag(Z);
 		depth++;
 		modulus = sqrt(z_real * z_real + z_imaginary * z_imaginary);
-		if (modulus > escape_radius || depth > limit)
+		if (modulus > escape_radius || depth > max_iterations)
 			break;
 	}
 	return (depth);
@@ -148,8 +147,11 @@ static void	draw_mandel(t_mlx_st *mlx)
 	double y;
 
 	int			(*colorset)(int);
+	int			max_iterations;
 
-	colorset = (int (*)(int))mlx->datas;
+	colorset = ((t_fractol_st *)mlx->datas)->color_fn;
+	max_iterations = ((t_fractol_st *)mlx->datas)->max_iterations;
+	//colorset = mlx->datas;
 	zoom = mlx->viewport.zoom_level;
 	// GET the position
 	// 0
@@ -183,7 +185,7 @@ static void	draw_mandel(t_mlx_st *mlx)
 			else*/
 			// j - y_min & x ... could be optimized
 				draw_viewport_point(mlx, i - x_min, j - y_min,
-										mandel(C, CMPLX(i, j), 0), colorset);
+										mandel(C, CMPLX(i, j), 0, max_iterations), colorset);
 			j += step_y;
 		}
 		i += step_x;

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:02:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/11 13:17:51 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/28 01:37:27 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,10 @@ int				main(int argc, char **argv)
 	t_mlx_st	*mlx;
 	//t_vec2		vertmap_size;
 	t_vec2		screen_size;
+	t_fractol_st	fractol_st;
 
+	fractol_st.color_fn = &colorset_deepblue;
+	fractol_st.max_iterations = 25;
 	//filepath = NULL;
 	//vertmap = NULL;
 	//vertmap_size.x = 0;
@@ -124,8 +127,9 @@ int				main(int argc, char **argv)
 	mlx->name = ft_strdup("Fract'ol");
 	mlx->draw_fn = &draw_koch;
 	//mlx->datas = malloc(sizeof(t_fractol_st));
+	mlx->datas = (void *)&fractol_st;
 	//mlx->datas = (void *)&colorset_deepblue;
-	mlx->datas = (void *)&colorset_burning;
+	//mlx->datas = (void *)&colorset_burning;
 	mlx->canvas = new_mlx_canvas(mlx, screen_size);
 	mlx->viewport.zoom_level = 1.f;
 	mlx->viewport.pos.x = 0;

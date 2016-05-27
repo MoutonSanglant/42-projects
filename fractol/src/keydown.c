@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:03:16 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/09 23:11:32 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/28 01:36:16 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,8 +125,9 @@ int			keydown(int key, void *p)
 	else if (key == KEY_Z)
 		mlx->options.zdraw = (mlx->options.zdraw) ? 0 : 1;
 	else if (key == KEY_NUMPAD_STAR)
-		mlx->options.line_width = (mlx->options.line_width > .06f) ? .02f :
-							mlx->options.line_width + .005f;
+		((t_fractol_st *)mlx->datas)->max_iterations++;
+	else if (key == KEY_NUMPAD_DIVIDE)
+		((t_fractol_st *)mlx->datas)->max_iterations--;
 	else if (key == KEY_I)
 	{
 		color = mlx->options.faces_color;
