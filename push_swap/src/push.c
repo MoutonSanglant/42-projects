@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/10 16:36:51 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/27 20:53:19 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/27 23:44:20 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 /*
 **	Push *
 */
-char		*pa (t_swap *s)
+
+char		*pa(t_swap *s)
 {
 	t_stack		*el;
 
@@ -26,7 +27,7 @@ char		*pa (t_swap *s)
 	return ("pa");
 }
 
-char		*pb (t_swap *s)
+char		*pb(t_swap *s)
 {
 	t_stack		*el;
 

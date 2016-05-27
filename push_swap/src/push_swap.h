@@ -21,27 +21,27 @@ typedef struct	s_swap
 	t_stack		*b;
 }				t_swap;
 
-void		print_swap(t_swap *s);
+void			print_swap(t_swap *s);
 
-void		basic_sort(t_swap *s);
-char		*store_unsorted(t_swap *swap, char *str, int min, int max);
-char		*insert(t_swap *swap, char *str);
+void			basic_sort(t_swap *s);
+char			*store_unsorted(t_swap *swap, char *str, int max);
+char			*insert(t_swap *swap, char *str);
 
-char		*pa (t_swap *s);
-char		*pb (t_swap *s);
+char			*pa (t_swap *s);
+char			*pb (t_swap *s);
 
-char		*sa (t_swap *s);
-char		*sb (t_swap *s);
-char		*ss (t_swap *s);
+char			*sa (t_swap *s);
+char			*sb (t_swap *s);
+char			*ss (t_swap *s);
 
-char		*ra (t_swap *s);
-char		*rb (t_swap *s);
-char		*rr (t_swap *s);
+char			*ra (t_swap *s);
+char			*rb (t_swap *s);
+char			*rr (t_swap *s);
 
-char		*rra (t_swap *s);
-char		*rrb (t_swap *s);
-char		*rrr (t_swap *s);
+char			*rra (t_swap *s);
+char			*rrb (t_swap *s);
+char			*rrr (t_swap *s);
 
-void		error();
+void			error();
 
 #endif

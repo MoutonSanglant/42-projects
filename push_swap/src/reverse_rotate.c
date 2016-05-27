@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/10 16:15:45 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/27 20:49:59 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/27 23:46:38 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 /*
 **	Reverse Rotate *
 */
-static t_stack		*rev_rotate (t_stack *top)
+
+static t_stack	*rev_rotate(t_stack *top)
 {
 	t_stack		*el;
 	t_stack		*last;
@@ -31,25 +32,25 @@ static t_stack		*rev_rotate (t_stack *top)
 	return (el);
 }
 
-char			*rra (t_swap *s)
+char			*rra(t_swap *s)
 {
 	if (s->a)
-		s->a = rev_rotate (s->a);
+		s->a = rev_rotate(s->a);
 	return ("rra");
 }
 
-char			*rrb (t_swap *s)
+char			*rrb(t_swap *s)
 {
 	if (s->b)
-		s->b = rev_rotate (s->b);
+		s->b = rev_rotate(s->b);
 	return ("rrb");
 }
 
-char			*rrr (t_swap *s)
+char			*rrr(t_swap *s)
 {
 	if (s->a)
-		s->a = rev_rotate (s->a);
+		s->a = rev_rotate(s->a);
 	if (s->b)
-		s->b = rev_rotate (s->b);
+		s->b = rev_rotate(s->b);
 	return ("rrr");
 }

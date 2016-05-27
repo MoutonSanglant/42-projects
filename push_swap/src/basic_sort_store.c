@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/27 21:10:39 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/27 22:16:24 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/27 23:54:11 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,47 @@
 
 static int	issorted(t_stack *stack, int max)
 {
+	int		first;
 	int		n1;
 	int		n2;
 
-	while (stack->prev)
+	first = *(int *)stack->content;
+	while (stack)
 	{
 		n1 = *(int *)stack->content;
 		stack = stack->prev;
-		n2 = *(int *)stack->content;
-		ft_printf("%i.%i;", n1, n2);
+		if (stack)
+			n2 = *(int *)stack->content;
+		else
+			n2 = first;
 		if (n1 != max && n1 > n2)
 			return (0);
 	}
-		ft_putchar('\n');
 	return (1);
 }
 
-static int	get_unsorted_value(t_stack *stack, int min)
+static int	isrevsorted(t_stack *stack, int max)
+{
+	int		first;
+	int		n1;
+	int		n2;
+
+	first = *(int *)stack->content;
+	while (stack)
+	{
+		n1 = *(int *)stack->content;
+		stack = stack->prev;
+		if (stack)
+			n2 = *(int *)stack->content;
+		else
+			n2 = first;
+		if (n2 != max && n1 < n2)
+			return (0);
+	}
+	return (1);
+}
+
+static int	get_unsorted_value(t_stack *stack)
 {
 	int		bot_gap;
 	int		top_gap;
@@ -38,7 +62,6 @@ static int	get_unsorted_value(t_stack *stack, int min)
 	int		n1;
 	int		n2;
 
-	(void)min;
 	gap = 0;
 	top_gap = -1;
 	while (stack->prev)
@@ -46,7 +69,6 @@ static int	get_unsorted_value(t_stack *stack, int min)
 		n1 = *(int *)stack->content;
 		stack = stack->prev;
 		n2 = *(int *)stack->content;
-		//if (n2 != min && n1 > n2)
 		if (n1 > n2)
 		{
 			if (top_gap < 0)
@@ -59,13 +81,29 @@ static int	get_unsorted_value(t_stack *stack, int min)
 	return (bot_gap - top_gap);
 }
 
-char		*store_unsorted(t_swap *swap, char *str, int min, int max)
+static int	store_init(t_swap *swap, char **str, int max)
 {
+	if (issorted(swap->a, max))
+		return (1);
+	if (isrevsorted(swap->a, max))
+	{
+		*str = ft_sprintf("%s%s ", *str, sa(swap));
+		*str = ft_sprintf("%s%s ", *str, rra(swap));
+	}
+	if (*(int *)swap->a->content > *(int *)swap->a->prev->content)
+		*str = ft_sprintf("%s%s ", *str, sa(swap));
+	return (0);
+}
+
+char		*store_unsorted(t_swap *swap, char *str, int max)
+{
+	if (store_init(swap, &str, max))
+		return (str);
 	while (1)
 	{
 		if (issorted(swap->a, max))
-			break;
-		if (get_unsorted_value(swap->a, min) > 0)
+			break ;
+		if (get_unsorted_value(swap->a) > 0)
 		{
 			while (*(int *)swap->a->content == max ||
 					*(int *)swap->a->content < *(int *)swap->a->prev->content)
@@ -79,9 +117,9 @@ char		*store_unsorted(t_swap *swap, char *str, int min, int max)
 				str = ft_sprintf("%s%s ", str, rra(swap));
 			str = ft_sprintf("%s%s ", str, pb(swap));
 		}
+		ft_printf(str);
+		ft_strdel(&str);
+		str = ft_strnew(1);
 	}
-	ft_printf("\n========= STORE END ==========\n");
-	print_swap(swap);
-	ft_printf("================================\n");
 	return (str);
 }

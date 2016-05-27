@@ -6,14 +6,14 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/07 21:09:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/07 21:13:16 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/27 23:43:54 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	error()
+void	error(void)
 {
 	ft_putendl("Error");
-	exit (1);
+	exit(1);
 }

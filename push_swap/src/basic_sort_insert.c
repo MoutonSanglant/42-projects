@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/27 21:11:19 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/27 22:38:03 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/27 23:59:25 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	get_closest_sibling(t_stack *stack, int value)
 		n1 = *(int *)stack->content;
 		stack = stack->prev;
 		n2 = *(int *)stack->content;
-		if (n2 < n1 || (n1 > value && value > n2))
+		if (n1 < n2 || (n1 > value && value > n2))
 		{
 			if (top_gap < 0)
 				top_gap = gap;
@@ -52,39 +52,47 @@ static int	get_last(t_stack *stack)
 	return (last);
 }
 
-char		*insert(t_swap *swap, char *str)
+static char	*roll(t_swap *swap, char *str)
 {
 	int		prev;
 
+	prev = get_last(swap->a);
+	while (*(int *)swap->a->content < *(int *)swap->b->content
+			|| *(int *)swap->b->content < prev)
+	{
+		str = ft_sprintf("%s%s ", str, ra(swap));
+		prev = get_last(swap->a);
+	}
+	return (ft_sprintf("%s%s ", str, pa(swap)));
+}
+
+static char	*reverse_roll(t_swap *swap, char *str)
+{
+	int		prev;
+
+	prev = get_last(swap->a);
+	while (*(int *)swap->a->content < *(int *)swap->b->content
+			|| *(int *)swap->b->content < prev)
+	{
+		str = ft_sprintf("%s%s ", str, rra(swap));
+		prev = get_last(swap->a);
+	}
+	return (ft_sprintf("%s%s ", str, pa(swap)));
+}
+
+char		*insert(t_swap *swap, char *str)
+{
 	while (1)
 	{
 		if (!swap->b || ft_stacksize(swap->b) < 1)
 			break ;
 		if (get_closest_sibling(swap->a, *(int *)swap->b->content))
-		{
-			prev = get_last(swap->a);
-			while (*(int *)swap->a->content < *(int *)swap->b->content
-					|| *(int *)swap->b->content < prev)
-			{
-				str = ft_sprintf("%s%s ", str, ra(swap));
-				prev = get_last(swap->a);
-			}
-			str = ft_sprintf("%s%s ", str, pa(swap));
-		}
+			str = roll(swap, str);
 		else
-		{
-			prev = get_last(swap->a);
-			while (*(int *)swap->a->content < *(int *)swap->b->content
-					|| *(int *)swap->b->content < prev)
-			{
-				str = ft_sprintf("%s%s ", str, rra(swap));
-				prev = get_last(swap->a);
-			}
-			str = ft_sprintf("%s%s ", str, pa(swap));
-		}
+			str = reverse_roll(swap, str);
+		ft_printf(str);
+		ft_strdel(&str);
+		str = ft_strnew(1);
 	}
-	ft_printf("\n========= INSERT END ==========\n");
-	print_swap(swap);
-	ft_printf("=================================\n");
 	return (str);
 }

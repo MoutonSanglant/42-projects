@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/10 01:41:45 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/27 20:52:11 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/27 23:48:41 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 /*
 **	Swap *
 */
-static t_stack		*swap (t_stack *top)
+
+static t_stack	*swap(t_stack *top)
 {
 	t_stack		*prev;
 
@@ -27,19 +28,19 @@ static t_stack		*swap (t_stack *top)
 	return (prev);
 }
 
-char			*sa (t_swap *s)
+char			*sa(t_swap *s)
 {
 	s->a = swap(s->a);
 	return ("sa");
 }
 
-char			*sb (t_swap *s)
+char			*sb(t_swap *s)
 {
 	s->b = swap(s->b);
 	return ("sb");
 }
 
-char			*ss (t_swap *s)
+char			*ss(t_swap *s)
 {
 	s->a = swap(s->a);
 	s->b = swap(s->b);

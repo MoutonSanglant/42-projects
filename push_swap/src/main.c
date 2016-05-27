@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/07 21:02:39 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/27 19:07:24 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/27 23:44:55 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,12 @@ void		init_swap(int argc, char **argv, t_swap *swap)
 	}
 }
 
-int		main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
 	t_swap		swap;
 
 	if (argc < 2)
-		error();
-
+		return (0);
 	init_swap(argc, argv, &swap);
 	basic_sort(&swap);
 	return (0);
