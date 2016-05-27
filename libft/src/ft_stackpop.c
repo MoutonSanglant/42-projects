@@ -6,7 +6,7 @@
 /*   By: tdefresn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/08 14:44:28 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/10 01:33:30 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/27 18:53:29 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,10 @@ t_stack		*ft_stackpop(t_stack **astack)
 	if (top->prev)
 	{
 		*astack = top->prev;
-		//ft_memdel((void *)&top);
+		top->prev = NULL;
 	}
 	else
-		return (NULL);
-		//ft_memdel((void **)astack);
+		*astack = NULL;
 	return (top);
 }
 
@@ -45,11 +44,10 @@ t_stack		*ft_stackpop(t_stack **astack)
 	if (top->prev)
 	{
 		*astack = top->prev;
-		//ft_memdel((void *)&top);
+		top->prev = NULL;
 	}
 	else
-		return (NULL);
-		//ft_memdel((void **)astack);
+		*astack = NULL;
 	return (top);
 }
 #endif
