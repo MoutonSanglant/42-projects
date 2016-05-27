@@ -24,21 +24,23 @@ typedef struct	s_swap
 void		print_swap(t_swap *s);
 
 void		basic_sort(t_swap *s);
+char		*store_unsorted(t_swap *swap, char *str, int min, int max);
+char		*insert(t_swap *swap, char *str);
 
-void		pa (t_swap *s);
-void		pb (t_swap *s);
+char		*pa (t_swap *s);
+char		*pb (t_swap *s);
 
-void		sa (t_swap *s);
-void		sb (t_swap *s);
-void		ss (t_swap *s);
+char		*sa (t_swap *s);
+char		*sb (t_swap *s);
+char		*ss (t_swap *s);
 
-void		ra (t_swap *s);
-void		rb (t_swap *s);
-void		rr (t_swap *s);
+char		*ra (t_swap *s);
+char		*rb (t_swap *s);
+char		*rr (t_swap *s);
 
-void		rra (t_swap *s);
-void		rrb (t_swap *s);
-void		rrr (t_swap *s);
+char		*rra (t_swap *s);
+char		*rrb (t_swap *s);
+char		*rrr (t_swap *s);
 
 void		error();
 

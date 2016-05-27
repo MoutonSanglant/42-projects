@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/10 16:36:51 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/27 18:45:06 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/27 20:53:19 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,24 @@
 /*
 **	Push *
 */
-void		pa (t_swap *s)
+char		*pa (t_swap *s)
 {
 	t_stack		*el;
 
-	ft_putstr("pa");
 	if (!s->b)
-		return ;
+		return ("");
 	el = ft_stackpop(&s->b);
-	//if (el)
-		ft_stackpush(&s->a, el);
+	ft_stackpush(&s->a, el);
+	return ("pa");
 }
 
-void		pb (t_swap *s)
+char		*pb (t_swap *s)
 {
 	t_stack		*el;
 
-	ft_putstr("pb");
 	if (!s->a)
-		return ;
+		return ("");
 	el = ft_stackpop(&s->a);
-	//if (el)
-		ft_stackpush(&s->b, el);
+	ft_stackpush(&s->b, el);
+	return ("pb");
 }

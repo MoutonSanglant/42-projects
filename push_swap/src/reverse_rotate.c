@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/10 16:15:45 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/10 17:11:57 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/27 20:49:59 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,25 +31,25 @@ static t_stack		*rev_rotate (t_stack *top)
 	return (el);
 }
 
-void			rra (t_swap *s)
+char			*rra (t_swap *s)
 {
-	ft_putstr("rra");
 	if (s->a)
 		s->a = rev_rotate (s->a);
+	return ("rra");
 }
 
-void			rrb (t_swap *s)
+char			*rrb (t_swap *s)
 {
-	ft_putstr("rrb");
 	if (s->b)
 		s->b = rev_rotate (s->b);
+	return ("rrb");
 }
 
-void			rrr (t_swap *s)
+char			*rrr (t_swap *s)
 {
-	ft_putstr("rrr");
 	if (s->a)
 		s->a = rev_rotate (s->a);
 	if (s->b)
 		s->b = rev_rotate (s->b);
+	return ("rrr");
 }
