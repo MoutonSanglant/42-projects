@@ -1,40 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push.c                                             :+:      :+:    :+:   */
+/*   print_swap.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/05/10 16:36:51 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/27 18:45:06 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/05/27 17:39:00 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/05/27 18:46:29 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-/*
-**	Push *
-*/
-void		pa (t_swap *s)
+void	print_swap(t_swap *swap)
 {
-	t_stack		*el;
+	t_stack		*a;
+	t_stack		*b;
 
-	ft_putstr("pa");
-	if (!s->b)
-		return ;
-	el = ft_stackpop(&s->b);
-	//if (el)
-		ft_stackpush(&s->a, el);
-}
-
-void		pb (t_swap *s)
-{
-	t_stack		*el;
-
-	ft_putstr("pb");
-	if (!s->a)
-		return ;
-	el = ft_stackpop(&s->a);
-	//if (el)
-		ft_stackpush(&s->b, el);
+	ft_putendl("A | B");
+	a = swap->a;
+	b = swap->b;
+	while (a || b)
+	{
+		if (a)
+		{
+			ft_putnbr(*((int *)a->content));
+			a = a->prev;
+		}
+		else
+			ft_putchar('-');
+		ft_putstr(" | ");
+		if (b)
+		{
+			ft_putnbr(*((int *)b->content));
+			b = b->prev;
+		}
+		else
+			ft_putchar('-');
+		ft_putchar('\n');
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/07 21:02:39 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/26 22:08:25 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/27 19:07:24 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,41 +61,6 @@ void		init_swap(int argc, char **argv, t_swap *swap)
 	}
 }
 
-void	_print_swap(t_swap *swap)
-{
-	t_stack		*stack;
-
-	ft_putchar('\n');
-	ft_putendl("A | B");
-	while (swap->a || swap->b)
-	{
-		if (swap->a)
-		{
-			ft_putnbr(*((int *)swap->a->content));
-			stack = ft_stackpop(&swap->a);
-			if (stack)
-				ft_memdel((void **)&stack);
-			else
-				ft_memdel((void **)&swap->a);
-		}
-		else
-		{
-			ft_putchar('-');
-		}
-		ft_putstr(" | ");
-		if (swap->b && ft_stacksize(swap->b))
-		{
-			ft_putnbr(*((int *)swap->b->content));
-			stack = ft_stackpop(&swap->b);
-			if (stack)
-				ft_memdel((void **)&stack);
-			else
-				ft_memdel((void **)&swap->b);
-		}
-		ft_putchar('\n');
-	}
-}
-
 int		main(int argc, char **argv)
 {
 	t_swap		swap;
@@ -104,8 +69,6 @@ int		main(int argc, char **argv)
 		error();
 
 	init_swap(argc, argv, &swap);
-	shell_sort(&swap);
-	_print_swap(&swap);
-
+	basic_sort(&swap);
 	return (0);
 }
