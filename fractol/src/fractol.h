@@ -75,19 +75,21 @@
 #  define KEY_7		232
 #  define KEY_8		95
 #  define KEY_9		231
-#  define KEY_Z		119
+#  define KEY_A		113
+#  define KEY_B		98
+#  define KEY_D		100
+#  define KEY_E		101
+#  define KEY_F		102
+#  define KEY_G		111111
+#  define KEY_H		104
 #  define KEY_I		105
 #  define KEY_O		111
 #  define KEY_P		112
 #  define KEY_Q		97
-#  define KEY_W		122
-#  define KEY_E		101
-#  define KEY_A		113
+#  define KEY_R		111111
 #  define KEY_S		115
-#  define KEY_D		100
-#  define KEY_B		98
-#  define KEY_H		104
-#  define KEY_F		102
+#  define KEY_W		122
+#  define KEY_Z		119
 #  define KEY_LEFT	65361
 #  define KEY_RIGHT	65363
 #  define KEY_UP	65362
@@ -115,19 +117,21 @@
 #  define KEY_7		26
 #  define KEY_8		28
 #  define KEY_9		25
-#  define KEY_Z		6
+#  define KEY_A		0
+#  define KEY_B		11
+#  define KEY_D		2
+#  define KEY_E		14
+#  define KEY_F		3
+#  define KEY_G		5
+#  define KEY_H		4
 #  define KEY_I		34
 #  define KEY_O		31
 #  define KEY_P		35
 #  define KEY_Q		12
-#  define KEY_W		13
-#  define KEY_E		14
-#  define KEY_A		0
+#  define KEY_R		15
 #  define KEY_S		1
-#  define KEY_D		2
-#  define KEY_B		11
-#  define KEY_H		4
-#  define KEY_F		3
+#  define KEY_W		13
+#  define KEY_Z		6
 #  define KEY_LEFT	123
 #  define KEY_RIGHT	124
 #  define KEY_UP	126
@@ -259,11 +263,14 @@ typedef struct	s_viewport
 	double		zoom_level;
 }				t_viewport;
 
-typedef struct	s_fractol_st
+typedef struct	s_fractol_st t_fractol_st;
+
+struct			s_fractol_st
 {
-	int		(*color_fn)(int);
+	int		(*color_fn)(int, t_fractol_st *);
 	int		max_iterations;
-}				t_fractol_st;
+	t_color	color;
+};
 
 typedef struct	s_mlx_st
 {
@@ -456,11 +463,13 @@ void			camera(t_mlx_st *mlx, char *str);
 */
 
 /*
-**								 : draw_koch.c :
+**								 : draw_mandel.c :
 */
-void	draw_koch();
-int		colorset_deepblue(int depth);
-int		colorset_burning(int depth);
+void	draw_mandel();
+int		colorset_deepblue(int depth, t_fractol_st *fractol_st);
+int		colorset_burning(int depth, t_fractol_st *fractol_st);
+int		colorset_greyradiosity(int depth, t_fractol_st *fractol_st);
+int		colorset_parametric(int depth, t_fractol_st *fractol_st);
 
 /*
 ********************************************************************************

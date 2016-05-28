@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:02:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/28 01:37:27 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/28 03:12:39 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,12 @@ int				main(int argc, char **argv)
 	t_vec2		screen_size;
 	t_fractol_st	fractol_st;
 
-	fractol_st.color_fn = &colorset_deepblue;
+	//fractol_st.color_fn = &colorset_deepblue;
+	//fractol_st.color_fn = &colorset_burning;
+	fractol_st.color_fn = &colorset_parametric;
+	fractol_st.color.r = 1.f;
+	fractol_st.color.g = 1.f;
+	fractol_st.color.b = 1.f;
 	fractol_st.max_iterations = 25;
 	//filepath = NULL;
 	//vertmap = NULL;
@@ -125,11 +130,8 @@ int				main(int argc, char **argv)
 	}
 	mlx = new_mlx_sess();
 	mlx->name = ft_strdup("Fract'ol");
-	mlx->draw_fn = &draw_koch;
-	//mlx->datas = malloc(sizeof(t_fractol_st));
+	mlx->draw_fn = &draw_mandel;
 	mlx->datas = (void *)&fractol_st;
-	//mlx->datas = (void *)&colorset_deepblue;
-	//mlx->datas = (void *)&colorset_burning;
 	mlx->canvas = new_mlx_canvas(mlx, screen_size);
 	mlx->viewport.zoom_level = 1.f;
 	mlx->viewport.pos.x = 0;

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:03:16 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/28 01:36:16 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/28 03:12:27 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int			keydown(int key, void *p)
 
 	mlx = (t_mlx_st *)p;
 	mlx->need_update = 1;
-	//ft_printf("key: %i\n", key);
+	ft_printf("key: %i\n", key);
 	if (key == KEY_NUMPAD_MORE || key == 44)
 		mlx->viewport.zoom_level *= 2.f;
 	else if (key == KEY_NUMPAD_LESS || key == 47)
@@ -120,6 +120,12 @@ int			keydown(int key, void *p)
 		mlx->viewport.pos.y -= .1f / mlx->viewport.zoom_level;
 	else if (key == KEY_DOWN)
 		mlx->viewport.pos.y += .1f / mlx->viewport.zoom_level;
+	else if (key == KEY_R)
+		((t_fractol_st *)mlx->datas)->color.r += .3f;
+	else if (key == KEY_G)
+		((t_fractol_st *)mlx->datas)->color.g += .3f;
+	else if (key == KEY_B)
+		((t_fractol_st *)mlx->datas)->color.b += .3f;
 	else if (key == KEY_H)
 		mlx->options.tooltip = (mlx->options.tooltip) ? 0 : 1;
 	else if (key == KEY_Z)

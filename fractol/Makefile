@@ -40,7 +40,7 @@ SRC	=	main \
 		draw_square \
 		draw_image \
 		draw_gui \
-		draw_koch \
+		draw_mandel \
 		clear_canvas \
 		set_image_pixel \
 		keydown \
