@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_mandel.c                                      :+:      :+:    :+:   */
+/*   draw_julia.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/05/28 01:45:27 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/28 04:28:23 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/05/28 04:20:40 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/05/28 05:27:12 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ static int	mandel(double complex Z, double complex C, int depth, int max_iterati
 	return (depth);
 }
 
-
-static void	draw_mandel_img(t_mlx_st *mlx)
+static void	draw_julia_img(t_mlx_st *mlx)
 {
 	double	i;
 	double	j;
@@ -93,7 +92,8 @@ static void	draw_mandel_img(t_mlx_st *mlx)
 	y_max = y + range_y / 2;
 	step_x = range_x / (mlx->canvas->width + 1);
 	step_y = range_y / (mlx->canvas->height + 1);
-	C = CMPLX(0, 0);
+	C = CMPLX(mlx->mouse_pos.x, mlx->mouse_pos.y);
+	//printf("x: %f\n", mlx->mouse_pos.x);
 	i = x_min;
 	while (i < x_max)
 	{
@@ -108,12 +108,12 @@ static void	draw_mandel_img(t_mlx_st *mlx)
 	}
 }
 
-void	draw_mandel(t_mlx_st *mlx)
+void	draw_julia(t_mlx_st *mlx)
 {
 	char	*str;
 
 	str = ft_sprintf("Number of iterations: %i", ((t_fractol_st *)mlx->datas)->max_iterations);
-	draw_mandel_img(mlx);
+	draw_julia_img(mlx);
 	mlx_put_image_to_window(mlx->sess, mlx->win, mlx->canvas->img, 0, 0);
 	mlx_string_put(mlx->sess, mlx->win, 10, mlx->canvas->height - 60, WHITE, str);
 	mlx_string_put(mlx->sess, mlx->win, 10, mlx->canvas->height - 30, WHITE, "Press ? for help");

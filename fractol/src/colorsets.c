@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 13:08:11 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/28 03:11:45 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/28 04:29:11 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int		colorset_burning(int depth, t_fractol_st *fractol_st)
 	unsigned char		b;
 
 	(void)fractol_st;
-	r =  (depth * 3 > 255) ? 255 : depth * 3;
+	r =  (depth * 7 > 255) ? 255 : depth * 7;
 	g =  (depth > 255) ? 255 : depth;
 	b =  (depth > 255) ? 255 : depth;
 	color = ((int)r << 16) + ((int)g << 8) + b;

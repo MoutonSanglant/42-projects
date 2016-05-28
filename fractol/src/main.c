@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:02:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/28 03:12:39 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/28 04:31:32 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,38 +99,44 @@ static void		arguments_count_error(void)
 	exit(1);
 }
 
+static void		*get_fractal_fn(char *name)
+{
+	void	*fn;
+
+	fn = NULL;
+	if (ft_strequ(name, "mandelbrot"))
+		fn = &draw_mandel;
+	else if (ft_strequ(name, "julia"))
+		fn = &draw_julia;
+	else
+	{
+		ft_putendl_fd(USAGE_MSG, 2);
+		exit(1);
+	}
+	return (fn);
+}
+
 int				main(int argc, char **argv)
 {
-	//t_vert		**vertmap;
-	//char		*filepath;
 	t_mlx_st	*mlx;
-	//t_vec2		vertmap_size;
 	t_vec2		screen_size;
 	t_fractol_st	fractol_st;
+	void		*fract_fn;
 
+	if (argc < 2 || argc > 4)
+		arguments_count_error();
+	fract_fn = get_fractal_fn(argv[1]);
+	get_size(argc, argv, &screen_size);
 	//fractol_st.color_fn = &colorset_deepblue;
-	//fractol_st.color_fn = &colorset_burning;
-	fractol_st.color_fn = &colorset_parametric;
+	fractol_st.color_fn = &colorset_burning;
+	//fractol_st.color_fn = &colorset_parametric;
 	fractol_st.color.r = 1.f;
 	fractol_st.color.g = 1.f;
 	fractol_st.color.b = 1.f;
 	fractol_st.max_iterations = 25;
-	//filepath = NULL;
-	//vertmap = NULL;
-	//vertmap_size.x = 0;
-	//vertmap_size.y = 0;
-	if (argc < 1 || argc > 4)
-		arguments_count_error();
-	get_size(argc, argv, &screen_size);
-	if (argc > 1)
-	{
-		//filepath = argv[1];
-		//vertmap = get_vertmap_from_file(argv[1],
-		//								&vertmap_size.x, &vertmap_size.y);
-	}
 	mlx = new_mlx_sess();
+	mlx->draw_fn = fract_fn;
 	mlx->name = ft_strdup("Fract'ol");
-	mlx->draw_fn = &draw_mandel;
 	mlx->datas = (void *)&fractol_st;
 	mlx->canvas = new_mlx_canvas(mlx, screen_size);
 	mlx->viewport.zoom_level = 1.f;

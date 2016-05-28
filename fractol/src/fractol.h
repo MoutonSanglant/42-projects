@@ -24,7 +24,7 @@
 # include <includes/libft.h>
 
 // TODO
-# define USAGE_MSG "Usage: fractol ...."
+# define USAGE_MSG "usage: fractol [mandelbrot | julia | ...] [width] [height]"
 
 # define BUFF_SIZE 32
 # define BLACK	0x00000000
@@ -255,7 +255,10 @@ typedef struct	s_image
 	uint32_t	height;
 }				t_image;
 
-// viewport range is [-1, 1]
+/*
+**  viewport range is [-1, 1]
+*/
+
 typedef struct	s_viewport
 {
 	t_vec2f		pos;
@@ -284,6 +287,7 @@ typedef struct	s_mlx_st
 	t_viewport		viewport;
 
 	void			(*draw_fn)(struct s_mlx_st *);
+	t_vec2d			mouse_pos;
 
 	t_camera		camera;
 	t_mat4x4		*world;
@@ -404,10 +408,17 @@ int				draw_loop(void *p);
 **								: keydown.c :
 */
 int				keydown(int key, void *p);
+
 /*
 **								: keypress.c :
 */
 int				keypress(int key, void *p);
+
+/*
+**								: mouse_event.c :
+*/
+//int				mouse_event(int button, int x, int y, void *p);
+int				mouse_event(int x, int y, void *p);
 
 /*
 ********************************************************************************
@@ -466,6 +477,15 @@ void			camera(t_mlx_st *mlx, char *str);
 **								 : draw_mandel.c :
 */
 void	draw_mandel();
+
+/*
+**								 : draw_julia.c :
+*/
+void	draw_julia();
+
+/*
+**								 : colorsets.c :
+*/
 int		colorset_deepblue(int depth, t_fractol_st *fractol_st);
 int		colorset_burning(int depth, t_fractol_st *fractol_st);
 int		colorset_greyradiosity(int depth, t_fractol_st *fractol_st);

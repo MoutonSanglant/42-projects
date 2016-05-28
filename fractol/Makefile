@@ -1,10 +1,10 @@
 CC		= gcc
-CFLAGS	= -g -O0 -fsanitize=address -Wall -Werror -Wextra -I./libft -D BONUS
+CFLAGS	= -fsanitize=address -g -O0 -Wall -Werror -Wextra -I./libft -D BONUS
 LDFLAGS	= -L./lib -L./libft
 LDLIBS	= -lft -lm
 
 ifeq ($(BUILD), Debug)
-CFLAGS	+= -g -O0 -D DEBUG
+CFLAGS	+= -fsanitize=address -g -O0 -D DEBUG
 SUFFIX	= .debug.o
 NAME	= fractol.debug
 else
@@ -41,10 +41,12 @@ SRC	=	main \
 		draw_image \
 		draw_gui \
 		draw_mandel \
+		draw_julia \
 		clear_canvas \
 		set_image_pixel \
 		keydown \
 		keypress \
+		mouse_event \
 		expose \
 		bresenham_draw_line \
 		draw_3dgrid \

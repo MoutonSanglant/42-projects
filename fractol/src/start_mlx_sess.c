@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:40:41 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/07 20:49:34 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/28 05:19:03 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static void		set_mlx_hooks(t_mlx_st *mlx)
 {
 	mlx_hook(mlx->win, 17, 0, &close_button, (void *)mlx);
 	mlx_hook(mlx->win, KEYPRESS, KEYPRESSMASK, &keydown, (void *)mlx);
+	//mlx_mouse_hook(mlx->win, &mouse_event, (void *)mlx);
+	mlx_hook(mlx->win, 6, 0, &mouse_event, (void *)mlx);
 	mlx_key_hook(mlx->win, &keypress, (void *)mlx);
 	mlx_expose_hook(mlx->win, &expose, (void *)mlx);
 	mlx_loop_hook(mlx->sess, &draw_loop, (void *)mlx);
@@ -36,6 +38,8 @@ static void		set_mlx_hooks(t_mlx_st *mlx)
 static void		set_mlx_hooks(t_mlx_st *mlx)
 {
 	mlx_key_hook(mlx->win, &keypress, (void *)mlx);
+	//mlx_mouse_motion_hook(mlx->win, &mouse_event, (void *)mlx);
+	mlx_hook(mlx->win, 6, 0, &mouse_event, (void *)mlx);
 	mlx_expose_hook(mlx->win, &expose, (void *)mlx);
 	mlx_loop_hook(mlx->sess, &draw_loop, (void *)mlx);
 }
