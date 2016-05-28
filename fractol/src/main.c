@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:02:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/28 04:31:32 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/28 17:20:21 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,8 +128,12 @@ int				main(int argc, char **argv)
 	fract_fn = get_fractal_fn(argv[1]);
 	get_size(argc, argv, &screen_size);
 	//fractol_st.color_fn = &colorset_deepblue;
-	fractol_st.color_fn = &colorset_burning;
+	//fractol_st.color_fn = &colorset_burning;
+	//fractol_st.color_fn = &colorset_smooth;
+	//fractol_st.color_fn = &colorset_psycho;
+	//fractol_st.color_fn = &colorset_square;
 	//fractol_st.color_fn = &colorset_parametric;
+	fractol_st.color_fn = &colorset_prismatic;
 	fractol_st.color.r = 1.f;
 	fractol_st.color.g = 1.f;
 	fractol_st.color.b = 1.f;

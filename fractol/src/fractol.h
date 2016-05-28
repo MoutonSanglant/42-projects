@@ -97,6 +97,11 @@
 #  define KEY_PAGE_UP	65365
 #  define KEY_PAGE_DOWN	65366
 
+#  define MOUSE_CLICK_LEFT	1
+#  define MOUSE_CLICK_RIGHT	2
+#  define MOUSE_SCROLL_DOWN	4
+#  define MOUSE_SCROLL_UP	5
+
 # else
 #  include "../includes/mlx.h"
 #  define KEYPRESSMASK	(1L<<0)
@@ -138,6 +143,12 @@
 #  define KEY_DOWN	125
 #  define KEY_PAGE_UP	116
 #  define KEY_PAGE_DOWN	121
+
+#  define MOUSE_CLICK_LEFT	1
+#  define MOUSE_CLICK_RIGHT	2
+#  define MOUSE_SCROLL_DOWN	4
+#  define MOUSE_SCROLL_UP	5
+
 # endif
 
 # define DEG(x) (x * 180.0 / M_PI)
@@ -417,8 +428,8 @@ int				keypress(int key, void *p);
 /*
 **								: mouse_event.c :
 */
-//int				mouse_event(int button, int x, int y, void *p);
-int				mouse_event(int x, int y, void *p);
+int				mouse_click_event(int button, int x, int y, void *p);
+int				mouse_move_event(int x, int y, void *p);
 
 /*
 ********************************************************************************
@@ -487,8 +498,16 @@ void	draw_julia();
 **								 : colorsets.c :
 */
 int		colorset_deepblue(int depth, t_fractol_st *fractol_st);
-int		colorset_burning(int depth, t_fractol_st *fractol_st);
 int		colorset_greyradiosity(int depth, t_fractol_st *fractol_st);
+int		colorset_burning(int depth, t_fractol_st *fractol_st);
+int		colorset_smooth(int depth, t_fractol_st *fractol_st);
+
+/*
+**								 : colorsets_extra.c :
+*/
+int		colorset_psycho(int depth, t_fractol_st *fractol_st);
+int		colorset_square(int depth, t_fractol_st *fractol_st);
+int		colorset_prismatic(int depth, t_fractol_st *fractol_st);
 int		colorset_parametric(int depth, t_fractol_st *fractol_st);
 
 /*

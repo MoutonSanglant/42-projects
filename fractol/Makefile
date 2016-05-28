@@ -62,6 +62,7 @@ SRC	=	main \
 		change_grid_z \
 		set_color_scheme \
 		colorsets \
+		colorsets_extra \
 		hex_to_float
 
 ifeq ($(BUILD), Debug)
