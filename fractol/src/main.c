@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:02:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/29 16:46:37 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/29 18:55:09 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,13 +132,20 @@ int				main(int argc, char **argv)
 	//fractol_st.color_fn = &colorset_smooth;
 	//fractol_st.color_fn = &colorset_psycho;
 	//fractol_st.color_fn = &colorset_square;
+	//fractol_st.color_fn = &colorset_prismatic;
 	//fractol_st.color_fn = &colorset_parametric;
-	fractol_st.color_fn = &colorset_prismatic;
+	fractol_st.color_fn = &colorset_parametric_hsl;
 	fractol_st.color.r = 1.f;
 	fractol_st.color.g = 1.f;
 	fractol_st.color.b = 1.f;
 	fractol_st.max_iterations = 25;
 	fractol_st.capture_mouse_position = 1;
+	fractol_st.hue = .5f;
+	fractol_st.saturation = 1.f;
+	fractol_st.lightness = 1.f;
+	fractol_st.damp_hue = 1;
+	fractol_st.damp_saturation = 1;
+	fractol_st.damp_lightness = 1;
 	mlx = new_mlx_sess();
 	mlx->draw_fn = fract_fn;
 	mlx->name = ft_strdup("Fract'ol");

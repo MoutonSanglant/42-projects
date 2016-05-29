@@ -85,6 +85,7 @@
 #  define KEY_G		111111
 #  define KEY_H		104
 #  define KEY_I		105
+#  define KEY_R		111111
 #  define KEY_O		111
 #  define KEY_P		112
 #  define KEY_Q		97
@@ -92,6 +93,7 @@
 #  define KEY_S		115
 #  define KEY_W		122
 #  define KEY_Z		119
+#  define KEY_TAB	111111
 #  define KEY_LEFT	65361
 #  define KEY_RIGHT	65363
 #  define KEY_UP	65362
@@ -132,6 +134,7 @@
 #  define KEY_G		5
 #  define KEY_H		4
 #  define KEY_I		34
+#  define KEY_L		37
 #  define KEY_O		31
 #  define KEY_P		35
 #  define KEY_Q		12
@@ -139,6 +142,7 @@
 #  define KEY_S		1
 #  define KEY_W		13
 #  define KEY_Z		6
+#  define KEY_TAB	48
 #  define KEY_LEFT	123
 #  define KEY_RIGHT	124
 #  define KEY_UP	126
@@ -287,6 +291,12 @@ struct			s_fractol_st
 	int		max_iterations;
 	t_color	color;
 	int		capture_mouse_position;
+	double	hue;
+	double	saturation;
+	double	lightness;
+	int		damp_hue;
+	int		damp_saturation;
+	int		damp_lightness;
 };
 
 typedef struct	s_mlx_st
@@ -512,6 +522,7 @@ int				colorset_psycho(int depth, t_fractol_st *fractol_st);
 int				colorset_square(int depth, t_fractol_st *fractol_st);
 int				colorset_prismatic(int depth, t_fractol_st *fractol_st);
 int				colorset_parametric(int depth, t_fractol_st *fractol_st);
+int				colorset_parametric_hsl(int depth, t_fractol_st *fractol_st);
 
 /*
 **								 : hsl_to_rgb.c :

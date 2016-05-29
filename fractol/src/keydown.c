@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:03:16 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/29 16:30:15 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/29 19:06:50 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,15 +100,51 @@ static void	color_events(t_mlx_st *mlx, int key)
 }
 */
 
+static void	loop_colorschemes(t_fractol_st *fractol)
+{
+	static int	scheme = 0;
+
+	scheme++;
+	if (scheme > 7)
+		scheme = 0;
+	if (scheme == 0)
+		fractol->color_fn = &colorset_parametric_hsl;
+	else if (scheme == 1)
+		fractol->color_fn = &colorset_burning;
+	else if (scheme == 2)
+		fractol->color_fn = &colorset_deepblue;
+	else if (scheme == 3)
+		fractol->color_fn = &colorset_smooth;
+	else if (scheme == 4)
+		fractol->color_fn = &colorset_prismatic;
+	else if (scheme == 5)
+		fractol->color_fn = &colorset_parametric;
+	else if (scheme == 6)
+		fractol->color_fn = &colorset_square;
+	else if (scheme == 7)
+		fractol->color_fn = &colorset_psycho;
+}
+
+static void	fractol_events(t_mlx_st *mlx, int key, t_fractol_st *fractol)
+{
+	(void)mlx;
+	if (key == KEY_H)
+		fractol->damp_hue = (fractol->damp_hue) ? 0 : 1;
+	else if (key == KEY_S)
+		fractol->damp_saturation = (fractol->damp_saturation) ? 0 : 1;
+	else if (key == KEY_L)
+		fractol->damp_lightness = (fractol->damp_lightness) ? 0 : 1;
+	else if (key == KEY_TAB)
+		loop_colorschemes(fractol);
+}
+
 int			keydown(int key, void *p)
 {
 	t_mlx_st	*mlx;
 	int			color;
 
 	mlx = (t_mlx_st *)p;
-	ft_printf("key: %i\n", key);
 	mlx->need_update = 1;
-
 	if (key == KEY_NUMPAD_MORE || key == 44)
 		mlx->viewport.zoom_level *= 2.f;
 	else if (key == KEY_NUMPAD_LESS || key == 47)
@@ -127,10 +163,6 @@ int			keydown(int key, void *p)
 		((t_fractol_st *)mlx->datas)->color.g += .3f;
 	else if (key == KEY_B)
 		((t_fractol_st *)mlx->datas)->color.b += .3f;
-	else if (key == KEY_H)
-		mlx->options.tooltip = (mlx->options.tooltip) ? 0 : 1;
-	else if (key == KEY_Z)
-		mlx->options.zdraw = (mlx->options.zdraw) ? 0 : 1;
 	else if (key == KEY_NUMPAD_STAR)
 		((t_fractol_st *)mlx->datas)->max_iterations++;
 	else if (key == KEY_NUMPAD_DIVIDE)
@@ -141,9 +173,7 @@ int			keydown(int key, void *p)
 		mlx->options.faces_color = mlx->options.lines_color;
 		mlx->options.lines_color = color;
 	}
-	//color_events(mlx, key);
-	//matrix_events(mlx, key);
-	//(*mlx->world)[7] = ((*mlx->world)[7] < mlx->options.distance) ?
-	//							mlx->options.distance : (*mlx->world)[7];
+	else
+		fractol_events(mlx, key, ((t_fractol_st *)mlx->datas));
 	return (0);
 }
