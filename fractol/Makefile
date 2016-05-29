@@ -63,7 +63,8 @@ SRC	=	main \
 		set_color_scheme \
 		colorsets \
 		colorsets_extra \
-		hex_to_float
+		hex_to_float \
+		hsl_to_rgb
 
 ifeq ($(BUILD), Debug)
 SRC += draw_debug_gui

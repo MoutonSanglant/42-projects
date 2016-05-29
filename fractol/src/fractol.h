@@ -40,6 +40,8 @@
 # define MAX_HEIGHT	900
 # define GUI_LINE_HEIGHT 18
 
+# define ITERATIONS_LIMIT 100
+
 # ifdef BONUS
 #  include <float.h>
 #  include <sys/time.h>
@@ -284,6 +286,7 @@ struct			s_fractol_st
 	int		(*color_fn)(int, t_fractol_st *);
 	int		max_iterations;
 	t_color	color;
+	int		capture_mouse_position;
 };
 
 typedef struct	s_mlx_st
@@ -487,28 +490,33 @@ void			camera(t_mlx_st *mlx, char *str);
 /*
 **								 : draw_mandel.c :
 */
-void	draw_mandel();
+void			draw_mandel();
 
 /*
 **								 : draw_julia.c :
 */
-void	draw_julia();
+void			draw_julia();
 
 /*
 **								 : colorsets.c :
 */
-int		colorset_deepblue(int depth, t_fractol_st *fractol_st);
-int		colorset_greyradiosity(int depth, t_fractol_st *fractol_st);
-int		colorset_burning(int depth, t_fractol_st *fractol_st);
-int		colorset_smooth(int depth, t_fractol_st *fractol_st);
+int				colorset_deepblue(int depth, t_fractol_st *fractol_st);
+int				colorset_greyradiosity(int depth, t_fractol_st *fractol_st);
+int				colorset_burning(int depth, t_fractol_st *fractol_st);
+int				colorset_smooth(int depth, t_fractol_st *fractol_st);
 
 /*
 **								 : colorsets_extra.c :
 */
-int		colorset_psycho(int depth, t_fractol_st *fractol_st);
-int		colorset_square(int depth, t_fractol_st *fractol_st);
-int		colorset_prismatic(int depth, t_fractol_st *fractol_st);
-int		colorset_parametric(int depth, t_fractol_st *fractol_st);
+int				colorset_psycho(int depth, t_fractol_st *fractol_st);
+int				colorset_square(int depth, t_fractol_st *fractol_st);
+int				colorset_prismatic(int depth, t_fractol_st *fractol_st);
+int				colorset_parametric(int depth, t_fractol_st *fractol_st);
+
+/*
+**								 : hsl_to_rgb.c :
+*/
+t_color			hsl_to_rgb(double h, double sl, double l);
 
 /*
 ********************************************************************************

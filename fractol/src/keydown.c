@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:03:16 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/28 03:12:27 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/29 16:30:15 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,9 @@ int			keydown(int key, void *p)
 	int			color;
 
 	mlx = (t_mlx_st *)p;
-	mlx->need_update = 1;
 	ft_printf("key: %i\n", key);
+	mlx->need_update = 1;
+
 	if (key == KEY_NUMPAD_MORE || key == 44)
 		mlx->viewport.zoom_level *= 2.f;
 	else if (key == KEY_NUMPAD_LESS || key == 47)

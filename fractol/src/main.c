@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:02:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/28 17:20:21 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/29 16:46:37 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ int				main(int argc, char **argv)
 	fractol_st.color.g = 1.f;
 	fractol_st.color.b = 1.f;
 	fractol_st.max_iterations = 25;
+	fractol_st.capture_mouse_position = 1;
 	mlx = new_mlx_sess();
 	mlx->draw_fn = fract_fn;
 	mlx->name = ft_strdup("Fract'ol");

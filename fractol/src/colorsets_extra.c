@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/28 16:13:33 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/28 17:20:50 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/29 18:21:36 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,61 +44,17 @@ int		colorset_square(int depth, t_fractol_st *fractol_st)
 
 int		colorset_prismatic(int depth, t_fractol_st *fractol_st)
 {
-	int		color;
-	unsigned char		r;
-	unsigned char		g;
-	unsigned char		b;
+	int			color;
+	t_color		rgb;
 
+	(void)depth;
 	(void)fractol_st;
-	if (depth < 30)
-	{
-		r = depth * 7;
-		g = depth;
-		b = depth;
-	}
-	else if (depth < 60)
-	{
-		r = depth;
-		g = depth;
-		b = depth * 7;
-	}
-	else if (depth < 90)
-	{
-		r = depth;
-		g = depth * 7;
-		b = depth;
-	}
-	else if (depth < 120)
-	{
-		r = depth * 7;
-		g = depth;
-		b = depth * 7;
-	}
-	else if (depth < 150)
-	{
-		r = depth * 7;
-		g = depth * 7;
-		b = depth;
-	}
-	else if (depth < 180)
-	{
-		r = depth;
-		g = depth * 7;
-		b = depth * 7;
-	}
-	else if (depth < 210)
-	{
-		r = depth * 7;
-		g = depth * 7;
-		b = depth * 7;
-	}
-	else
-	{
-		r = depth;
-		g = depth;
-		b = depth;
-	}
-	color = ((int)r << 16) + ((int)g << 8) + b;
+	//rgb = hsl_to_rgb(.5f, 255.f/(float)depth, .5f);
+	rgb = hsl_to_rgb((float)depth/(float)ITERATIONS_LIMIT, 1.f, .7f);
+	color = ((int)rgb.r << 16) + ((int)rgb.g << 8) + rgb.b;
+	//color = ((int)rgb.b << 16) + ((int)rgb.g << 8) + rgb.r;
+	color &= 0x00ffffff;
+	//color |= 0xff000000;
 	return (color);
 }
 
