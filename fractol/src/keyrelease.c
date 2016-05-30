@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/30 14:47:12 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/30 15:09:07 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/30 16:19:41 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ int			keyrelease(int key, void *p)
 	t_mlx_st	*mlx;
 
 	mlx = (t_mlx_st *)p;
-	//mlx->need_update = 1;
-	ft_printf("key up: %i\n", key);
+	mlx->need_update = 1;
 	if (key == KEY_ESCAPE)
 	{
 		destroy_mlx_sess(mlx);

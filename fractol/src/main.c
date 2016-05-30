@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:02:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/30 15:51:04 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/30 18:19:18 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,15 +99,23 @@ static void		arguments_count_error(void)
 	exit(1);
 }
 
-static void		*get_fractal_fn(char *name)
+static void		*get_fractal_fn(char *name, t_fractol_st *fractol)
 {
 	void	*fn;
 
 	fn = NULL;
 	if (ft_strequ(name, "mandelbrot"))
-		fn = &draw_mandel;
-	else if (ft_strequ(name, "julia"))
+	{
 		fn = &draw_julia;
+		fractol->capture_mouse_position = 0;
+		fractol->name = "Mandelbrot";
+	}
+	else if (ft_strequ(name, "julia"))
+	{
+		fn = &draw_julia;
+		fractol->capture_mouse_position = 1;
+		fractol->name = "Julia";
+	}
 	else
 	{
 		ft_putendl_fd(USAGE_MSG, 2);
@@ -118,21 +126,21 @@ static void		*get_fractal_fn(char *name)
 
 int				main(int argc, char **argv)
 {
-	t_mlx_st	*mlx;
-	t_vec2		screen_size;
+	t_mlx_st		*mlx;
+	void			*draw_fn;
+	t_vec2			screen_size;
 	t_fractol_st	fractol_st;
-	void		*fract_fn;
 
 	if (argc < 2 || argc > 4)
 		arguments_count_error();
-	fract_fn = get_fractal_fn(argv[1]);
 	get_size(argc, argv, &screen_size);
+	fractol_st.name = "n/a";
+	draw_fn = get_fractal_fn(argv[1], &fractol_st);
 	set_color_scheme(&fractol_st, 0);
 	fractol_st.color.r = 1.f;
 	fractol_st.color.g = 1.f;
 	fractol_st.color.b = 1.f;
 	fractol_st.max_iterations = 25;
-	fractol_st.capture_mouse_position = 1;
 	fractol_st.hue = .5f;
 	fractol_st.saturation = 1.f;
 	fractol_st.lightness = .5f;
@@ -140,7 +148,7 @@ int				main(int argc, char **argv)
 	fractol_st.damp_saturation = 1;
 	fractol_st.damp_lightness = 1;
 	mlx = new_mlx_sess();
-	mlx->draw_fn = fract_fn;
+	mlx->draw_fn = draw_fn;
 	mlx->name = ft_strdup("Fract'ol");
 	mlx->datas = (void *)&fractol_st;
 	mlx->canvas = new_mlx_canvas(mlx, screen_size);

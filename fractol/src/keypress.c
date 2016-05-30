@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:14:47 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/30 15:49:37 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/30 18:22:03 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,10 @@ int			keypress(int key, void *p)
 
 	mlx = (t_mlx_st *)p;
 	mlx->need_update = 1;
-	ft_printf("key down: %i\n", key);
 	if (key == KEY_NUMPAD_MORE || key == 44)
-		mlx->viewport.zoom_level *= 2.f;
+		zoom_in(mlx, 0, 0);
 	else if (key == KEY_NUMPAD_LESS || key == 47)
-		mlx->viewport.zoom_level *= .5f;
+		zoom_out(mlx, 0, 0);
 	else if (key == KEY_LEFT)
 		mlx->viewport.pos.x -= .1f / mlx->viewport.zoom_level;
 	else if (key == KEY_RIGHT)

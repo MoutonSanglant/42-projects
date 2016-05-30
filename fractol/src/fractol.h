@@ -307,6 +307,7 @@ typedef struct	s_fractol_st t_fractol_st;
 
 struct			s_fractol_st
 {
+	char	*name;
 	int		(*color_fn)(int, t_fractol_st *);
 	char	*colorset_name;
 	int		max_iterations;
@@ -433,7 +434,7 @@ void			start_mlx_sess(t_mlx_st *mlx);
 /*
 **						   : destroy_mlx_sess.c :
 */
-void			destroy_mlx_sess(t_mlx_st	*mlx);
+void			destroy_mlx_sess(t_mlx_st *mlx);
 
 /*
 ********************************************************************************
@@ -470,7 +471,10 @@ int				keyrelease(int key, void *p);
 **								: mouse_event.c :
 */
 int				mouse_click_event(int button, int x, int y, void *p);
-int				mouse_move_event(int x, int y, void *p);
+int				mouse_motion_event(int x, int y, void *p);
+
+void			zoom_in(t_mlx_st *mlx, int x, int y);
+void			zoom_out(t_mlx_st *mlx, int x, int y);
 
 /*
 ********************************************************************************

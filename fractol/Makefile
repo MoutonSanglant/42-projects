@@ -40,13 +40,13 @@ SRC	=	main \
 		draw_square \
 		draw_image \
 		draw_gui \
-		draw_mandel \
 		draw_julia \
 		clear_canvas \
 		set_image_pixel \
 		keyrelease \
 		keypress \
 		mouse_event \
+		zoom \
 		expose \
 		bresenham_draw_line \
 		draw_3dgrid \
