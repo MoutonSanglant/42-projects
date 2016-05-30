@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:03:16 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/29 19:06:50 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/30 10:20:05 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,12 @@ static void	fractol_events(t_mlx_st *mlx, int key, t_fractol_st *fractol)
 		fractol->damp_lightness = (fractol->damp_lightness) ? 0 : 1;
 	else if (key == KEY_TAB)
 		loop_colorschemes(fractol);
+	else if (key == KEY_NUMPAD_STAR)
+		fractol->max_iterations +=
+			(fractol->max_iterations < MAX_ITERATIONS - 1) ? 1 : 0;
+	else if (key == KEY_NUMPAD_SLASH)
+		fractol->max_iterations -=
+			(fractol->max_iterations > 0) ? 1 : 0;
 }
 
 int			keydown(int key, void *p)
@@ -163,10 +169,6 @@ int			keydown(int key, void *p)
 		((t_fractol_st *)mlx->datas)->color.g += .3f;
 	else if (key == KEY_B)
 		((t_fractol_st *)mlx->datas)->color.b += .3f;
-	else if (key == KEY_NUMPAD_STAR)
-		((t_fractol_st *)mlx->datas)->max_iterations++;
-	else if (key == KEY_NUMPAD_DIVIDE)
-		((t_fractol_st *)mlx->datas)->max_iterations--;
 	else if (key == KEY_I)
 	{
 		color = mlx->options.faces_color;

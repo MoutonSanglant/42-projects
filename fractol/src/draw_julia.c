@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/28 04:20:40 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/28 05:27:12 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/30 10:19:32 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,9 +112,9 @@ void	draw_julia(t_mlx_st *mlx)
 {
 	char	*str;
 
-	str = ft_sprintf("Number of iterations: %i", ((t_fractol_st *)mlx->datas)->max_iterations);
 	draw_julia_img(mlx);
 	mlx_put_image_to_window(mlx->sess, mlx->win, mlx->canvas->img, 0, 0);
+	str = ft_sprintf("Number of iterations: %i", ((t_fractol_st *)mlx->datas)->max_iterations);
 	mlx_string_put(mlx->sess, mlx->win, 10, mlx->canvas->height - 60, WHITE, str);
 	mlx_string_put(mlx->sess, mlx->win, 10, mlx->canvas->height - 30, WHITE, "Press ? for help");
 	ft_strdel(&str);

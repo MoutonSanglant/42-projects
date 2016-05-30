@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/29 16:54:09 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/29 18:23:41 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/30 10:30:31 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,11 @@ static void	set_sextant_even(int sextant, t_color *rgb, double mid, double v, do
 
 static void	convert(t_color *rgb, double h, double l, double v)
 {
-	double	m;
-	double	sv;
 	int		sextant;
 	double	fract;
 	double	vsf;
+	double	sv;
+	double	m;
 
 	m = l + l - v;
 	sv = (v - m ) / v;
@@ -71,7 +71,7 @@ static void	convert(t_color *rgb, double h, double l, double v)
 	fract = h - sextant;
 	vsf = v * sv * fract;
 	if (sextant % 2)
-		set_sextant_odd(sextant, rgb, m - vsf, v, m);
+		set_sextant_odd(sextant, rgb, v - vsf, v, m);
 	else
 		set_sextant_even(sextant, rgb, m + vsf, v, m);
 }

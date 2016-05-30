@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/28 16:13:33 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/29 19:05:28 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/30 10:24:34 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ int		colorset_prismatic(int depth, t_fractol_st *fractol_st)
 	t_color		rgb;
 
 	(void)fractol_st;
-	rgb = hsl_to_rgb((float)depth/(float)ITERATIONS_LIMIT,
-			1.f, (float)depth/(float)ITERATIONS_LIMIT);
+	rgb = hsl_to_rgb((float)depth/(float)MAX_ITERATIONS,
+			1.f, (float)depth/(float)MAX_ITERATIONS);
 	color = ((int)rgb.r << 16) + ((int)rgb.g << 8) + rgb.b;
 	color &= 0x00ffffff;
 	return (color);
@@ -61,9 +61,11 @@ int		colorset_parametric(int depth, t_fractol_st *fractol_st)
 	int			color;
 	t_color		rgb;
 
-	rgb.r =  depth * fractol_st->color.r;
-	rgb.g =  (depth * fractol_st->color.g > 255) ? 255 : depth * fractol_st->color.g;
-	rgb.b =  (depth * fractol_st->color.b > 255) ? 255 : depth * fractol_st->color.b;
+	rgb.r = depth * fractol_st->color.r;
+	rgb.g =
+		(depth * fractol_st->color.g > 255) ? 255 : depth * fractol_st->color.g;
+	rgb.b =
+		(depth * fractol_st->color.b > 255) ? 255 : depth * fractol_st->color.b;
 	color = ((int)rgb.r << 16) + ((int)rgb.g << 8) + rgb.b;
 	return (color);
 }
@@ -80,12 +82,13 @@ int		colorset_parametric_hsl(int depth, t_fractol_st *fractol_st)
 	saturation = fractol_st->saturation;
 	lightness = fractol_st->lightness;
 	if (fractol_st->damp_hue)
-		hue = (float)depth/(float)ITERATIONS_LIMIT;
+		hue = (float)depth/(float)MAX_ITERATIONS;
 	if (fractol_st->damp_saturation)
-		saturation = (float)depth/(float)ITERATIONS_LIMIT;
+		saturation = (float)depth/(float)MAX_ITERATIONS;
 	if (fractol_st->damp_lightness)
-		lightness = (float)depth/(float)ITERATIONS_LIMIT;
+		lightness = (float)depth/(float)MAX_ITERATIONS;
 	rgb = hsl_to_rgb(hue, saturation, lightness);
 	color = ((int)rgb.r << 16) + ((int)rgb.g << 8) + rgb.b;
+	color &= 0x00ffffff;
 	return (color);
 }

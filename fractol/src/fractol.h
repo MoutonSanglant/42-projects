@@ -40,7 +40,7 @@
 # define MAX_HEIGHT	900
 # define GUI_LINE_HEIGHT 18
 
-# define ITERATIONS_LIMIT 100
+# define MAX_ITERATIONS 100
 
 # ifdef BONUS
 #  include <float.h>
@@ -66,7 +66,7 @@
 #  define KEY_NUMPAD_MORE	65451
 #  define KEY_NUMPAD_LESS	65453
 #  define KEY_NUMPAD_STAR	65450
-#  define KEY_NUMPAD_DIVIDE	11111
+#  define KEY_NUMPAD_SLASH	11111
 #  define KEY_0		224
 #  define KEY_1		38
 #  define KEY_2		233
@@ -115,7 +115,7 @@
 #  define KEY_NUMPAD_MORE	69
 #  define KEY_NUMPAD_LESS	78
 #  define KEY_NUMPAD_STAR	67
-#  define KEY_NUMPAD_DIVIDE	75
+#  define KEY_NUMPAD_SLASH	75
 #  define KEY_0		29
 #  define KEY_1		18
 #  define KEY_2		19

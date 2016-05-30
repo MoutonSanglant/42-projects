@@ -1,5 +1,5 @@
 CC		= gcc
-CFLAGS	= -fsanitize=address -g -O0 -Wall -Werror -Wextra -I./libft -D BONUS
+CFLAGS	= -Wall -Werror -Wextra -I./libft -D BONUS
 LDFLAGS	= -L./lib -L./libft
 LDLIBS	= -lft -lm
 
