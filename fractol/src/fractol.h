@@ -59,8 +59,13 @@
 #  include "../includes/linux/mlx.h"
 #  include "../includes/linux/mlx_int.h"
 
-#  define KEYPRESS KeyPress
-#  define KEYPRESSMASK KeyPressMask
+#  define KEYPRESS		KeyPress
+#  define KEYRELEASE	KeyRelease
+#  define MOTIONNOTIFY	MotionNotify
+#  define DESTROYNOTIFY	DestroyNotify
+#  define KEYPRESSMASK		KeyPressMask
+#  define KEYRELEASEMASK	KeyReleaseMask
+#  define POINTERMOTIONMASK	PointerMotionMask
 
 #  define KEY_ESCAPE	65307
 #  define KEY_NUMPAD_MORE	65451
@@ -101,6 +106,11 @@
 #  define KEY_PAGE_UP	65365
 #  define KEY_PAGE_DOWN	65366
 
+#  define KEY_LEFT_CTRL		25600
+#  define KEY_LEFT_SHIFT	25700
+#  define KEY_RIGHT_SHIFT	25800
+#  define KEY_RIGHT_CTRL	26900
+
 #  define MOUSE_CLICK_LEFT	1
 #  define MOUSE_CLICK_RIGHT	2
 #  define MOUSE_SCROLL_DOWN	4
@@ -108,8 +118,13 @@
 
 # else
 #  include "../includes/mlx.h"
-#  define KEYPRESSMASK	(1L<<0)
-#  define KEYPRESS	2
+#  define KEYPRESS		2
+#  define KEYRELEASE	3
+#  define MOTIONNOTIFY	6
+#  define DESTROYNOTIFY	17
+#  define KEYPRESSMASK		(1L<<0)
+#  define KEYRELEASEMASK	(1L<<1)
+#  define POINTERMOTIONMASK	(1L<<6)
 
 #  define KEY_ESCAPE	53
 #  define KEY_NUMPAD_MORE	69
@@ -147,8 +162,13 @@
 #  define KEY_RIGHT	124
 #  define KEY_UP	126
 #  define KEY_DOWN	125
-#  define KEY_PAGE_UP	116
-#  define KEY_PAGE_DOWN	121
+#  define KEY_PAGE_UP		116
+#  define KEY_PAGE_DOWN		121
+
+#  define KEY_LEFT_CTRL		256
+#  define KEY_LEFT_SHIFT	257
+#  define KEY_RIGHT_SHIFT	258
+#  define KEY_RIGHT_CTRL	269
 
 #  define MOUSE_CLICK_LEFT	1
 #  define MOUSE_CLICK_RIGHT	2
@@ -288,6 +308,7 @@ typedef struct	s_fractol_st t_fractol_st;
 struct			s_fractol_st
 {
 	int		(*color_fn)(int, t_fractol_st *);
+	char	*colorset_name;
 	int		max_iterations;
 	t_color	color;
 	int		capture_mouse_position;
@@ -298,6 +319,12 @@ struct			s_fractol_st
 	int		damp_saturation;
 	int		damp_lightness;
 };
+
+typedef struct	s_key_modifiers
+{
+	int		shift;
+	int		ctrl;
+}				t_key_modifiers;
 
 typedef struct	s_mlx_st
 {
@@ -312,6 +339,7 @@ typedef struct	s_mlx_st
 
 	void			(*draw_fn)(struct s_mlx_st *);
 	t_vec2d			mouse_pos;
+	t_key_modifiers		modifiers;
 
 	t_camera		camera;
 	t_mat4x4		*world;
@@ -429,14 +457,14 @@ int				draw_loop(void *p);
 */
 
 /*
-**								: keydown.c :
+**								: keypress.c :
 */
-int				keydown(int key, void *p);
+int				keypress(int key, void *p);
 
 /*
 **								: keypress.c :
 */
-int				keypress(int key, void *p);
+int				keyrelease(int key, void *p);
 
 /*
 **								: mouse_event.c :
@@ -544,8 +572,7 @@ void			alloc_error(char *error_obj, size_t alloc_size);
 **	EXTRA
 */
 
-void			set_color_scheme(t_mlx_st *mlx, int lines_color,
-									int faces_color, int bg_color);
+void			set_color_scheme(t_fractol_st *fractol, int scheme);
 void			change_grid_z(t_grid *grid, float factor);
 
 # ifdef DEBUG

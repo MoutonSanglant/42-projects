@@ -44,7 +44,7 @@ SRC	=	main \
 		draw_julia \
 		clear_canvas \
 		set_image_pixel \
-		keydown \
+		keyrelease \
 		keypress \
 		mouse_event \
 		expose \

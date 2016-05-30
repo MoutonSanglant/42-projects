@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:02:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/30 10:27:04 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/05/30 15:51:04 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,14 +127,7 @@ int				main(int argc, char **argv)
 		arguments_count_error();
 	fract_fn = get_fractal_fn(argv[1]);
 	get_size(argc, argv, &screen_size);
-	//fractol_st.color_fn = &colorset_deepblue;
-	//fractol_st.color_fn = &colorset_burning;
-	//fractol_st.color_fn = &colorset_smooth;
-	//fractol_st.color_fn = &colorset_psycho;
-	//fractol_st.color_fn = &colorset_square;
-	//fractol_st.color_fn = &colorset_prismatic;
-	//fractol_st.color_fn = &colorset_parametric;
-	fractol_st.color_fn = &colorset_parametric_hsl;
+	set_color_scheme(&fractol_st, 0);
 	fractol_st.color.r = 1.f;
 	fractol_st.color.g = 1.f;
 	fractol_st.color.b = 1.f;
@@ -156,8 +149,9 @@ int				main(int argc, char **argv)
 	mlx->viewport.pos.y = 0;
 	mlx->viewport.size.x = 2.f;
 	mlx->viewport.size.y = 2.f;
+	mlx->modifiers.shift = 0;
+	mlx->modifiers.ctrl = 0;
 	init_mlx_sess(mlx);
-	//init_vertex_grid(mlx, vertmap, vertmap_size.x, vertmap_size.y);
 	start_mlx_sess(mlx);
 	return (0);
 }
