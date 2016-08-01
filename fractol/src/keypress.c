@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:14:47 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/30 18:22:03 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/07/12 19:18:13 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void	loop_colorschemes(t_fractol_st *fractol, int modifier)
 
 static void	fractol_shift_events(int key, t_fractol_st *fractol)
 {
+	ft_printf("key: %i; star: %i\n", key, KEY_STAR);
 	if (key == KEY_H)
 		fractol->hue += 0.01f;
 	else if (key == KEY_S)
@@ -37,6 +38,9 @@ static void	fractol_shift_events(int key, t_fractol_st *fractol)
 		fractol->lightness += 0.01f;
 	else if (key == KEY_TAB)
 		loop_colorschemes(fractol, 1);
+	else if (key == KEY_STAR)
+		fractol->max_iterations +=
+			(fractol->max_iterations < MAX_ITERATIONS - 1) ? 1 : 0;
 	fractol->hue = (fractol->hue > 1) ? 1 : fractol->hue;
 	fractol->saturation = (fractol->saturation > 1) ? 1 : fractol->saturation;
 	fractol->lightness = (fractol->lightness > 1) ? 1 : fractol->lightness;

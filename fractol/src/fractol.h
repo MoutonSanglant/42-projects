@@ -68,6 +68,7 @@
 #  define POINTERMOTIONMASK	PointerMotionMask
 
 #  define KEY_ESCAPE	65307
+#  define KEY_STAR		30
 #  define KEY_NUMPAD_MORE	65451
 #  define KEY_NUMPAD_LESS	65453
 #  define KEY_NUMPAD_STAR	65450
@@ -127,6 +128,7 @@
 #  define POINTERMOTIONMASK	(1L<<6)
 
 #  define KEY_ESCAPE	53
+#  define KEY_STAR		30
 #  define KEY_NUMPAD_MORE	69
 #  define KEY_NUMPAD_LESS	78
 #  define KEY_NUMPAD_STAR	67
