@@ -13,8 +13,6 @@
 #ifndef FILLIT_H
 # define FILLIT_H
 
-#define DEBUG 0
-
 # include <libft.h>
 # include <fcntl.h>
 # include <unistd.h>
@@ -27,12 +25,6 @@ typedef long long unsigned int t_mask64;
 ** map and pull from this map whenever a tetrimino is needed
 ** according to an id.
 */
-typedef struct		s_tetrimino
-{
-	unsigned char	pattern_id;
-	unsigned char	h_shift;
-	unsigned char	v_shift;
-}			t_tetrimino;
 
 typedef struct		s_tetri_masks
 {
@@ -41,6 +33,14 @@ typedef struct		s_tetri_masks
 	t_mask64	last;
 	t_mask64	shift;
 }			t_tetri_masks;
+
+typedef struct		s_tetrimino
+{
+	t_tetri_masks	mask;
+	unsigned char	pattern_id;
+	unsigned char	h_shift;
+	unsigned char	v_shift;
+}			t_tetrimino;
 
 typedef struct		s_grid_mask
 {
@@ -56,20 +56,23 @@ typedef struct		s_bf_params
 	t_grid_mask	*grid;
 }			t_bf_params;
 
-char	*read_tetri_file(char*);
-t_list	*get_tetriminos_from_buffer(char*);
+char		*read_tetri_file(char*);
+t_list		*get_tetriminos_from_buffer(char*);
 
-void	fillit(t_list*);
-t_mask64	bruteforce(t_bf_params*, size_t, t_list*);
-void	print_grid(size_t, t_list*);
+t_list		*convert_list(t_bf_params *p, t_list *lst, size_t grid_size);
+void		fillit(t_list*);
+t_mask64	bruteforce(t_bf_params*, size_t, t_list*, t_mask64 mask);
+void		print_grid(size_t, t_list*);
 
-char	get_pattern_id(t_mask16);
-void	delelem(void *content, size_t content_size);
+char		get_pattern_id(t_mask16);
+void		delelem(void *content, size_t content_size);
 
-void	buffer_error(char*);
-void	error(void);
+void		error(void);
+void		memory_error(void);
+void		grid_size_error(void);
+void		buffer_error(char*);
 
-extern t_mask16	g_mask_table[19][9];
+extern t_mask16			g_mask_table[19][9];
 extern char				*g_pattern_table[19][5];
 
 #endif

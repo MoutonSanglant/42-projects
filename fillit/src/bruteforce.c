@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/18 20:48:20 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/01/10 04:52:52 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/09/17 23:01:03 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,41 +15,10 @@
 #define OVERLAP(a, b) (a & b) != 0
 
 /*
-** Convert a 2-bytes pattern bitmask into a
-** 8-bytes pattern bitmask, applying delta
+** Check wether a position is valid or no
+** Return 1 when out of bound
+** Return 0 when valid
 */
-static t_mask64	convert(t_mask16 pattern_mask, int delta)
-{
-	t_mask64	mask;
-	size_t		bitshift;
-	size_t		lineshift;
-
-	mask = 0;
-	bitshift = 0;
-	lineshift = 0;
-	if (delta > 0)
-	{
-		while (bitshift < 16)
-		{
-			if (bitshift > 0 && bitshift % 4 == 0)
-				lineshift += delta;
-			mask |= (pattern_mask & (1 << bitshift++)) << lineshift;
-		}
-	}
-	else
-	{
-		while (bitshift < 16)
-		{
-			if (bitshift > 0 && bitshift % 4 == 0)
-				lineshift -= delta;
-			if (mask & ((pattern_mask & (1 << bitshift)) >> lineshift))
-				return (0);
-			mask |= (pattern_mask & (1 << bitshift++)) >> lineshift;
-		}
-	}
-	return (mask);
-}
-
 static int	valid_position(t_bf_params *p, size_t grid_size,
 							t_tetrimino *tetri, t_tetri_masks *tetri_masks)
 {
@@ -78,6 +47,10 @@ static int	valid_position(t_bf_params *p, size_t grid_size,
 	return (0);
 }
 
+/*
+** Find next valid position
+** return 0 when end of grid is reached
+*/
 static int	overlap_test(t_bf_params *p, size_t grid_size,
 							t_tetrimino *tetri, t_tetri_masks *tetri_masks)
 {
@@ -99,71 +72,42 @@ static int	overlap_test(t_bf_params *p, size_t grid_size,
 	return (0);
 }
 
-static int	bruteforce_tetri(t_bf_params *p, size_t grid_size,
-								t_list *tetri_list)
+/*
+** Bruteforce the result using backtracking
+** Init test parameters then loop through
+** positions
+** return 0 on error:
+**  - bitmask (> 64-bit)
+**  - end of grid is reached
+** exit loop and return actual grid when
+** last tetri is reached
+*/
+t_mask64	bruteforce(t_bf_params *p, size_t grid_size,
+						t_list *lst, t_mask64 current_tetrimino_mask)
 {
-	t_list		*previous_list;
+	t_list			*previous_list;
+	t_tetrimino		*tetrimino;
 
-#if DEBUG == 1
-	ft_putchar('/');
-#endif
-	previous_list = p->list;
-	/*
-	** TODO
-	** MALLOC: p_rl_n01
-	** >> free attribued in bruteforce_tetri (line 10) <<
-	** >> memerror behaviour: call error() <<
-	*/
-	p->list->next = ft_lstnew(NULL, 0);
-	if (!p->list->next)
-		error();
-	p->list = p->list->next;
-	p->grid->tetri = bruteforce(p, grid_size, tetri_list->next);
-	if (p->grid->tetri == 0)
-	{
-		//ft_putchar('@');
-		p->list = previous_list;
-		ft_lstdel(&p->list->next, &delelem);
-		return (1);
-	}
-	return (0);
-}
-
-t_mask64	bruteforce(t_bf_params *p, size_t grid_size, t_list *tetri_list)
-{
-	t_tetrimino		*tetri;
-	t_mask64		previous_grid_mask;
-	t_tetri_masks	tetri_masks;
-
-#if DEBUG == 1
-	ft_putchar('@');
-#endif
-	/*
-	** TODO
-	** MALLOC: p_rl_c01
-	** >> No free attribued <<
-	** >> memerror behaviour: call error() <<
-	*/
-	p->list->content = malloc(sizeof(t_mask64));
-	if (!p->list->content)
-		error();
+	if (!(p->list->content = ft_memalloc(sizeof(t_mask64))))
+		memory_error();
 	p->list->content_size = sizeof(t_mask64);
-	tetri = (t_tetrimino *)tetri_list->content;
-	tetri_masks.shifted = 0;
-	tetri_masks.tetri = convert(g_mask_table[(int)tetri->pattern_id][0],
-								grid_size - 4);
-	if (tetri_masks.tetri == 0)
-		return(0);
-	previous_grid_mask = p->grid->tetri;
+	tetrimino = (t_tetrimino *)lst->content;
 	while (1)
 	{
-		p->grid->tetri = previous_grid_mask;
-		if (overlap_test(p, grid_size, tetri, &tetri_masks))
+		p->grid->tetri = current_tetrimino_mask;
+		if (overlap_test(p, grid_size, tetrimino, &tetrimino->mask))
 			return (0);
-		p->grid->tetri |= tetri_masks.shifted;
-		if (tetri_list->next && bruteforce_tetri(p, grid_size, tetri_list))
-			continue ;
-		break ;
+		p->grid->tetri |= tetrimino->mask.shifted;
+		if (!lst->next)
+			break ;
+		previous_list = p->list;
+		if (!(p->list->next = ft_lstnew(NULL, 0)))
+			memory_error();
+		p->list = p->list->next;
+		if ((p->grid->tetri = bruteforce(p, grid_size, lst->next, p->grid->tetri)))
+			break ;
+		p->list = previous_list;
+		ft_lstdel(&p->list->next, &delelem);
 	}
 	return (p->grid->tetri);
 }

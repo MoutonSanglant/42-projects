@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/10 15:19:26 by tdefresn          #+#    #+#             */
-/*   Updated: 2015/12/19 11:36:18 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/09/17 22:59:18 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,27 @@ char *g_pattern_table[19][5] = {
 	{ ".#.", "###", NULL },
 	{ "#.", "##", "#.", NULL }
 };
+
+char	get_pattern_id(t_mask16 mask)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < 19)
+	{
+		j = 0;
+		while (j < 9)
+		{
+			if (g_mask_table[i][j] == mask)
+				return (i);
+			j++;
+		}
+		i++;
+	}
+	error();
+	return (-1);
+}
 
 int		main(int argc, char **argv)
 {
