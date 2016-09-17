@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/13 17:05:24 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/09/17 22:50:20 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/09/17 23:52:48 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void	fillit(t_list *lst)
 {
 	t_bf_params		p;
 
+	if (!lst)
+		error();
 	if (!(p.list = ft_lstnew(NULL, 0)))
 		memory_error();
 	if (!(p.grid = (t_grid_mask *)ft_memalloc(sizeof(t_grid_mask))))
@@ -64,4 +66,5 @@ void	fillit(t_list *lst)
 	look_for_best_grid(&p, lst, biggest_square(ft_lstsize(lst) * 4));
 	ft_lstdel(&p.list, &delelem);
 	ft_memdel((void **)&p.grid);
+	ft_lstdel(&lst, &delelem);
 }

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/17 22:07:33 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/09/17 22:21:59 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/09/17 23:26:43 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,7 @@ static void		convert(t_mask64 *mask, t_mask16 pattern_mask, int delta)
 
 static t_list	*clone(t_list *elem)
 {
-	void		*new_content;
-
-	new_content = ft_memalloc(elem->content_size);
-	ft_memcpy(new_content, elem->content, elem->content_size);
-	return (ft_lstnew(new_content, elem->content_size));
+	return (ft_lstnew(elem->content, elem->content_size));
 }
 
 /*

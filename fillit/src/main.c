@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/10 15:19:26 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/09/17 22:59:18 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/09/17 23:50:14 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,16 +103,11 @@ char	get_pattern_id(t_mask16 mask)
 int		main(int argc, char **argv)
 {
 	char	*file_buffer;
-	t_list	*tetri_list;
 
 	if (argc != 2)
 		error();
-	file_buffer = read_tetri_file(argv[1]);
-	if (!file_buffer)
+	if (!(file_buffer = read_tetri_file(argv[1])))
 		error();
-	tetri_list = get_tetriminos_from_buffer(file_buffer);
-	ft_memdel((void **)&file_buffer);
-	if (tetri_list)
-		fillit(tetri_list);
+	fillit(get_tetriminos_from_buffer(file_buffer));
 	return (0);
 }

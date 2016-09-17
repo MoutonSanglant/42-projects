@@ -6,38 +6,38 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/18 19:56:10 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/09/17 23:01:39 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/09/17 23:50:40 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-static void		new_tetrimino(unsigned int mask, t_list **next,
-										t_list **list, int last)
+/*
+** /!\ Removed a check on last tetrimino
+*/
+static void		new_tetrimino(unsigned int mask, t_list **next, t_list **list)
 {
-	t_tetrimino		*tetrimino;
+	t_tetrimino		tetrimino;
 
-	if (!(tetrimino = (t_tetrimino *)ft_memalloc(sizeof(t_tetrimino))))
-		memory_error();
-	tetrimino->mask.tetri = 0;
-	tetrimino->mask.shifted = 0;
-	tetrimino->mask.last = 0;
-	tetrimino->mask.shift = 0;
-	tetrimino->pattern_id = get_pattern_id(mask);
-	tetrimino->h_shift = 0;
-	tetrimino->v_shift = 0;
+	tetrimino.pattern_id = get_pattern_id(mask);
+	tetrimino.h_shift = 0;
+	tetrimino.v_shift = 0;
+	tetrimino.mask.tetri = 0;
+	tetrimino.mask.shifted = 0;
+	tetrimino.mask.last = 0;
+	tetrimino.mask.shift = 0;
 	if (*next)
 	{
-		(*next)->next = ft_lstnew(tetrimino, sizeof(*tetrimino));
+		//ft_printf("mask: %u\n", mask);
+		(*next)->next = ft_lstnew(&tetrimino, sizeof(t_tetrimino));
 		*next = (*next)->next;
 	}
 	else
 	{
-		*next = ft_lstnew(tetrimino, sizeof(*tetrimino));
-		if (!last)
-			*list = *next;
+		//ft_printf("first mask: %u\n", mask);
+		*next = ft_lstnew(&tetrimino, sizeof(t_tetrimino));
+		*list = *next;
 	}
-	ft_memdel((void **)&tetrimino);
 }
 
 static void check_tetrimino_size(char **buffer, char *buffer_start,
@@ -79,17 +79,15 @@ static void	read_buffer(char *buffer, char *buffer_start, t_list **list)
 		{
 			if (buffer[1] == '\0')
 				error();
-			new_tetrimino(mask, &next, list, 0);
+			new_tetrimino(mask, &next, list);
 			mask = 0;
 			height = 0;
 			buffer++;
 		}
 	}
-	if (!mask)
+	if (mask == 0)
 		error();
-	new_tetrimino(mask, &next, list, 1);
-	if (!*list)
-		*list = next;
+	new_tetrimino(mask, &next, list);
 }
 
 t_list				*get_tetriminos_from_buffer(char *buffer)
@@ -98,5 +96,6 @@ t_list				*get_tetriminos_from_buffer(char *buffer)
 
 	list = NULL;
 	read_buffer(buffer, buffer, &list);
+	ft_memdel((void **)&buffer);
 	return (list);
 }
