@@ -6,10 +6,10 @@ LDLIBS	= -lft
 ifeq ($(BUILD), Debug)
 	CFLAGS	+= -fsanitize=address -g -O0 -D DEBUG
 	SUFFIX	= .debug.o
-	NAME	= push_swap.debug
+	NAME	= lem-in.debug
 else
 	SUFFIX	= .o
-	NAME	= push_swap
+	NAME	= lem-in
 endif
 
 ARCH	= $(shell uname -m)
@@ -30,8 +30,7 @@ endif
 SRC_PREFIX	= ./src/
 OBJ_PREFIX	= ./obj/
 
-SRC	=	main push swap rotate reverse_rotate print_swap error \
-		basic_sort basic_sort_store basic_sort_insert
+SRC	=	main
 
 ifeq ($(BUILD), Debug)
 	SRC +=
