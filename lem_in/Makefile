@@ -30,7 +30,8 @@ endif
 SRC_PREFIX	= ./src/
 OBJ_PREFIX	= ./obj/
 
-SRC	=	main
+SRC	=	main get_next_line read_stdin errors \
+		rooms connections node graph
 
 ifeq ($(BUILD), Debug)
 	SRC +=
