@@ -2,10 +2,12 @@
 1 2 3
 # send ERROR if (##start || ##end) are missing
 3 2 1
+##end
 4 4 5
 # multiple records (room)
 1 2 3
-1 2 3
+##start
+1 2 8
 4 7 1
 # 
 78 999 6

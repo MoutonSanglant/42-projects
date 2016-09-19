@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/18 04:19:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/09/19 06:36:05 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/09/19 16:39:36 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,6 @@ static int	parse_input(char *line, void *st)
 	static int	command = 0;
 
 	input = (t_input *)st;
-
 	if (line[0] == 'L')
 		return (0);
 	if (line[0] == '#')
@@ -114,7 +113,6 @@ static int	parse_input(char *line, void *st)
 		command = get_command(&line[1]);
 		return (1);
 	}
-
 	if (input->state == 0)
 	{
 		input->ant_count = ft_atoi(line);
@@ -122,23 +120,12 @@ static int	parse_input(char *line, void *st)
 			error("ant_count < 1");
 		input->state++;
 	}
-	else if (input->state == 1)
-	{
-		if (!new_room(&input->rooms, line))
-			input->state++;
-		(void)command;
-	}
-
-	if (input->state == 2)
-	{
-		if (!new_connection(&input->connections, line))
-			input->state++;
-	}
-
+	else if (input->state == 1 && !new_room(input, line, command))
+		input->state++;
+	if (input->state == 2 && !new_connection(&input->connections, line))
+		input->state++;
 	command = 0;
 	return ((input->state) != 3);
-
-	//f->str = ft_strjoin(f->str, line);
 }
 
 int main(int argc, char **argv)
@@ -151,10 +138,19 @@ int main(int argc, char **argv)
 	//input.graph = NULL;
 	input.rooms = NULL;
 	input.connections = NULL;
+	input.start = NULL;
+	input.end = NULL;
 	input.state = 0;
 	input.ant_count = -1;
 	read_stdin(&parse_input, (void*)&input);
-	input.graph = new_graph(input.rooms, input.connections);
+	if (!input.start || !input.end)
+		error("missing start or end room");
+	input.graph = new_graph(&input, input.rooms, input.connections);
+	if (!input.graph->start || !input.graph->end)
+		error("bad input format (start or end commands hidden by duplicate rooms)");
+	
+	ft_printf("start room: %s\nend room: %s\n", (char *)input.start->content, (char *)input.end->content);
+	ft_printf("start node: %s\nend node: %s\n", input.graph->start->name, input.graph->end->name);
 	//ft_printf("%s\n", f.str);
 	ft_printf("exit\n");
 	return (0);

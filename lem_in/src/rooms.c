@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/18 17:39:56 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/09/18 17:41:30 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/09/19 16:05:09 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,21 @@ static int	valid_room_str(char *str)
 	return (0);
 }
 
-int			new_room(t_queue **rooms, char *line)
+int			new_room(t_input *input, char *line, int command)
 {
 	t_queue	*room;
 
 	if (valid_room_str(line))
 	{
 		room = ft_queuenew((void *)line, ft_strlen(line) + 1);
-		if (!*rooms)
-			*rooms = room;
+		if (!input->rooms)
+			input->rooms = room;
 		else
-			ft_queuepush(*rooms, room);
+			ft_queuepush(input->rooms, room);
+		if (command == 1)
+			input->start = room;
+		else if (command == 2)
+			input->end = room;
 		return (1);
 	}
 	return (0);

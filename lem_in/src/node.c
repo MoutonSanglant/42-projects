@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/19 06:34:20 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/09/19 06:50:44 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/09/19 16:20:30 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int		count_node_links(char *node_name, t_queue *link)
 }
 
 
-t_node		*new_node(char *name, int type, t_queue *links)
+t_node		*new_node(char *name, t_queue *links)
 {
 	t_node	*node;
 	size_t	count;
@@ -63,7 +63,7 @@ t_node		*new_node(char *name, int type, t_queue *links)
 	node = (t_node *)ft_memalloc(sizeof(t_node));
 	node->links = (t_node **)ft_memalloc(sizeof(t_node*) * count);
 	node->name = ft_strdup(name);
-	node->type = type;
+	node->links_count = count;
 	node->x = 0;
 	node->y = 0;
 	ft_printf("new node: '%s'\n", name);

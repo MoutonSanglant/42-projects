@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/19 06:33:28 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/09/19 07:12:41 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/09/19 16:33:56 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,16 +106,22 @@ static int	node_exist(t_node *graph, char *name)
 ** Then, connect nodes together
 ** Remove root node
 ** Return start node
+** -----------------
+** -> Preserve existing nodes
+** x Rewrite existing nodes
 */
-t_node		*new_graph(t_queue *rooms, t_queue *links)
+t_graph		*new_graph(t_input *input, t_queue *rooms, t_queue *links)
 {
-	t_node	root;
-	t_node	*node;
-	//t_queue	*pool;
+	t_graph		*graph;
+	//t_node		*node;
+	char		*name;
+	char		*to;
+	t_node		root;
 	size_t		i;
-	char	*to;
-	char	*name;
 
+	graph = (t_graph *)ft_memalloc(sizeof(t_graph));
+	graph->start = NULL;
+	graph->end = NULL;
 	//output(input.rooms, "room");
 	//output(input.connections, "connection");
 
@@ -131,7 +137,7 @@ t_node		*new_graph(t_queue *rooms, t_queue *links)
 		i++;
 	}
 
-	node = NULL;
+	//node = NULL;
 
 	i = 0;
 	while (rooms)
@@ -139,10 +145,16 @@ t_node		*new_graph(t_queue *rooms, t_queue *links)
 		to = ft_strchr((char*)rooms->content, ' ');
 		name = ft_strsub((char*)rooms->content, 0, to - (char *)rooms->content);
 		if (!node_exist(&root, name))
-			root.links[i] = new_node(name, 0, links);
+		{
+			root.links[i] = new_node(name, links);
+			if (ft_strequ((char *)rooms->content, (char *)input->start->content))
+				graph->start = root.links[i];
+			else if (ft_strequ((char *)rooms->content, (char *)input->end->content))
+				graph->end = root.links[i];
+		}
 		ft_strdel(&name);
 		rooms = rooms->next;
-		// Don't pop the queue, we need to output it later'
+		// Don't pop the queue, we need to output it later !!
 		//ft_queuepop(&rooms);
 		i++;
 	}
@@ -160,16 +172,12 @@ t_node		*new_graph(t_queue *rooms, t_queue *links)
 		i++;
 	}
 
+	// TODO @placeholder
+	// this is just to prevent graph from being empty
+	//graph->start = root.links[0];
+	//graph->end = root.links[0];
 
-	/*
-	while (links)
-	{
-		new_link(root.links, );
-		ft_queuepop(links);
-	}
-	*/
-
-	return (node);
+	return (graph);
 }
 
 
