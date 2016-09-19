@@ -44,7 +44,7 @@ strtrim strsplit itoa strlen putchar putstr putnbr putunbr putendl putchar_fd pu
 putnbr_fd putendl_fd lstnew lstdelone lstdel lstadd lstiter lstmap isupper \
 islower isspace pow lstsize dl_lstnew dl_lstfront dl_lstback dl_lstpushfront \
 dl_lstpushback dl_lstpopfront dl_lstpopback dl_lstiter dl_lstmap dl_lstsize \
-dl_lstclear queuenew queuefront queueback queuepush queuepop queuesize \
+dl_lstclear queuenew queueback queuepush queuepop queuesize \
 stacknew stackpush stackpop stacksize lstgetat putaddr itoa_base imaxtoa \
 uitoa strprepend print_formated_string print_formated_digit print_formated_hex \
 print_formated_unsigned print_formated_space print_formated_char print_formated_widechar \
