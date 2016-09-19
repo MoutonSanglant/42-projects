@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/28 11:01:01 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/02/28 12:14:26 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/09/19 07:20:14 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,8 @@ void			check_victory(t_grid *game)
 {
 	int		i;
 	int		j;
-	int		check;
 
 	i = 0;
-	check = 0;
 	while (i < game->lin)
 	{
 		j = 0;

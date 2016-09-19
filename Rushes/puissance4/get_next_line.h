@@ -1,19 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_dblstdeltail.c                                  :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdruel <gdruel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/03/24 17:12:06 by gdruel            #+#    #+#             */
-/*   Updated: 2015/03/24 17:24:53 by gdruel           ###   ########.fr       */
+/*   Created: 2015/12/28 19:25:12 by tdefresn          #+#    #+#             */
+/*   Updated: 2015/12/28 19:25:12 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-void	ft_dblstdeltail(t_dblist *root)
+# include <libft.h>
+# define BUFF_SIZE 32
+
+typedef struct	s_parser
 {
-	if (root->prev != root)
-		ft_dblstdelone(root->prev);
-}
+	int		fd;
+	long	bs;
+	char	*buf;
+}				t_parser;
+
+int				get_next_line(int const fd, char **line);
+#endif
