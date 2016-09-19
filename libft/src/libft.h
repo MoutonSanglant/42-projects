@@ -23,34 +23,50 @@
 # define ABS(x) ((x < 0) ? -x : x)
 # define HEX_TABLE(x) "0123456789abcdef"[x]
 
+/*
+** 8 + 8 + 4 -> lost: 4 bytes
+*/
 typedef struct	s_list
 {
+	struct s_list	*next;
 	void			*content;
 	size_t			content_size;
-	struct s_list	*next;
 }				t_list;
 
+/*
+** 8 + 8 + 8 + 4 -> lost: 4 bytes
+*/
 typedef struct	s_dl_list
 {
+	struct s_dl_list	*next;
+	struct s_dl_list	*prev;
 	void				*content;
 	size_t				content_size;
-	struct s_dl_list	*prev;
-	struct s_dl_list	*next;
 }				t_dl_list;
 
+/*
+** 8 + 8 + 4 -> lost: 4 bytes
+*/
 typedef struct	s_queue
 {
+	struct s_queue	*next;
 	void			*content;
 	size_t			content_size;
-	struct s_queue	*prev;
-	struct s_queue	*next;
 }				t_queue;
 
+/*
+** 8 + 8 + 4 -> lost: 4 bytes
+*/
+/*
+** TODO
+** @rename
+** prev -> next
+*/
 typedef struct	s_stack
 {
+	struct s_stack	*prev;
 	void			*content;
 	size_t			content_size;
-	struct s_stack	*prev;
 }				t_stack;
 
 /*
@@ -201,7 +217,6 @@ int				ft_dl_lstsize(t_dl_list *lst);
 */
 
 t_queue			*ft_queuenew(const void *content, size_t content_size);
-t_queue			*ft_queuefront(t_queue *queue);
 t_queue			*ft_queueback(t_queue *queue);
 void			ft_queuepush(t_queue *queue, t_queue *new);
 void			ft_queuepop(t_queue **aqueue);

@@ -6,7 +6,7 @@
 /*   By: tdefresn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/08 14:44:22 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/03/05 23:51:41 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/09/19 02:32:49 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,17 @@
 
 int		ft_queuesize(t_queue *queue)
 {
-	t_queue		*first;
-	int			i;
+	int		i;
 
 	if (!queue)
 	{
 		ERROR_PARAM("ft_queuesize");
 		return (-1);
 	}
-	first = ft_queuefront(queue);
 	i = 0;
-	while (first->next)
+	while (queue)
 	{
-		first = first->next;
+		queue = queue->next;
 		i++;
 	}
 	return (i);
@@ -38,14 +36,12 @@ int		ft_queuesize(t_queue *queue)
 
 int		ft_queuesize(t_queue *queue)
 {
-	t_queue		*first;
-	int			i;
+	int		i;
 
-	first = ft_queuefront(queue);
 	i = 0;
-	while (first->next)
+	while (queue)
 	{
-		first = first->next;
+		queue = queue->next;
 		i++;
 	}
 	return (i);

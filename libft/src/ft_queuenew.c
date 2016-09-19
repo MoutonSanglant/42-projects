@@ -6,7 +6,7 @@
 /*   By: tdefresn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/08 14:44:12 by tdefresn          #+#    #+#             */
-/*   Updated: 2015/12/14 11:51:53 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/09/19 02:09:38 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ t_queue		*ft_queuenew(void const *content, size_t content_size)
 			q->content_size = 0;
 		}
 		q->next = NULL;
-		q->prev = NULL;
 	}
 	return (q);
 }

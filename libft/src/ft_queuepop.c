@@ -6,7 +6,7 @@
 /*   By: tdefresn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/08 14:44:16 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/03/06 00:11:24 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/09/19 02:24:38 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,10 @@ void	ft_queuepop(t_queue **aqueue)
 		ERROR_PARAM("ft_queuepop");
 		return ;
 	}
-	first = ft_queuefront(*aqueue);
+	first = *aqueue;
 	if (first->next)
 	{
 		*aqueue = first->next;
-		(*aqueue)->prev = NULL;
 		ft_memdel((void *)&first);
 	}
 	else
@@ -40,11 +39,10 @@ void	ft_queuepop(t_queue **aqueue)
 {
 	t_queue	*first;
 
-	first = ft_queuefront(*aqueue);
+	first = *aqueue;
 	if (first->next)
 	{
 		*aqueue = first->next;
-		(*aqueue)->prev = NULL;
 		ft_memdel((void *)&first);
 	}
 	else
