@@ -19,7 +19,7 @@
 # include <stdlib.h>
 # include <math.h>
 
-# include <includes/libft.h>
+# include <libft.h>
 
 # define USAGE_MSG "Usage: fdf [Path] [Width] [Height]"
 
