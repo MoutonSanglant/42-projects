@@ -6,42 +6,25 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/18 21:46:45 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/03/06 00:05:26 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/09/20 23:53:22 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-static size_t	nbr_length(intmax_t n)
-{
-	size_t		i;
-
-	if (n == 0)
-		return (1);
-	i = 0;
-	while (n != 0)
-	{
-		n /= 10;
-		i++;
-	}
-	return (i);
-}
 
 char			*ft_imaxtoa(intmax_t n)
 {
 	char			*str;
 	size_t			sign;
 	size_t			l;
+	intmax_t		n_copy;
 
-	if (n == 0)
-	{
-		if ((str = ft_strnew(sizeof(char))))
-			str[0] = '0';
-		return (str);
-	}
-	sign = (n > 0) ? 0 : 1;
-	l = nbr_length(n) + sign;
-	if (!(str = ft_strnew(sizeof(char) * l)))
+	sign = (n < 0);
+	l = sign + 1;
+	n_copy = n;
+	while (n_copy /= 10)
+		l++;
+	if (!(str = ft_strnew(l)))
 		return (NULL);
 	str[l] = '\0';
 	if (sign != 0)
