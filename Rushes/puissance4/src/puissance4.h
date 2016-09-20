@@ -19,7 +19,7 @@
 
 # include <libft.h>
 
-#include "get_next_line.h"
+# include "get_next_line.h"
 
 # define PLAYER_TOKEN 'X'
 # define AI_TOKEN 'O'

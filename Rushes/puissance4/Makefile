@@ -1,37 +1,64 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: gdruel <gdruel@student.42.fr>              +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2015/10/10 15:46:02 by gdruel            #+#    #+#              #
-#    Updated: 2016/02/27 18:35:00 by gdruel           ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+NAME	= puissance4
 
-NAME = puissance4
+CC		= gcc
+CFLAGS	= -Wall -Werror -Wextra -I./libft -I./includes
+LDFLAGS	= -L./libft
+LDLIBS	= -lft
+DFLAGS	= -g -O0 -D DEBUG
 
-SRC = main.c ai_play_turn.c score_map_fn.c grid_manager.c \
-		vector2.c check_victory.c human_play_turn.c get_next_line.c
-OBJ = main.o ai_play_turn.o score_map_fn.o grid_manager.o \
-		vector2.o check_victory.o human_play_turn.o get_next_line.o
+ARCH	= $(shell uname -m)
+OS		= $(shell uname -s)
 
-RM = rm -f
+ifeq ($(OS), Darwin)
+	LDLIBS +=
+endif
 
-all: $(NAME)
+ifeq ($(OS)_$(ARCH), Linux_x86_64)
+	CFLAGS += -D LINUX
+	LDLIBS +=
+else ifeq ($(OS), Linux)
+	CFLAGS += -D LINUX
+	LDLIBS +=
+endif
 
-$(NAME):
-	make -C libft/
-	gcc -Wall -Wextra -Werror -Ilibft/src -c $(SRC) -g -O0
-	gcc -o $(NAME) $(OBJ) -Ilibft/src -Llibft/ -lft -g -O0
+SRC_PREFIX	= ./src/
+
+SRC	= main ai_play_turn score_map_fn grid_manager \
+		vector2 check_victory human_play_turn get_next_line
+
+SRC := $(addsuffix .c, $(SRC))
+SRC := $(addprefix $(SRC_PREFIX), $(SRC))
+
+OBJ = $(SRC:.c=.o)
+
+.SILENT: $(OBJ)
+.PHONY: all clean fclean re libft
+
+all: libft $(NAME)
+
+debug: CFLAGS += $(DFLAGS)
+debug: fclean debug_compile
+debug_compile: $(OBJ) $(SRC_PREFIX)debug.o
+	@echo "call to 'debug' rule"
+	$(CC) -o $(NAME) $^ $(CFLAGS) $(LDFLAGS) $(LDLIBS) -D BONUS
+#	/bin/rm -f $(SRC_PREFIX)debug.o
+
+$(NAME): $(OBJ)
+	@echo "making $@"
+	$(CC) -o $(NAME) $^ $(CFLAGS) $(LDFLAGS) $(LDLIBS) -D BONUS
+
+libft:
+	@echo "making $@"
+	cd libft && $(MAKE)
+
+%.o: %.c
+	@echo "making $<"
+	$(CC) -o $@ -c $< $(CFLAGS) -D BONUS
 
 clean:
-	make -C libft/ clean
-	$(RM) $(OBJ)
+	/bin/rm -f ${OBJ}
 
 fclean: clean
-	make -C libft/ fclean
-	$(RM) $(NAME)
+	/bin/rm -f $(NAME)
 
 re: fclean all
