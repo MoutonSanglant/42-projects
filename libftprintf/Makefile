@@ -45,6 +45,7 @@ SRC		=	get_formated_argument \
 			ft_eprintf \
 			ft_dprintf \
 			ft_fprintf \
+			ft_asprintf \
 			ft_sprintf \
 			ft_snprintf \
 			ft_isprint \
