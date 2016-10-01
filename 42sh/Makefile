@@ -1,6 +1,6 @@
 CC		= gcc
 CFLAGS	= -Wall -Werror -Wextra -I./includes
-LDFLAGS	= -L./lib -L./libft -L./libftprintf
+LDFLAGS	= -L./libft -L./libftprintf
 LDLIBS	= -lft -lftprintf -ltermcap
 
 ifeq ($(BUILD), Debug)
