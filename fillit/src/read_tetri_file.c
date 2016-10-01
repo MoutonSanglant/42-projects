@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/11 12:51:30 by tdefresn          #+#    #+#             */
-/*   Updated: 2015/12/11 14:18:40 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/09/19 22:08:38 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char*	read_tetri_file(char *path)
 	fd = open(path, O_RDONLY);
 	if (fd)
 	{
-		buffer = (char *)malloc(sizeof(char) * BUFSIZE);
+		buffer = (char *)ft_memalloc(sizeof(char) * BUFSIZE);
 		if (!buffer)
 			return (NULL);
 		bcount = read(fd, buffer, BUFSIZE);

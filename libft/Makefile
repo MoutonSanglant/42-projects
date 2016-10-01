@@ -1,23 +1,18 @@
 CC		= gcc
-CFLAGS	= -g -O0 -Wall -Werror -Wextra
+CFLAGS	= -Wall -Werror -Wextra
+LDFLAGS	=
+LDLIBS	=
 
-# Specific compilation routines
-
-ifeq ($(BUILD), Debug)
-CFLAGS	+= -g -O0 -D DEBUG
-SUFFIX	= .debug.o
-else ifeq ($(BUILD), Bonus)
-CFLAGS	+= -D BONUS
-SUFFIX	= .bonus.o
-else
 SUFFIX	= .o
-endif
-
-#NAME	= libftprintf.a
 NAME	= libft.a
 
-# Get system and set specific flags accordingly
+# DEBUG routine
+ifeq ($(BUILD), Debug)
+	CFLAGS	+= -fsanitize=address -g -O0 -D DEBUG
+	SUFFIX	= .debug.o
+endif
 
+# OS flags
 ARCH	= $(shell uname -m)
 OS		= $(shell uname -s)
 
@@ -41,16 +36,24 @@ strcat strncat strlcat strchr strrchr strstr strnstr strcmp strncmp atoi \
 isalpha isdigit isalnum isascii isprint toupper tolower memalloc memdel strnew \
 strdel strclr striter striteri strmap strmapi strequ strnequ strsub strjoin strnjoin \
 strtrim strsplit itoa strlen putchar putstr putnbr putunbr putendl putchar_fd putstr_fd \
-putnbr_fd putendl_fd lstnew lstdelone lstdel lstadd lstiter lstmap isupper \
-islower isspace pow lstsize dl_lstnew dl_lstfront dl_lstback dl_lstpushfront \
+putnbr_fd putendl_fd \
+lstnew lstdelone lstdel lstadd lstiter lstmap \
+lstsize lstgetat lstsort \
+isupper islower isspace \
+pow \
+dl_lstnew dl_lstfront dl_lstback dl_lstpushfront dl_lstclear \
 dl_lstpushback dl_lstpopfront dl_lstpopback dl_lstiter dl_lstmap dl_lstsize \
-dl_lstclear queuenew queueback queuepush queuepop queuesize \
-stacknew stackpush stackpop stacksize lstgetat putaddr itoa_base imaxtoa \
-uitoa strprepend print_formated_string print_formated_digit print_formated_hex \
-print_formated_unsigned print_formated_space print_formated_char print_formated_widechar \
-print_formated_octal print_formated_pointer strpbrk putwchar debug_error_param \
-lstsort debug_error_free printf eprintf dprintf fprintf sprintf snprintf \
-strconcat strnconcat towstr get_formated_argument atoimax
+queuenew queueback queuepush queuepop queuesize \
+stacknew stackpush stackpop stacksize \
+putaddr \
+itoa_base uitoa imaxtoa atoimax \
+strprepend strpbrk \
+strconcat strnconcat
+
+ifeq ($(BUILD), Debug)
+	SRC += debug_error_param debug_error_free
+endif
+
 
 SRC := $(addsuffix .c, $(SRC))
 SRC := $(addprefix $(SRC_PREFIX)ft_, $(SRC))
@@ -64,9 +67,6 @@ all: $(NAME)
 
 debug:
 	@$(MAKE) BUILD=Debug all
-
-bonus:
-	@$(MAKE) BUILD=Bonus all
 
 $(NAME): $(OBJ)
 	@echo "making $@"

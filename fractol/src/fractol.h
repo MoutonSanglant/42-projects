@@ -22,6 +22,7 @@
 # include <setjmp.h>
 
 # include <libft.h>
+# include <libftprintf.h>
 
 // TODO
 # define USAGE_MSG "usage: fractol [mandelbrot | julia | ...] [width] [height]"

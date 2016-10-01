@@ -3,22 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdefresn <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/24 18:16:07 by tdefresn          #+#    #+#             */
-/*   Updated: 2015/12/08 14:43:02 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/10/01 19:13:17 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/10/01 19:13:17 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# include <string.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdint.h>
 # include <limits.h>
-# include <wchar.h>
 
 # define ABS(x) ((x < 0) ? -x : x)
 # define HEX_TABLE(x) "0123456789abcdef"[x]
@@ -164,22 +162,9 @@ int				ft_putstr_fd(const char *s, int fd);
 void			ft_putendl_fd(const char *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
 
-int				ft_putwchar(wchar_t *unicode_point);
-char			*ft_towstr(wchar_t *unicode_point, int *len);
 int				ft_putunbr(unsigned int n);
 int				ft_putaddr(const void *addr);
 
-int				ft_printf(const char *restrict format, ...);
-int				ft_eprintf(const char *restrict format, ...);
-int				ft_dprintf(int fd, const char *restrict format, ...);
-char			*ft_sprintf(const char *restrict format, ...);
-char			*ft_snprintf(size_t size, const char *restrict format, ...);
-
-# ifdef FORBIDDEN
-
-int				ft_fprintf(FILE *stream, const char *restrict format, ...);
-
-# endif
 
 /*
 **	FORWARD LISTS

@@ -1,17 +1,19 @@
 CC		= gcc
-CFLAGS	= -Wall -Werror -Wextra -I./libft/src -D BONUS
-LDFLAGS	= -L./libft
-LDLIBS	= -lft
+CFLAGS	= -Wall -Werror -Wextra -I./includes
+LDFLAGS	= -L./libft -L./libftprintf
+LDLIBS	= -lft -lftprintf
 
+SUFFIX	= .o
+NAME	= lem-in
+
+# DEBUG routine
 ifeq ($(BUILD), Debug)
 	CFLAGS	+= -fsanitize=address -g -O0 -D DEBUG
 	SUFFIX	= .debug.o
 	NAME	= lem-in.debug
-else
-	SUFFIX	= .o
-	NAME	= lem-in
 endif
 
+# OS flags
 ARCH	= $(shell uname -m)
 OS		= $(shell uname -s)
 
@@ -27,11 +29,11 @@ else ifeq ($(OS), Linux)
 	LDLIBS +=
 endif
 
-SRC_PREFIX	= ./src/
-OBJ_PREFIX	= ./obj/
+SRC_PREFIX = ./src/
+OBJ_PREFIX = ./obj/
 
 SRC	=	main get_next_line read_stdin errors \
-		rooms connections node graph
+		rooms connections node link graph
 
 ifeq ($(BUILD), Debug)
 	SRC +=

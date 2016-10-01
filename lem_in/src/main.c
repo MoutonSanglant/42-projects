@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/18 04:19:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/09/19 16:39:36 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/09/19 20:58:07 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,18 +78,18 @@
 
 
 
-/*
-static void	output(t_queue *queue, char *str)
+
+static void	dequeue(t_queue *queue)
 {
-	ft_printf("queue size: %o\n", ft_queuesize(queue));
+	//ft_printf("queue size: %o\n", ft_queuesize(queue));
 	while (queue)
 	{
-		ft_printf("%s: %s\n", str, (char *)queue->content);
+		//ft_printf("%s: %s\n", str, (char *)queue->content);
+		//ft_printf("%s\n", (char *)queue->content);
 		ft_queuepop(&queue);
-		//lst = lst->next;
 	}
 }
-*/
+
 
 static int	get_command(char *str)
 {
@@ -145,12 +145,15 @@ int main(int argc, char **argv)
 	read_stdin(&parse_input, (void*)&input);
 	if (!input.start || !input.end)
 		error("missing start or end room");
-	input.graph = new_graph(&input, input.rooms, input.connections);
+	input.graph = new_graph(&input);
 	if (!input.graph->start || !input.graph->end)
 		error("bad input format (start or end commands hidden by duplicate rooms)");
-	
-	ft_printf("start room: %s\nend room: %s\n", (char *)input.start->content, (char *)input.end->content);
+	ft_printf("=== Graph ========\n");
+	//ft_printf("start room: %s\nend room: %s\n", (char *)input.start->content, (char *)input.end->content);
 	ft_printf("start node: %s\nend node: %s\n", input.graph->start->name, input.graph->end->name);
+	ft_printf("==================\n");
+	dequeue(input.rooms);
+	dequeue(input.connections);
 	//ft_printf("%s\n", f.str);
 	ft_printf("exit\n");
 	return (0);

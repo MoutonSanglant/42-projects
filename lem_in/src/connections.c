@@ -6,18 +6,19 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/18 17:39:21 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/09/18 17:40:35 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/09/19 20:49:58 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
 
 /*
 ** Check for:
 ** - space count is 0
 ** - `-` count is 1
 */
-static int	valid_connection_str(char *str)
+static int	valid_str(char *str)
 {
 	int		i;
 	int		j;
@@ -41,7 +42,7 @@ int			new_connection(t_queue **connections, char *line)
 {
 	t_queue	*connection;
 
-	if (valid_connection_str(line))
+	if (valid_str(line))
 	{
 		connection = ft_queuenew((void *)line, ft_strlen(line) + 1);
 		if (!*connections)

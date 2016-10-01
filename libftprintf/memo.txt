@@ -1,0 +1,24 @@
+ft_strdel
+ft_strlen
+ft_strncpy
+ft_strnew
+ft_strnconcat
+ft_strconcat
+ft_strchr
+ft_putstr_fd
+ft_strjoin
+ft_strdup
+ft_itoa_base
+ft_isprint
+ft_uitoa
+ft_toupper
+ft_imaxtoa
+ft_itoa
+
+== step 2 ==
+intmax_t
+uintmax_t
+ft_atoi
+ft_isdigit
+ft_strpbrk
+

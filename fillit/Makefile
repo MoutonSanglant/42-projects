@@ -1,36 +1,83 @@
+CC		= gcc
+CFLAGS	= -Wall -Werror -Wextra -I./includes
+LDFLAGS	= -L./libft
+LDLIBS	= -lft
+
+SUFFIX	= .o
 NAME	= fillit
 
-CC	= gcc
-CFLAGS	= -Wall -Werror -Wextra -I./includes -g -O0
-#-D DEBUG
-#-fsanitize=address
-LDFLAGS	= -L./lib -lft
-LDLIBS	=
+# DEBUG routine
+ifeq ($(BUILD), Debug)
+	CFLAGS	+= -fsanitize=address -g -O0 -D DEBUG
+	SUFFIX	= .debug.o
+	NAME	= fillit.debug
+endif
+
+# OS flags
+ARCH	= $(shell uname -m)
+OS		= $(shell uname -s)
+
+ifeq ($(OS), Darwin)
+	LDLIBS +=
+endif
+
+ifeq ($(OS)_$(ARCH), Linux_x86_64)
+	CFLAGS += -D LINUX
+	LDLIBS +=
+else ifeq ($(OS), Linux)
+	CFLAGS += -D LINUX
+	LDLIBS +=
+endif
 
 SRC_PREFIX = ./src/
+OBJ_PREFIX = ./obj/
 
 SRC		= main list read_tetri_file get_tetriminos_from_buffer \
 		masks fillit bruteforce print_grid errors
 
+ifeq ($(BUILD), Debug)
+	SRC +=
+endif
+
 SRC := $(addsuffix .c, $(SRC))
 SRC := $(addprefix $(SRC_PREFIX), $(SRC))
 
-OBJ = $(SRC:.c=.o)
+OBJ = $(subst $(SRC_PREFIX), , $(SRC:.c=$(SUFFIX)))
+OBJ := $(addprefix $(OBJ_PREFIX), $(OBJ))
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re libft debug
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	gcc -o $@ $^ $(CFLAGS) $(LDFLAGS) $(LDLIBS)
+debug:
+	@$(MAKE) BUILD=Debug all
 
-bin/%.o: %.c
-	$(CC) -o $@ -c $< $(CFLAGS)
+$(NAME): $(OBJ) libft/libft.a
+	$(CC) -o $(NAME) $(OBJ) $(CFLAGS) $(LDFLAGS) $(LDLIBS)
+
+libft/libft.a: libft
+
+libft:
+	@echo "making $@"
+	@$(MAKE) -C libft BUILD=$(BUILD)
+
+$(OBJ_PREFIX)%$(SUFFIX): $(SRC_PREFIX)%.c
+	@echo "making $<"
+	@mkdir -p $(OBJ_PREFIX)
+	@$(CC) -o $@ -c $< $(CFLAGS)
 
 clean:
-	/bin/rm -f ${OBJ}
+	/bin/rm -rf $(OBJ_PREFIX)
+	$(MAKE) -C libft clean
 
 fclean: clean
 	/bin/rm -f $(NAME)
+	$(MAKE) -C libft fclean
+
+cclean:
+	/bin/rm -rf $(OBJ_PREFIX)
+	/bin/rm -f $(NAME)
 
 re: fclean all
+
+rre: cclean all

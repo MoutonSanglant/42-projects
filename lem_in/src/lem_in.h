@@ -14,6 +14,7 @@
 # define LEM_IN_H
 
 # include <libft.h>
+# include <libftprintf.h>
 
 
 /*
@@ -74,9 +75,11 @@ int		new_room(t_input *input, char *line, int command);
 int		new_connection(t_queue **connections, char *line);
 
 /* ================================= Graphs ================================= */
-t_graph	*new_graph(t_input *input, t_queue *rooms, t_queue *links);
+t_graph	*new_graph(t_input *input);
 t_node	*new_node(char *name, t_queue *links);
+void	connect_nodes(t_node *a, t_node *b);
 void	new_link(t_node *node_a, t_node *node_b);
+void	parse_connections(t_node *graph, char *name, t_queue *connections);
 
 void	error(char *str);
 void	memory_error(void);

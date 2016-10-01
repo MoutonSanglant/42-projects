@@ -1,7 +1,7 @@
 CC		= gcc
 CFLAGS	= -Wall -Werror -Wextra -I./libft -I./includes -D BONUS
-LDFLAGS	= -L./lib -L./libft
-LDLIBS	= -lft -lm
+LDFLAGS	= -L./lib -L./libft -L./libftprintf
+LDLIBS	= -lft -lftprintf -lm
 
 ifeq ($(BUILD), Debug)
 CFLAGS	+= -fsanitize=address -g -O0 -D DEBUG

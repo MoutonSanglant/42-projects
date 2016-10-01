@@ -1,7 +1,7 @@
 CC		= gcc
-CFLAGS	= -Wall -Werror -Wextra -I./libft -I./includes -D BONUS
-LDFLAGS	= -L./libft
-LDLIBS	= -lft -ltermcap
+CFLAGS	= -Wall -Werror -Wextra -I./includes
+LDFLAGS	= -L./lib -L./libft -L./libftprintf
+LDLIBS	= -lft -lftprintf -ltermcap
 
 ifeq ($(BUILD), Debug)
 	CFLAGS	+= -g -O0 -D DEBUG

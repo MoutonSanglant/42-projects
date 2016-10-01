@@ -14,6 +14,7 @@
 # define PUSH_SWAP_H
 
 # include <libft.h>
+# include <libftprintf.h>
 
 typedef struct	s_swap
 {
