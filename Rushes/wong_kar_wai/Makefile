@@ -1,7 +1,7 @@
 NAME	= game_2048
 
 CC		= gcc
-CFLAGS	= -Wall -Werror -Wextra -I./libft
+CFLAGS	= -Wall -Werror -Wextra -I./libft -I./includes
 LDFLAGS	= -L./libft
 LDLIBS	= -lft -lncurses
 DFLAGS	= -g -O0 -D DEBUG

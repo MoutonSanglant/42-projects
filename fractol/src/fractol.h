@@ -21,7 +21,7 @@
 # include <complex.h>
 # include <setjmp.h>
 
-# include <includes/libft.h>
+# include <libft.h>
 
 // TODO
 # define USAGE_MSG "usage: fractol [mandelbrot | julia | ...] [width] [height]"

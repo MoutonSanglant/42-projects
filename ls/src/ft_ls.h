@@ -19,7 +19,7 @@
 # include <pwd.h>
 # include <grp.h>
 # include <time.h>
-# include <includes/libft.h>
+# include <libft.h>
 
 # define PROGRAM_NAME "ls"
 # define VALID_FLAGS "Ralrt1"

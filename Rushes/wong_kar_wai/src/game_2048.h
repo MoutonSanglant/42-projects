@@ -15,7 +15,7 @@
 
 # include <time.h>
 # include <ncurses.h>
-# include <includes/libft.h>
+# include <libft.h>
 
 # define GAME_ERR_MSG "Window is too small !!"
 # define GAME_MIN_Y 26

@@ -18,7 +18,7 @@
 # include <signal.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
-# include <includes/libft.h>
+# include <libft.h>
 
 # define PROGRAM_NAME "minishell"
 
