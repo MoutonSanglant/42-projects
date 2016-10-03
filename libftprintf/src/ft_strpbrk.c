@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/01 21:44:50 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/01 21:44:52 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/03 03:34:05 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char			*ft_strpbrk(const char *s1, const char *s2)
 {
 	if (!s1 || !s2)
 	{
-		ERROR_PARAM("ft_strpbrk");
+		ft_printf("ft_strpbrk: param error");
 		return (NULL);
 	}
 	return (debug_ft_strpbrk(s1, s2));

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/01 21:44:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/01 21:44:46 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/03 03:33:15 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*ft_strnjoin(char const *s1, char const *s2, int n)
 	i = 0;
 	if (!s1 || !s2)
 	{
-		ERROR_PARAM("ft_strjoin");
+		ft_printf("ft_strnjoin: param error");
 		return (NULL);
 	}
 	str_new = ft_strnew(ft_strlen(s1) + n);

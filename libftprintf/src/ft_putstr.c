@@ -6,7 +6,7 @@
 /*   By: tdefresn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/01 12:36:49 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/01 22:10:47 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/03 03:34:20 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		ft_putstr(char const *s)
 {
 	if (!s)
 	{
-		ERROR_PARAM("ft_putstr");
+		ft_printf("ft_putstr: param error");
 		return (-1);
 	}
 	return (write(1, s, ft_strlen(s)));

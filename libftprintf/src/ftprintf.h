@@ -21,11 +21,23 @@
 # include "libftprintf.h"
 
 # define HEX_TABLE(x) "0123456789abcdef"[x]
-
-# define MASK11 0b00000000000000000000011111111111
-# define MASK16 0b00000000000000001111111111111111
-# define MASK21 0b00000000000111111111111111111111
 # define HEX_CHECK(s) (s == 'x') ? "0x" : "0X"
+
+/*
+**	0x0000007f	-> 0b00000000 00000000 00000000 01111111
+**	0x000007ff	-> 0b00000000 00000000 00000111 11111111
+**	0x0000ffff	-> 0b00000000 00000000 11111111 11111111
+**	0x001fffff	-> 0b00000000 00011111 11111111 11111111
+**	0x03ffffff	-> 0b00000011 11111111 11111111 11111111
+**	0x7fffffff	-> 0b01111111 11111111 11111111 11111111
+*/
+
+# define MASK7 0x0000007f
+# define MASK11 0x000007ff
+# define MASK16 0x0000ffff
+# define MASK21 0x001fffff
+# define MASK26 0x03ffffff
+# define MASK31 0x7fffffff
 
 typedef enum	e_fflag
 {
@@ -51,8 +63,8 @@ typedef enum	e_flength
 
 typedef struct	s_fdata
 {
-	const char	*format;
 	char		*out;
+	const char	*format;
 	char		*fill_char;
 	t_fflag		flag;
 	t_flength	length;

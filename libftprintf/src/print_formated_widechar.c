@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/01 21:46:54 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/01 21:48:35 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/03 07:40:01 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void		justify(wint_t *c, t_fdata *fdatas)
 	{
 		str = ft_towstr((wchar_t *)c, &ret);
 		fdatas->out = ft_strconcat(fdatas->out, str);
+		ft_strdel(&str);
 	}
 	else
 		fdatas->out = ft_strnconcat(fdatas->out, (char *)c, 1);
@@ -35,19 +36,21 @@ static void		justify(wint_t *c, t_fdata *fdatas)
 
 static int		unicode_length(t_fdata *fdatas, wint_t c)
 {
-	if (c > MASK21)
-		return (-1);
-	else if (c < 128)
+	if (c <= MASK7)
 	{
 		fdatas->length = LENGTH_NONE;
 		return (0);
 	}
-	else if (c < MASK11)
+	else if (c <= MASK11)
 		return (1);
-	else if (c < MASK16)
+	else if (c <= MASK16)
 		return (2);
-	else
+	else if (c <= MASK21)
 		return (3);
+	else if (c <= MASK26)
+		return (4);
+	else
+		return (5);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/01 20:40:28 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/01 21:49:28 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/03 03:35:16 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int				ft_putwchar(wchar_t *unicode_point)
 {
 	if (!unicode_point)
 	{
-		ERROR_PARAM("ft_putwchar");
+		ft_printf("ft_putwchar: param error");
 		return (0);
 	}
 	return (debug_ft_putwchar(unicode_point));

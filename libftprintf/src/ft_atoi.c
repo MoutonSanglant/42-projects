@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/01 21:37:29 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/01 21:48:02 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/03 03:35:47 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		ft_atoi(char const *str)
 
 	if (!str)
 	{
-		ERROR_PARAM("ft_atoi");
+		ft_printf("ft_atoi: param error");
 		return (0);
 	}
 	r = 0;

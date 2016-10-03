@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/02 00:21:06 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/02 00:34:49 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/03 06:32:02 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 /*
 ** return(0) is maybe incorrect
 */
+
+//#include <stdio.h>
 
 int		ft_vasprintf(char **ret, const char *format, va_list *ap)
 {
@@ -32,11 +34,15 @@ int		ft_vasprintf(char **ret, const char *format, va_list *ap)
 		if (to_ptr == NULL)
 		{
 			ft_strdel(&fdatas.out);
-			return (0);
+			*ret = NULL;
+			return (-1);
 		}
 		to_ptr += 1;
 		if (fdatas.flag & FLAG_FORMAT_ERROR)
+		{
+			*ret = fdatas.out;
 			return (ft_strlen(fdatas.out));
+		}
 		from_ptr = to_ptr;
 	}
 	fdatas.out = ft_strconcat(fdatas.out, from_ptr);
@@ -44,7 +50,7 @@ int		ft_vasprintf(char **ret, const char *format, va_list *ap)
 	return (ft_strlen(*ret));
 }
 
-int		ft_asprintf(char **ret, const char *restrict format, ...)
+int		ft_asprintf(char **ret, const char *format, ...)
 {
 	va_list		ap;
 	int			out;

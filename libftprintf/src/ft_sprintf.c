@@ -6,46 +6,30 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/01 18:46:52 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/01 21:49:24 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/03 07:49:48 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftprintf.h"
 
-char				*ft_vsprintf(const char *restrict format, va_list *ap)
+int		ft_vsprintf(char *restrict str, const char *restrict format, va_list *ap)
 {
-	const char	*from_ptr;
-	const char	*to_ptr;
-	t_fdata		fdatas;
+	int out;
 
-	fdatas.out = ft_strnew(1);
-	fdatas.bcount = 0;
-	from_ptr = format;
-	while ((to_ptr = ft_strchr(from_ptr, '%')))
-	{
-		fdatas.out = ft_strnconcat(fdatas.out, from_ptr, (to_ptr - from_ptr));
-		to_ptr = get_formated_argument(ap, (to_ptr + 1), &fdatas);
-		if (to_ptr == NULL)
-		{
-			ft_strdel(&fdatas.out);
-			return (NULL);
-		}
-		to_ptr += 1;
-		if (fdatas.flag & FLAG_FORMAT_ERROR)
-			return (fdatas.out);
-		from_ptr = to_ptr;
-	}
-	fdatas.out = ft_strconcat(fdatas.out, from_ptr);
-	return (fdatas.out);
+	(void)format;
+	(void)ap;
+	(void)str;
+	out = 0;
+	return (out);
 }
 
-char				*ft_sprintf(const char *restrict format, ...)
+int		ft_sprintf(char *restrict str, const char *restrict format, ...)
 {
 	va_list		ap;
-	char		*out;
+	int			out;
 
 	va_start(ap, format);
-	out = ft_vsprintf(format, &ap);
+	out = ft_vsprintf(str, format, &ap);
 	va_end(ap);
 	return (out);
 }

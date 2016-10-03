@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/01 21:46:41 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/01 21:48:40 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/03 07:42:20 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,32 @@ static int		justify_long_string(wchar_t *wstr, t_fdata *fdatas, int dry)
 	int		w_bytes;
 	int		n;
 	int		len;
+	char	*str;
 
 	r_bytes = -1;
 	w_bytes = 0;
 	while (wstr[++r_bytes])
 	{
-		n = 4;
-		if (wstr[r_bytes] < 128)
+		n = 6;
+		if (wstr[r_bytes] <= MASK7)
 			n = 1;
-		else if (wstr[r_bytes] < MASK11)
+		else if (wstr[r_bytes] <= MASK11)
 			n = 2;
-		else if (wstr[r_bytes] < MASK16)
+		else if (wstr[r_bytes] <= MASK16)
 			n = 3;
+		else if (wstr[r_bytes] <= MASK21)
+			n = 4;
+		else if (wstr[r_bytes] <= MASK26)
+			n = 5;
 		w_bytes += n;
 		if (w_bytes > fdatas->precision)
 			return (w_bytes - n);
 		else if (!dry)
-			fdatas->out = ft_strconcat(fdatas->out,
-							ft_towstr(&wstr[r_bytes], &len));
+		{
+			str = ft_towstr(&wstr[r_bytes], &len);
+			fdatas->out = ft_strconcat(fdatas->out, str);
+			ft_strdel(&str);
+		}
 	}
 	return (w_bytes);
 }

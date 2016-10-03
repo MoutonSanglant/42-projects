@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/01 21:40:20 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/01 21:49:11 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/03 03:32:06 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ size_t	ft_strlen(char const *s)
 
 	if (!s)
 	{
-		ERROR_PARAM("ft_strlen");
+		ft_printf("ft_strlen: param error");
 		return (0);
 	}
 	i = 0;
