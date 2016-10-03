@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/02 00:21:06 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/03 06:32:02 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/03 08:59:12 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int		ft_vasprintf(char **ret, const char *format, va_list *ap)
 	t_fdata		fdatas;
 
 	fdatas.out = ft_strnew(1);
+	fdatas.out[0] = '\0';
 	fdatas.bcount = 0;
 	from_ptr = format;
 	while ((to_ptr = ft_strchr(from_ptr, '%')))
@@ -33,15 +34,14 @@ int		ft_vasprintf(char **ret, const char *format, va_list *ap)
 		to_ptr = get_formated_argument(ap, (to_ptr + 1), &fdatas);
 		if (to_ptr == NULL)
 		{
-			ft_strdel(&fdatas.out);
-			*ret = NULL;
-			return (-1);
+			*ret = fdatas.out;
+			return (0);
 		}
 		to_ptr += 1;
 		if (fdatas.flag & FLAG_FORMAT_ERROR)
 		{
 			*ret = fdatas.out;
-			return (ft_strlen(fdatas.out));
+			return (ft_strlen(*ret));
 		}
 		from_ptr = to_ptr;
 	}

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/01 21:39:52 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/03 03:31:39 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/03 08:51:19 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ void	ft_strdel(char **as)
 {
 	if (!as)
 	{
-		ft_printf("ft_strdel: param error");
+		ft_putstr_fd("ft_strdel: param error", 2);
 		return ;
 	}
 	if (!*as)
 	{
-		ft_printf("ft_strdel: free error");
+		ft_putstr_fd("ft_strdel: free error", 2);
 		return ;
 	}
 	free(*as);

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 00:57:09 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/09/21 00:04:47 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/03 08:28:50 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char			*ft_itoa_base(intmax_t value, int base)
 	str = NULL;
 	if (value == 0)
 		str = ft_strdup("0");
-	if (base < 2 || base > 16)
+	else if (base < 2 || base > 16)
 		str = NULL;
 	else if (base == 10)
 		str = ft_imaxtoa(value);
