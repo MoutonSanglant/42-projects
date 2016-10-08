@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/27 21:10:39 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/27 23:54:11 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/05 02:43:24 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,11 @@ static int	store_init(t_swap *swap, char **str, int max)
 		return (1);
 	if (isrevsorted(swap->a, max))
 	{
-		*str = ft_sprintf("%s%s ", *str, sa(swap));
-		*str = ft_sprintf("%s%s ", *str, rra(swap));
+		ft_asprintf(str, "%s%s ", *str, sa(swap));
+		ft_asprintf(str, "%s%s ", *str, rra(swap));
 	}
 	if (*(int *)swap->a->content > *(int *)swap->a->prev->content)
-		*str = ft_sprintf("%s%s ", *str, sa(swap));
+		ft_asprintf(str, "%s%s ", *str, sa(swap));
 	return (0);
 }
 
@@ -107,19 +107,19 @@ char		*store_unsorted(t_swap *swap, char *str, int max)
 		{
 			while (*(int *)swap->a->content == max ||
 					*(int *)swap->a->content < *(int *)swap->a->prev->content)
-				str = ft_sprintf("%s%s ", str, ra(swap));
-			str = ft_sprintf("%s%s ", str, pb(swap));
+				ft_asprintf(&str, "%s%s ", str, ra(swap));
+			ft_asprintf(&str, "%s%s ", str, pb(swap));
 		}
 		else
 		{
 			while (*(int *)swap->a->content == max ||
 					*(int *)swap->a->content < *(int *)swap->a->prev->content)
-				str = ft_sprintf("%s%s ", str, rra(swap));
-			str = ft_sprintf("%s%s ", str, pb(swap));
+				ft_asprintf(&str, "%s%s ", str, rra(swap));
+			ft_asprintf(&str, "%s%s ", str, pb(swap));
 		}
 		ft_printf(str);
 		ft_strdel(&str);
-		str = ft_strnew(1);
+		ft_strnew(1);
 	}
 	return (str);
 }

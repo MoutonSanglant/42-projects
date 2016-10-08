@@ -36,6 +36,11 @@ vgcore.*
 /push_swap/push_swap*
 /lem_in/lem-in*
 
+### Rushes ###
+/Rushes/hotrace/hotrace*
+/Rushes/puissance4/puissance4*
+/Rushes/wong_kar_wai/game_2048*
+
 
 ### Temporary files ###
 _*

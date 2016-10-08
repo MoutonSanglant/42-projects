@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/27 19:06:54 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/28 00:01:13 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/05 02:40:05 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,12 @@ void		basic_sort(t_swap *swap)
 	if (min_is_top_half(swap->a, min))
 	{
 		while (*(int *)swap->a->content != min)
-			str = ft_sprintf("%s%s ", str, ra(swap));
+			ft_asprintf(&str, "%s%s ", str, ra(swap));
 	}
 	else
 	{
 		while (*(int *)swap->a->content != min)
-			str = ft_sprintf("%s%s ", str, rra(swap));
+			ft_asprintf(&str, "%s%s ", str, rra(swap));
 	}
 	len = ft_strlen(str);
 	str[(len >= 1) ? len - 1 : 0] = '\n';

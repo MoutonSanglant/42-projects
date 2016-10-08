@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/27 21:11:19 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/27 23:59:25 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/05 02:44:27 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,11 @@ static char	*roll(t_swap *swap, char *str)
 	while (*(int *)swap->a->content < *(int *)swap->b->content
 			|| *(int *)swap->b->content < prev)
 	{
-		str = ft_sprintf("%s%s ", str, ra(swap));
+		ft_asprintf(&str, "%s%s ", str, ra(swap));
 		prev = get_last(swap->a);
 	}
-	return (ft_sprintf("%s%s ", str, pa(swap)));
+	ft_asprintf(&str, "%s%s ", str, pa(swap));
+	return (str);
 }
 
 static char	*reverse_roll(t_swap *swap, char *str)
@@ -74,25 +75,26 @@ static char	*reverse_roll(t_swap *swap, char *str)
 	while (*(int *)swap->a->content < *(int *)swap->b->content
 			|| *(int *)swap->b->content < prev)
 	{
-		str = ft_sprintf("%s%s ", str, rra(swap));
+		ft_asprintf(&str, "%s%s ", str, rra(swap));
 		prev = get_last(swap->a);
 	}
-	return (ft_sprintf("%s%s ", str, pa(swap)));
+	ft_asprintf(&str, "%s%s ", str, pa(swap));
+	return (str);
 }
 
-char		*insert(t_swap *swap, char *str)
+char	*insert(t_swap *swap, char *str)
 {
 	while (1)
 	{
 		if (!swap->b || ft_stacksize(swap->b) < 1)
 			break ;
 		if (get_closest_sibling(swap->a, *(int *)swap->b->content))
-			str = roll(swap, str);
+			roll(swap, str);
 		else
 			str = reverse_roll(swap, str);
 		ft_printf(str);
 		ft_strdel(&str);
-		str = ft_strnew(1);
+		ft_strnew(1);
 	}
 	return (str);
 }
