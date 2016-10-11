@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/18 04:19:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/11 19:46:46 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/11 22:00:19 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,16 +145,7 @@ int main(int argc, char **argv)
 	input.graph->start->start = 1;
 	input.graph->end->end = 1;
 	ft_printf("=== Graph ========\n");
-	//ft_printf("start room: %s\nend room: %s\n", (char *)input.start->content, (char *)input.end->content);
 	ft_printf("start node: %s\nend node: %s\n", input.graph->start->name, input.graph->end->name);
-	ft_printf("==================\n");
-
-	ft_printf("sizeof(t_node): %u\n", sizeof(t_node));
-
-	ft_printf("=== graph traversal ===\n");
-	// Traverse with each branch to find shortest path
-	//graph_traversal(input.graph->start, NULL, 4);
-	input.graph->end->path_length = 0;
 	compute_pathes(input.graph->end, 0);
 	//graph_traversal(input.graph->start, NULL, 4);
 	ft_printf("=======================\n");

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/19 06:33:28 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/09/19 21:00:20 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/11 21:59:00 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,63 +87,14 @@ t_graph		*new_graph(t_input *input)
 		}
 		ft_strdel(&name);
 		rooms = rooms->next;
-		// Don't pop the queue, we need to output it later !!
-		//ft_queuepop(&rooms);
 		i++;
 	}
 	i = 0;
 	while (i < root.links_count)
 	{
-		if (!root.links[i])
-		{
-			i++;
-			continue ;
-		}
-		//ft_printf("# of connections: %u\n", ft_queuesize(connections));
-		//ft_printf("node %u: %s\n", i, root.links[i]->name);
-		parse_connections(&root, root.links[i]->name, connections);
+		if (root.links[i])
+			parse_connections(&root, root.links[i]->name, connections);
 		i++;
 	}
-
-	// TODO @placeholder
-	// this is just to prevent graph from being empty
-	//graph->start = root.links[0];
-	//graph->end = root.links[0];
-
 	return (graph);
 }
-
-
-
-
-
-
-/*
-t_queue *start;
-t_queue	*current;
-t_queue *previous;
-t_queue *next;
-
-start = links;
-next = links;
-previous = links;
-current = next;
-while (current)
-{
-	next = current->next;
-	if (is_matching_link(node, current))
-	{
-		if (current == start)
-			start = next;
-		previous->next = next;
-		if (previous == current)
-			previous = next;
-		find_nodes(nodes, current);
-		ft_queuepop(&current);
-	}
-	else
-		previous = current;
-	current = next;
-}
-return (start);
-*/
