@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/11 10:55:39 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/11 13:16:19 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/11 19:54:04 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,21 @@ void	compute_pathes(t_node *root, size_t length)
 	t_node *link;
 	size_t	i;
 
-	root->path_length = length;
 	ft_printf("%s: %i\n", root->name, length);
 
 	i = 0;
 	while (i < root->links_count)
 	{
-		// If inside recursive ?
-		// mark neighbourg first, then enter !!
 		link = root->links[i];
 		if (link && link->path_length == 0 && !(link->end || link->start))
+			link->path_length = length + 1;
+		i++;
+	}
+	i = 0;
+	while (i < root->links_count)
+	{
+		link = root->links[i];
+		if (link && link->path_length >= length + 1 && !(link->end || link->start))
 			compute_pathes(link, length + 1);
 		i++;
 	}

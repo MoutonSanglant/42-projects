@@ -16,6 +16,7 @@
 # include <libft.h>
 # include <libftprintf.h>
 
+typedef unsigned int uint;
 
 /*
 ** type:
@@ -24,21 +25,26 @@
 ** 2 -> end
 ** ==========
 ** packing:
-** 8 + 8 + (4 + 4) + ([1 + 1 + {2}] + 2 + 2)
-** --> 30 (lost: 2)
+** 8 + 8 + (4 + 4) + ([1 + 1 + {2}] + {4})
+** --> 32 (lost: 6)
 */
 typedef struct	s_node
 {
 	struct s_node	**links;
 	char			*name;
-	size_t			links_count:16,
-					path_length:16;
-	//size_t			links_count;
-	//size_t			path_length;
+	uint			links_count;
+	uint			path_length;
 	int				start:1,
-					end:1;
+					end:1,
+					ant:1;
 	// x, y
 }				t_node;
+
+typedef struct s_test
+{
+	uint		a;
+
+}	t_test;
 
 typedef struct	s_graph
 {

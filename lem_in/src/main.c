@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/18 04:19:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/11 13:14:53 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/11 19:46:46 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,6 @@ int main(int argc, char **argv)
 
 	if (argc < 1 && !*argv[0])
 		return (1);
-	ft_printf("lem_in\n");
 	ft_bzero(&input, sizeof(t_input));
 	input.ant_count = -1;
 	read_stdin(&parse_input, (void*)&input);
@@ -155,6 +154,7 @@ int main(int argc, char **argv)
 	ft_printf("=== graph traversal ===\n");
 	// Traverse with each branch to find shortest path
 	//graph_traversal(input.graph->start, NULL, 4);
+	input.graph->end->path_length = 0;
 	compute_pathes(input.graph->end, 0);
 	//graph_traversal(input.graph->start, NULL, 4);
 	ft_printf("=======================\n");
