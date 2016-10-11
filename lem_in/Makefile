@@ -33,7 +33,7 @@ SRC_PREFIX = ./src/
 OBJ_PREFIX = ./obj/
 
 SRC	=	main get_next_line read_stdin errors \
-		rooms connections node link graph
+		rooms connections node link graph graph_traversal
 
 ifeq ($(BUILD), Debug)
 	SRC +=

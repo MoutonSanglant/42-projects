@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/18 04:19:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/09/19 20:58:07 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/11 13:14:53 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,12 +135,7 @@ int main(int argc, char **argv)
 	if (argc < 1 && !*argv[0])
 		return (1);
 	ft_printf("lem_in\n");
-	//input.graph = NULL;
-	input.rooms = NULL;
-	input.connections = NULL;
-	input.start = NULL;
-	input.end = NULL;
-	input.state = 0;
+	ft_bzero(&input, sizeof(t_input));
 	input.ant_count = -1;
 	read_stdin(&parse_input, (void*)&input);
 	if (!input.start || !input.end)
@@ -148,10 +143,21 @@ int main(int argc, char **argv)
 	input.graph = new_graph(&input);
 	if (!input.graph->start || !input.graph->end)
 		error("bad input format (start or end commands hidden by duplicate rooms)");
+	input.graph->start->start = 1;
+	input.graph->end->end = 1;
 	ft_printf("=== Graph ========\n");
 	//ft_printf("start room: %s\nend room: %s\n", (char *)input.start->content, (char *)input.end->content);
 	ft_printf("start node: %s\nend node: %s\n", input.graph->start->name, input.graph->end->name);
 	ft_printf("==================\n");
+
+	ft_printf("sizeof(t_node): %u\n", sizeof(t_node));
+
+	ft_printf("=== graph traversal ===\n");
+	// Traverse with each branch to find shortest path
+	//graph_traversal(input.graph->start, NULL, 4);
+	compute_pathes(input.graph->end, 0);
+	//graph_traversal(input.graph->start, NULL, 4);
+	ft_printf("=======================\n");
 	dequeue(input.rooms);
 	dequeue(input.connections);
 	//ft_printf("%s\n", f.str);

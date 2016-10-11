@@ -24,16 +24,20 @@
 ** 2 -> end
 ** ==========
 ** packing:
-** 8 + 8 + (4 i 2 + 2)
-** --> 28 (no loss)
+** 8 + 8 + (4 + 4) + ([1 + 1 + {2}] + 2 + 2)
+** --> 30 (lost: 2)
 */
 typedef struct	s_node
 {
 	struct s_node	**links;
 	char			*name;
-	size_t			links_count;
-	short			x;
-	short			y;
+	size_t			links_count:16,
+					path_length:16;
+	//size_t			links_count;
+	//size_t			path_length;
+	int				start:1,
+					end:1;
+	// x, y
 }				t_node;
 
 typedef struct	s_graph
@@ -80,6 +84,10 @@ t_node	*new_node(char *name, t_queue *links);
 void	connect_nodes(t_node *a, t_node *b);
 void	new_link(t_node *node_a, t_node *node_b);
 void	parse_connections(t_node *graph, char *name, t_queue *connections);
+
+/* =============================== Resolution =============================== */
+void	graph_traversal(t_node *root, t_node *parent, int depth);
+void	compute_pathes(t_node *root, size_t length);
 
 void	error(char *str);
 void	memory_error(void);

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/19 06:34:20 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/09/19 21:02:46 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/11 13:08:07 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,8 @@ static int	match_link(char *node_name, t_queue *link)
 }
 
 /*
-** Doubles in output will result
-** in existing but empty links
-** I will do with it anyway
+** Count links in input
+** allow duplicates
 */
 static int		count_node_links(char *node_name, t_queue *link)
 {
@@ -47,23 +46,57 @@ static int		count_node_links(char *node_name, t_queue *link)
 	return (i);
 }
 
-void		connect_nodes(t_node *a, t_node *b)
+static void	link_to(t_node *a, t_node *b)
 {
-	// There can be doubles in the output,
-	// prevent multiple connections
-	ft_printf("%s-%s\n", a->name, b->name);
-	ft_sprintf(">> connect node '%s' with '%s'\n", a->name, b->name);
+	size_t	i;
+
+	i = 0;
+	while (i < a->links_count)
+	{
+		if (!a->links[i])
+			break;
+		i++;
+	}
+	a->links[i] = b;
 }
 
+/*
+** Create bidirectionnal links
+*/
+void		connect_nodes(t_node *a, t_node *b)
+{
+	t_node	*link;
+	size_t	i;
+
+	link = NULL;
+	i = 0;
+	while (i < a->links_count)
+	{
+		link = a->links[i];
+		if (!link)
+		{
+			i++;
+			continue;
+		}
+		if (ft_strequ(b->name, link->name))
+			return;
+		i++;
+	}
+	link_to(a, b);
+	link_to(b, a);
+	ft_printf("%s-%s\n", a->name, b->name);
+}
+
+/*
+** Since count_node_links allows duplicates,
+** it will allocate more memory than needed
+** when user input is wrong
+*/
 t_node		*new_node(char *name, t_queue *links)
 {
 	t_node	*node;
 	size_t	count;
 
-	/*
-	**  /!\ TODO /!\
-	** Break on duplicate links
-	*/
 	count = count_node_links(name, links);
 	if (count < 1)
 		return NULL;
@@ -71,9 +104,8 @@ t_node		*new_node(char *name, t_queue *links)
 	node->links = (t_node **)ft_memalloc(sizeof(t_node*) * count);
 	node->name = ft_strdup(name);
 	node->links_count = count;
-	node->x = 0;
-	node->y = 0;
-	//ft_printf("new node: '%s'\n", name);
+	//node->x = 0;
+	//node->y = 0;
 
 	return node;
 }

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/19 20:33:18 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/09/19 21:02:34 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/11 10:05:13 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static int	match(char *name, t_queue *connection)
 void		parse_connections(t_node *graph, char *name, t_queue *connections)
 {
 	int side;
-	
+
 	side = 0;
 	while (connections)
 	{
