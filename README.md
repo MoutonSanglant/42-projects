@@ -12,9 +12,11 @@ Projets
 Graphic
 -------
 * fdf (v1) - la 3d a l’état pur
+
 Algo
 ----
 * libftprintf (v1) - le printf du Mouton
+
 System
 ------
 * ls (v1) - optimisé pour fonctionner
