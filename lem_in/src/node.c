@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/19 06:34:20 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/11 13:08:07 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/11 22:00:38 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ t_node		*new_node(char *name, t_queue *links)
 	if (count < 1)
 		return NULL;
 	node = (t_node *)ft_memalloc(sizeof(t_node));
+	ft_bzero(node, sizeof(t_node));
 	node->links = (t_node **)ft_memalloc(sizeof(t_node*) * count);
 	node->name = ft_strdup(name);
 	node->links_count = count;
