@@ -18,7 +18,7 @@ Algo
 ----
 * libftprintf (v1) - le printf du Mouton
 * push_swap (v1) - b a ba
-* lem_in (v0) - traverser un graph n'est pas aussi simple que de traverser la rue
+* lem_in (v0) - on ne traverse pas un graph comme on traverse une rue
 
 System
 ------

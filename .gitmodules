@@ -4,3 +4,6 @@
 [submodule "libftprintf"]
 	path = libftprintf
 	url = https://github.com/moutonsanglant/libftprintf
+[submodule "corewar"]
+	path = corewar
+	url = https://github.com/moutonsanglant/corewar
