@@ -30,15 +30,11 @@ endif
 SRC_PREFIX	= ./src/
 OBJ_PREFIX	= ./obj/
 
-SRC	= main print_fn sort_fn list_fn fetch_args fetch_file_datas read_dir \
-	file_mode_str remove_file_element clear_ls_datas errors
+SRC	=	$(shell ls $(SRC_PREFIX)*.c)
 
 ifeq ($(BUILD), Debug)
 	SRC +=
 endif
-
-SRC := $(addsuffix .c, $(SRC))
-SRC := $(addprefix $(SRC_PREFIX), $(SRC))
 
 OBJ = $(subst $(SRC_PREFIX), , $(SRC:.c=$(SUFFIX)))
 OBJ := $(addprefix $(OBJ_PREFIX), $(OBJ))

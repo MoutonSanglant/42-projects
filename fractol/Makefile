@@ -30,48 +30,11 @@ endif
 SRC_PREFIX	= ./src/
 OBJ_PREFIX	= ./obj/
 
-SRC	=	main \
-		alloc_error \
-		new_mlx_sess \
-		init_mlx_sess \
-		start_mlx_sess \
-		destroy_mlx_sess \
-		draw_loop \
-		draw_square \
-		draw_image \
-		draw_gui \
-		draw_julia \
-		clear_canvas \
-		set_image_pixel \
-		keyrelease \
-		keypress \
-		mouse_event \
-		zoom \
-		expose \
-		bresenham_draw_line \
-		draw_3dgrid \
-		init_grid \
-		init_grid_from_vertmap \
-		matrix \
-		matrix_math \
-		rasterize \
-		camera \
-		inverse_matrix \
-		projection_matrix \
-		identity_matrix \
-		change_grid_z \
-		set_color_scheme \
-		colorsets \
-		colorsets_extra \
-		hex_to_float \
-		hsl_to_rgb
+SRC	=	$(shell ls $(SRC_PREFIX)*.c)
 
 ifeq ($(BUILD), Debug)
 SRC += draw_debug_gui
 endif
-
-SRC := $(addsuffix .c, $(SRC))
-SRC := $(addprefix $(SRC_PREFIX), $(SRC))
 
 OBJ = $(subst $(SRC_PREFIX), , $(SRC:.c=$(SUFFIX)))
 OBJ := $(addprefix $(OBJ_PREFIX), $(OBJ))
