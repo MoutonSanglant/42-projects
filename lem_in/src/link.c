@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/19 20:33:18 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/11 10:05:13 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/21 13:45:06 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 ** 1 = left
 ** 2 = right
 */
-static void		find_nodes(t_node *graph, t_queue *connection, int side)
+/*
+static void		find_nodes(t_node *graph, t_queue *connections)
 {
 	t_node	*a;
 	t_node	*b;
@@ -25,11 +26,10 @@ static void		find_nodes(t_node *graph, t_queue *connection, int side)
 	char	*name_b;
 	size_t	i;
 
-	(void) side;
 	a = NULL;
 	b = NULL;
-	name_b = ft_strchr((char*)connection->content, '-');
-	name_a = ft_strsub((char*)connection->content, 0, name_b - (char *)connection->content);
+	name_b = ft_strchr((char*)connections->content, '-');
+	name_a = ft_strsub((char*)connections->content, 0, name_b - (char *)connections->content);
 	name_b++;
 
 	if (ft_strequ(name_a, name_b))
@@ -50,45 +50,50 @@ static void		find_nodes(t_node *graph, t_queue *connection, int side)
 
 	//ft_printf("connect node '%s' with '%s'\n", name_a, name_b);
 	if (a && b)
-	{
 		connect_nodes(a, b);
-	}
 
 }
+*/
 
-static int	match(char *name, t_queue *connection)
+static t_node	*find_node(char *name, t_node *root)
 {
-	char	*node_a_name;
-	char	*node_b_name;
+	int		i;
 
-	node_b_name = ft_strchr((char*)connection->content, '-');
-	node_a_name = ft_strsub((char*)connection->content, 0, node_b_name - (char *)connection->content);
-	node_b_name++;
-	if (ft_strequ(name, node_a_name))
+	i = 0;
+	while (i < root->links_count)
 	{
-		ft_strdel(&node_a_name);
-		return (1);
+		if (root->links[i] && ft_strequ(root->links[i]->name, name))
+			return (root->links[i]);
+		i++;
 	}
-	else if  (ft_strequ(name, node_b_name))
-	{
-		ft_strdel(&node_a_name);
-		return (2);
-	}
-	ft_strdel(&node_a_name);
-	return (0);
+
+	return (NULL);
 }
 
-void		parse_connections(t_node *graph, char *name, t_queue *connections)
+void		create_node_links(t_node *root, t_node *node, t_queue *connections)
 {
-	int side;
+	t_key			*key;
+	t_node			*to;
+	t_connection	*connection;
 
-	side = 0;
+	if (!node)
+		return ;
 	while (connections)
 	{
-		if ((side = match(name, connections)))
+		to = NULL;
+		key = (t_key *)connections->content;
+		//if (key->type & TYPE_CONNECTION && match(node->name, key->value))
+		if (key->type & TYPE_CONNECTION)
 		{
-			find_nodes(graph, connections, side);
+			connection = (t_connection *)key->value;
+			if (ft_strequ(node->name, connection->from))
+				to = find_node(connection->to, root);
+			else if (ft_strequ(node->name, connection->to))
+				to = find_node(connection->from, root);
+			if (to)
+				connect_nodes(node, to);
 		}
+			//find_nodes(graph, connections);
 		connections = connections->next;
 	}
 }

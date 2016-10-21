@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 14:44:53 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/01/26 01:00:02 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/17 09:11:21 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int		clear_fd_parser(t_list **parser_list, int fd)
 
 	prev = NULL;
 	fd_list = *parser_list;
-	while (((t_parser *)fd_list->content)->fd != fd)
+	while (((t_gnl_parser *)fd_list->content)->fd != fd)
 	{
 		prev = fd_list;
 		fd_list = fd_list->next;
@@ -30,15 +30,15 @@ static int		clear_fd_parser(t_list **parser_list, int fd)
 		prev->next = fd_list->next;
 	if (fd_list == *parser_list)
 		*parser_list = (*parser_list)->next;
-	ft_memdel((void **)&((t_parser *)fd_list->content)->buf);
+	ft_memdel((void **)&((t_gnl_parser *)fd_list->content)->buf);
 	ft_memdel((void **)&fd_list->content);
 	ft_memdel((void **)&fd_list);
 	return (0);
 }
 
-static t_parser	*get_fd_parser(t_list **s_parsers, t_list *parser_list, int fd)
+static t_gnl_parser	*get_fd_parser(t_list **s_parsers, t_list *parser_list, int fd)
 {
-	t_parser	p;
+	t_gnl_parser	p;
 
 	p.fd = fd;
 	p.bs = 0;
@@ -50,7 +50,7 @@ static t_parser	*get_fd_parser(t_list **s_parsers, t_list *parser_list, int fd)
 		return (NULL);
 	}
 	parser_list = *s_parsers;
-	while (((t_parser *)parser_list->content)->fd != fd)
+	while (((t_gnl_parser *)parser_list->content)->fd != fd)
 	{
 		if (!parser_list->next
 				&& (!(p.buf = (char *)ft_memalloc((BUFF_SIZE + 1)))
@@ -62,10 +62,10 @@ static t_parser	*get_fd_parser(t_list **s_parsers, t_list *parser_list, int fd)
 		}
 		parser_list = parser_list->next;
 	}
-	return ((t_parser *)parser_list->content);
+	return ((t_gnl_parser *)parser_list->content);
 }
 
-static int		read_until_eol(t_list **s, t_parser *p, size_t *total_bcount)
+static int		read_until_eol(t_list **s, t_gnl_parser *p, size_t *total_bcount)
 {
 	size_t	eol;
 
@@ -103,10 +103,10 @@ static int		read_until_eol(t_list **s, t_parser *p, size_t *total_bcount)
 static int		get_fd_line(char **line, t_list **s_parsers,
 							int fd, t_list **strings)
 {
-	t_list		*first;
-	t_parser	*parser;
-	size_t		total_bcount;
-	int			r;
+	t_list			*first;
+	t_gnl_parser	*parser;
+	size_t			total_bcount;
+	int				r;
 
 	r = 0;
 	total_bcount = 0;

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/18 17:39:21 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/09/19 20:49:58 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/19 02:57:05 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,64 @@ static int	valid_str(char *str)
 	return (0);
 }
 
-int			new_connection(t_queue **connections, char *line)
+static int	is_duplicate(t_queue *queue, char *from, char *to)
 {
-	t_queue	*connection;
+	t_connection	*connection;
+	t_key			*key;
+	int				match_a;
+	int				match_b;
+
+	while (queue)
+	{
+		key = (t_key *)queue->content;
+		if (key->type & TYPE_CONNECTION)
+		{
+			match_a = 0;
+			match_b = 0;
+			//ft_printf("connection type: %i\n", ((t_key *)queue->content)->type);
+			//if (!(((t_key *)queue->content)->type & TYPE_CONNECTION))
+			connection = (t_connection *)((t_key *)queue->content)->value;
+			match_a |= ft_strequ(from, connection->from);
+			match_a |= ft_strequ(from, connection->to);
+			match_b |= ft_strequ(to, connection->from);
+			match_b |= ft_strequ(to, connection->to);
+			if (match_a && match_b)
+				return (1);
+		}
+		queue = queue->next;
+	}
+	return (0);
+}
+
+int			new_connection(t_queue **queue, char *line)
+{
+	t_connection	*connection;
+	t_queue			*el;
+	t_key			key;
+	char	**split;
 
 	if (valid_str(line))
 	{
-		connection = ft_queuenew((void *)line, ft_strlen(line) + 1);
-		if (!*connections)
-			*connections = connection;
+		split = ft_strsplit(line, '-');
+
+		if (is_duplicate((*queue)->next, split[0], split[1]))
+		{
+			ft_memdel((void *)&split[0]);
+			ft_memdel((void *)&split[1]);
+			ft_memdel((void *)&split);
+			return (1);
+		}
+		connection = (t_connection *)malloc(sizeof(t_connection));
+		connection->from = split[0];
+		connection->to = split[1];
+		ft_memdel((void *)&split);
+		key.type = TYPE_CONNECTION;
+		key.value = (void *)connection;
+		el = ft_queuenew((void *)&key, sizeof(t_key));
+		if (!*queue)
+			*queue = el;
 		else
-			ft_queuepush(*connections, connection);
+			ft_queuepush(*queue, el);
 		return (1);
 	}
 	return (0);

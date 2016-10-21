@@ -16,12 +16,12 @@
 # include <libft.h>
 # define BUFF_SIZE 32
 
-typedef struct	s_parser
+typedef struct	s_gnl_parser
 {
 	int		fd;
 	long	bs;
 	char	*buf;
-}				t_parser;
+}				t_gnl_parser;
 
 int				get_next_line(int const fd, char **line);
 #endif

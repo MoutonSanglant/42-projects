@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/18 14:45:21 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/09/18 17:10:15 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/17 08:36:14 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 #include "get_next_line.h"
 
 /*
-** Generic stdin reader with callback
+** Generic stdin reader with callback 'read_line'
 */
-void read_stdin(int (callback)(char *, void *), void *st)
+void read_stdin(int (read_line)(char *, void *), void *st)
 {
 	char	*line;
 	int		r;
@@ -26,17 +26,12 @@ void read_stdin(int (callback)(char *, void *), void *st)
 	{
 		if (r > 0)
 		{
-			if (callback(line, st))
-				ft_memdel((void **)&line);
-			else
-			{
-				ft_memdel((void **)&line);
+			r = read_line(line, st);
+			ft_memdel((void **)&line);
+			if (!r)
 				break ;
-			}
 		}
 		else
-		{
-			memory_error();
-		}
+			memerror();
 	}
 }

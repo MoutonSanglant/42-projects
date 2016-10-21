@@ -1,28 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/14 12:15:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/17 09:56:09 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/10/21 13:03:53 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/10/21 15:40:52 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void	error(char *str)
+void	mark_all_path(t_graph *graph, t_node *root, int w)
 {
-	ft_putendl("ERROR");
-	ft_putstr_fd("lem-in: ", 2);
-	ft_putendl_fd(str, 2);
-	exit(1);
-}
+	t_node	*link;
+	int		i;
 
-void	memerror(void)
-{
-	ft_putendl("ERROR");
-	perror("lem_in");
-	exit(2);
+	i = -1;
+	while (++i < root->links_count)
+	{
+		link = root->links[i];
+		if (link && (link->weight == 0 || link->weight > w + 1))
+			link->weight = w + 1;
+	}
+	i = -1;
+	while (++i < root->links_count)
+	{
+		link = root->links[i];
+		if (link && link->weight >= w)
+			mark_all_path(graph, link, w + 1);
+	}
 }

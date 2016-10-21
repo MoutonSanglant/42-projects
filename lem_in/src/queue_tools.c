@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   queue_tools.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/14 12:15:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/17 09:56:09 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/10/18 23:00:48 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/10/18 23:09:34 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void	error(char *str)
+void	queue_add_key(t_queue **queue, t_key *key)
 {
-	ft_putendl("ERROR");
-	ft_putstr_fd("lem-in: ", 2);
-	ft_putendl_fd(str, 2);
-	exit(1);
-}
+	t_queue	*el;
 
-void	memerror(void)
-{
-	ft_putendl("ERROR");
-	perror("lem_in");
-	exit(2);
+	el = ft_queuenew((void *)key, sizeof(t_key));
+	if (!*queue)
+		*queue = el;
+	else
+		ft_queuepush(*queue, el);
 }

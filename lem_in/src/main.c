@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/18 04:19:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/11 22:00:19 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/21 15:51:48 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,82 +76,60 @@
 ** exit
 */
 
-
-
-
-static void	dequeue(t_queue *queue)
+static void	print_room(t_room *room)
 {
-	//ft_printf("queue size: %o\n", ft_queuesize(queue));
+	//ft_printf("room: %s %i %i\n", room->name, room->x, room->y);
+	ft_printf("%s %i %i\n", room->name, room->x, room->y);
+}
+
+
+static void	print_connection(t_connection *connection)
+{
+	//ft_printf("connection: %s-%s\n", connection->from, connection->to);
+	ft_printf("%s-%s\n", connection->from, connection->to);
+}
+
+
+static void	print_anthill(t_parser *parser)
+{
+	t_queue		*queue;
+	t_key		*key;
+
+	queue = parser->queue;
+	ft_printf("%i\n", parser->ants_count);
 	while (queue)
 	{
-		//ft_printf("%s: %s\n", str, (char *)queue->content);
-		//ft_printf("%s\n", (char *)queue->content);
+		key = (t_key *)queue->content;
+
+		if (key->type & TYPE_COMMENT)
+			ft_printf("%s\n", (char *)key->value);
+		else if (key->type & TYPE_ROOM)
+			print_room((t_room *)key->value);
+		else if (key->type & TYPE_CONNECTION)
+			print_connection((t_connection *)key->value);
+		ft_memdel((void *)&key->value);
+		ft_memdel((void *)&queue->content);
 		ft_queuepop(&queue);
 	}
+	write(1, "\n", 1);
 }
 
-
-static int	get_command(char *str)
+int main(void)
 {
-	if (ft_strequ(str, "#start"))
-		return (1);
-	if (ft_strequ(str, "#end"))
-		return (2);
-	return (0);
-}
+	t_parser	parser;
+	t_graph		graph;
 
-static int	parse_input(char *line, void *st)
-{
-	t_input		*input;
-	static int	command = 0;
-
-	input = (t_input *)st;
-	if (line[0] == 'L')
-		return (0);
-	if (line[0] == '#')
-	{
-		command = get_command(&line[1]);
-		return (1);
-	}
-	if (input->state == 0)
-	{
-		input->ant_count = ft_atoi(line);
-		if (input->ant_count < 1)
-			error("ant_count < 1");
-		input->state++;
-	}
-	else if (input->state == 1 && !new_room(input, line, command))
-		input->state++;
-	if (input->state == 2 && !new_connection(&input->connections, line))
-		input->state++;
-	command = 0;
-	return ((input->state) != 3);
-}
-
-int main(int argc, char **argv)
-{
-	t_input	input;
-
-	if (argc < 1 && !*argv[0])
-		return (1);
-	ft_bzero(&input, sizeof(t_input));
-	input.ant_count = -1;
-	read_stdin(&parse_input, (void*)&input);
-	if (!input.start || !input.end)
-		error("missing start or end room");
-	input.graph = new_graph(&input);
-	if (!input.graph->start || !input.graph->end)
-		error("bad input format (start or end commands hidden by duplicate rooms)");
-	input.graph->start->start = 1;
-	input.graph->end->end = 1;
-	ft_printf("=== Graph ========\n");
-	ft_printf("start node: %s\nend node: %s\n", input.graph->start->name, input.graph->end->name);
-	compute_pathes(input.graph->end, 0);
-	//graph_traversal(input.graph->start, NULL, 4);
-	ft_printf("=======================\n");
-	dequeue(input.rooms);
-	dequeue(input.connections);
-	//ft_printf("%s\n", f.str);
-	ft_printf("exit\n");
+	ft_bzero(&graph, sizeof(t_graph));
+	ft_bzero(&parser, sizeof(t_parser));
+	parser.ants_count = -1;
+	read_stdin(&parse_line, (void*)&parser);
+	new_graph(&graph, &parser);
+	print_anthill(&parser);
+	graph.end->weight = -1;
+	graph.end->state = STATE_END;
+	graph.start->state = STATE_START;
+	graph.ants_count = parser.ants_count;
+	mark_all_path(&graph, graph.end, 0);
+	resolve(&graph);
 	return (0);
 }

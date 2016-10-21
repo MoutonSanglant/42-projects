@@ -16,86 +16,165 @@
 # include <libft.h>
 # include <libftprintf.h>
 
+# define ERR_MISSING_ROOM "missing start or end room"
+# define ERR_BAD_FORMAT "bad parser format (start or end commands hidden by \
+duplicate rooms)"
+# define ERR_INVALID_ANT_LINE "ant line format error"
+# define ERR_INVALID_ANT_NUMBER "ant_count < 1"
+# define ERR_L_PREFIX "a room name starts with a L"
+
+#define CMD_START 1
+#define CMD_END 2
+#define CMD_UNKNOWN 3
+#define CMD_COMMENT 0
+
+typedef enum	e_type
+{
+	TYPE_INVALID = 0x0,
+	TYPE_ROOM = 0x1,
+	TYPE_CONNECTION = 0x2,
+	TYPE_START = 0x4,
+	TYPE_END = 0x8,
+	TYPE_COMMENT = 0x20
+}				t_type;
+
+typedef enum	e_state
+{
+	STATE_EMPTY = 0x0,
+	STATE_BUSY = 0x1,
+	STATE_START = 0x2,
+	STATE_END = 0x4
+}				t_state;
+
 typedef unsigned int uint;
 
+typedef struct	s_node t_node;
+
 /*
-** type:
-** 0 -> normal
-** 1 -> start
-** 2 -> end
-** ==========
-** packing:
-** 8 + 8 + (4 + 4) + ([1 + 1 + {2}] + {4})
-** --> 32 (lost: 6)
+** 8 + 8 + (4 + 4) + (4 + 4) + (4)
+** size: 40
+** lost: 4
 */
-typedef struct	s_node
+struct			s_node
 {
-	struct s_node	**links;
-	char			*name;
-	uint			links_count;
-	uint			path_length;
-	int				start:1,
-					end:1,
-					ant:1;
-	// x, y
-}				t_node;
+	char		*name;
+	t_node		**links;
+	int			links_count;
+	int			weight;
+	int			x;
+	int			y;
+	t_state		state;
+};
 
-typedef struct s_test
+typedef struct	s_ant
 {
-	uint		a;
+	char		*name;
+	t_node		*room;
+}				t_ant;
 
-}	t_test;
+typedef struct	s_room
+{
+	char	*name;
+	int		x;
+	int		y;
+}				t_room;
 
+typedef struct	s_connection
+{
+	char	*from;
+	char	*to;
+}				t_connection;
+
+typedef struct	s_key
+{
+	t_type	type;
+	void	*value;
+}				t_key;
+
+/*
+** 8 + 8 + 8 + (4 + 0)
+** size: 32
+** lost: 4
+*/
 typedef struct	s_graph
 {
 	t_node		*start;
 	t_node		*end;
-
-}				t_graph;
-
-typedef struct	s_ant
-{
-	t_node		*room;
-}				t_ant;
+	t_ant		**ants;
+	int			ants_count;
+}
+t_graph;
 
 /*
-** state:
-** 0 -> read_ant_count
-** 1 -> read_rooms
-** 2 -> read_connections
-** 3 -> done
-** packing:
-** 8 + 8 + 8 + (4 + 4)
-** --> 32 (no loss)
+** 8 + 8 + (4 + 4) + (4 + 0)
+** size: 32
+** lost: 4
 */
-typedef struct	s_input
+typedef struct	s_parser
 {
-	t_graph	*graph;
-	t_queue	*rooms;
+	t_queue	*queue;
 	t_queue	*connections;
-	t_queue *start;
-	t_queue *end;
-	int		ant_count;
-	int		state;
-}				t_input;
+	t_type	command;
+	int		ants_count;
+	int		rooms_count;
+}				t_parser;
 
-void	read_stdin(int (callback)(char *, void *), void *st);
+/*
+** =============================== read_stin.c ==============================
+*/
+void	read_stdin(int (read_line)(char *, void *), void *st);
 
-int		new_room(t_input *input, char *line, int command);
-int		new_connection(t_queue **connections, char *line);
+/*
+** ================================= rooms.c ================================
+*/
+int		new_room(t_queue **queue, char *line, t_type type);
 
-/* ================================= Graphs ================================= */
-t_graph	*new_graph(t_input *input);
-t_node	*new_node(char *name, t_queue *links);
+/*
+** =============================== connection.c =============================
+*/
+int		new_connection(t_queue **queue, char *line);
+
+/*
+** ================================ parser.c ================================
+*/
+int		parse_line(char *line, void *st);
+
+/*
+** ============================== queue_tools.c =============================
+*/
+void	queue_add_key(t_queue **queue, t_key *key);
+
+
+/*
+** ================================= graph.c =================================
+*/
+void	new_graph(t_graph *graph, t_parser *parser);
+
+/*
+** ================================= node.c =================================
+*/
+t_node	*new_node(t_room *room, t_queue *links);
 void	connect_nodes(t_node *a, t_node *b);
-void	new_link(t_node *node_a, t_node *node_b);
-void	parse_connections(t_node *graph, char *name, t_queue *connections);
 
-/* =============================== Resolution =============================== */
-void	graph_traversal(t_node *root, t_node *parent, int depth);
-void	compute_pathes(t_node *root, size_t length);
+/*
+** ================================= link.c =================================
+*/
+void	create_node_links(t_node *graph, t_node *node, t_queue *connections);
 
+/*
+** ================================= path.c =================================
+*/
+void	mark_all_path(t_graph *graph, t_node *root, int weight);
+
+/*
+** ================================ resolve.c ===============================
+*/
+void	resolve(t_graph *graph);
+
+/*
+** ================================ errors.c ================================
+*/
 void	error(char *str);
-void	memory_error(void);
+void	memerror(void);
 
 #endif
