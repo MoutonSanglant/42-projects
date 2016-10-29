@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 16:54:45 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/06 04:28:33 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/29 06:42:42 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	clear_canvas(t_mlx_st *mlx, int clear_color)
 		xy.y = 0;
 		while (xy.y < canvas->height)
 		{
-			set_image_pixel(mlx, mlx->canvas, clear_color, &xy);
+			set_image_pixel(mlx, canvas, clear_color, &xy);
 		//	mlx->zbuffer[xy.x + xy.y * (canvas->width)] = FLT_MAX;
 			xy.y++;
 		}
