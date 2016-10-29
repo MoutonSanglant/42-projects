@@ -17,11 +17,13 @@
 # include <libftprintf.h>
 
 # define ERR_MISSING_ROOM "missing start or end room"
+# define ERR_HIDDEN_ROOM "start or end room is hidden by multiple records"
 # define ERR_BAD_FORMAT "bad parser format (start or end commands hidden by \
 duplicate rooms)"
 # define ERR_INVALID_ANT_LINE "ant line format error"
 # define ERR_INVALID_ANT_NUMBER "ant_count < 1"
 # define ERR_L_PREFIX "a room name starts with a L"
+# define ERR_NO_LINK "no link between START & END"
 
 #define CMD_START 1
 #define CMD_END 2
@@ -40,10 +42,11 @@ typedef enum	e_type
 
 typedef enum	e_state
 {
-	STATE_EMPTY = 0x0,
-	STATE_BUSY = 0x1,
-	STATE_START = 0x2,
-	STATE_END = 0x4
+	STATE_INVALID = 0x0,
+	STATE_VALID = 0x1,
+	STATE_BUSY = 0x2,
+	STATE_START = 0x4,
+	STATE_END = 0x8
 }				t_state;
 
 typedef unsigned int uint;
@@ -52,8 +55,7 @@ typedef struct	s_node t_node;
 
 /*
 ** 8 + 8 + (4 + 4) + (4 + 4) + (4)
-** size: 40
-** lost: 4
+** = 40 {4}
 */
 struct			s_node
 {
@@ -66,12 +68,20 @@ struct			s_node
 	t_state		state;
 };
 
+/*
+** 8 + 8
+** = 16 {-}
+*/
 typedef struct	s_ant
 {
 	char		*name;
 	t_node		*room;
 }				t_ant;
 
+/*
+** 8 + (4 + 4)
+** = 16 {-}
+*/
 typedef struct	s_room
 {
 	char	*name;
@@ -79,22 +89,29 @@ typedef struct	s_room
 	int		y;
 }				t_room;
 
+/*
+** 8 + 8
+** = 16 {-}
+*/
 typedef struct	s_connection
 {
 	char	*from;
 	char	*to;
 }				t_connection;
 
+/*
+** 8 + 4
+** = 16 {4}
+*/
 typedef struct	s_key
 {
-	t_type	type;
 	void	*value;
+	t_type	type;
 }				t_key;
 
 /*
-** 8 + 8 + 8 + (4 + 0)
-** size: 32
-** lost: 4
+** 8 + 8 + 8 + (4 + 4)
+** = 32 {-}
 */
 typedef struct	s_graph
 {
@@ -102,13 +119,13 @@ typedef struct	s_graph
 	t_node		*end;
 	t_ant		**ants;
 	int			ants_count;
+	int			sleeping_ants;
 }
 t_graph;
 
 /*
-** 8 + 8 + (4 + 4) + (4 + 0)
-** size: 32
-** lost: 4
+** 8 + 8 + (4 + 4) + (4)
+** = 32 {4}
 */
 typedef struct	s_parser
 {
@@ -164,7 +181,7 @@ void	create_node_links(t_node *graph, t_node *node, t_queue *connections);
 /*
 ** ================================= path.c =================================
 */
-void	mark_all_path(t_graph *graph, t_node *root, int weight);
+int		mark_all_path(t_node *root, int weight, t_graph *graph);
 
 /*
 ** ================================ resolve.c ===============================

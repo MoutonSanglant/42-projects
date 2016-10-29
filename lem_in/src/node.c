@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/19 06:34:20 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/21 13:45:25 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/28 21:51:52 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ t_node		*new_node(t_room *room, t_queue *links)
 	ft_bzero(node, sizeof(t_node));
 	node->links = (t_node **)ft_memalloc(sizeof(t_node *) * count);
 	node->name = room->name;
+	node->state = STATE_INVALID;
 	node->links_count = count;
 	node->x = room->x;
 	node->y = room->y;
