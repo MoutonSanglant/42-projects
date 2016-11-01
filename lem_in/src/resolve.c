@@ -6,56 +6,11 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/21 13:59:13 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/29 05:38:18 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/29 05:42:06 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-
-/*
-** Works fine with 2 root path
-** Could be improved for n-root path:
-** for each path, store its length, 
-*/
-/*
-static t_node	*find_best_path(t_node *room, t_graph *graph)
-{
-	t_node	*path;
-	t_node	*dest;
-	int		path_count;
-	int		i;
-	int		busy_count;
-	int		best_path;
-
-	best_path = 0;
-	i = -1;
-	path = NULL;
-	path_count = 0;
-	busy_count = 0;
-	while (++i < room->links_count)
-	{
-		dest = room->links[i];
-		if (!dest || dest->state == STATE_INVALID || dest->state & STATE_START)
-			continue ;
-		path_count++;
-		if (dest->state & STATE_BUSY)
-		{
-			best_path += dest->weight;
-			busy_count++;
-			continue ;
-		}
-		if (!path)
-			path = dest;
-		else if (dest->weight < path->weight)
-			path = dest;
-	}
-	if (path && room->state & STATE_START
-			&& busy_count > 0
-			&& path_count >= 2
-			&& graph->sleeping_ants < path->weight - best_path)
-		path = NULL;
-	return (path);
-}*/
 
 static void		sort(t_node **path_list)
 {
