@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:02:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/30 18:19:18 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/30 10:59:52 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,8 @@ static void		*get_fractal_fn(char *name, t_fractol_st *fractol)
 	fn = NULL;
 	if (ft_strequ(name, "mandelbrot"))
 	{
-		fn = &draw_julia;
+		//fn = &draw_julia;
+		fn = &draw_mandel;
 		fractol->capture_mouse_position = 0;
 		fractol->name = "Mandelbrot";
 	}
@@ -157,6 +158,7 @@ int				main(int argc, char **argv)
 	mlx->viewport.pos.y = 0;
 	mlx->viewport.size.x = 2.f;
 	mlx->viewport.size.y = 2.f;
+	set_viewport(mlx);
 	mlx->modifiers.shift = 0;
 	mlx->modifiers.ctrl = 0;
 	init_mlx_sess(mlx);

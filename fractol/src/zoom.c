@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/30 18:20:35 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/30 18:42:42 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/30 10:58:21 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	center_to_point(t_mlx_st *mlx, int x, int y)
 
 void		zoom_in(t_mlx_st *mlx, int x, int y)
 {
-	ft_printf("[zoom]  x:, %i, y: %i\n", x, y);
+	//ft_printf("[zoom]  x:, %i, y: %i\n", x, y);
 	//mlx->viewport.zoom_level *= 2.f;
 	center_to_point(mlx, x, y);
 	mlx->viewport.zoom_level *= 1.1f;

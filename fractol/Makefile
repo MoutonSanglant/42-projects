@@ -33,7 +33,7 @@ OBJ_PREFIX	= ./obj/
 SRC	=	$(shell ls $(SRC_PREFIX)*.c)
 
 ifeq ($(BUILD), Debug)
-SRC += draw_debug_gui
+	SRC	+= $(shell ls $(SRC_PREFIX)debug/*.c)
 endif
 
 OBJ = $(subst $(SRC_PREFIX), , $(SRC:.c=$(SUFFIX)))
@@ -59,6 +59,7 @@ libft:
 $(OBJ_PREFIX)%$(SUFFIX): $(SRC_PREFIX)%.c
 	@echo "making $<"
 	@mkdir -p $(OBJ_PREFIX)
+	@mkdir -p $(OBJ_PREFIX)debug/
 	@$(CC) -o $@ -c $< $(CFLAGS)
 
 clean:

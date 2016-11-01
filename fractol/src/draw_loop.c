@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:16:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/29 07:22:29 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/31 22:17:33 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,19 @@ int			draw_loop(void *p)
 		fps = (double)frames / (double)tval_now.tv_sec + (double)tval_now.tv_usec / 1000000;
 		frames = 0;
 		gettimeofday(&mlx->last_tval, NULL);
+		mlx->need_update = 1;
 	}
-	clear_canvas(mlx, mlx->options.bg_color);
-	mlx->draw_fn(mlx);
-	mlx_put_image_to_window(mlx->sess, mlx->win, mlx->canvas->img, 0, 0);
+	//clear_canvas(mlx, mlx->options.bg_color);
 	//draw_3dgrid(mlx);
 	//TODO use ft_snprinf
-	snprintf(str, 7, "%2.2i FPS", (int)fps);
-	mlx_string_put(mlx->sess, mlx->win, mlx->canvas->width - 100, 20, WHITE, str);
-	mlx->need_update = 0;
+	if (mlx->need_update)
+	{
+		mlx->draw_fn(mlx);
+		mlx_put_image_to_window(mlx->sess, mlx->win, mlx->canvas->img, 0, 0);
+		snprintf(str, 7, "%2.2i FPS", (int)fps);
+		mlx_string_put(mlx->sess, mlx->win, mlx->canvas->width - 100, 20, WHITE, str);
+		mlx->need_update = 0;
+	}
 	return (0);
 }
 

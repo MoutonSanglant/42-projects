@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:14:47 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/07/12 19:18:13 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/30 10:56:09 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	loop_colorschemes(t_fractol_st *fractol, int modifier)
 
 static void	fractol_shift_events(int key, t_fractol_st *fractol)
 {
-	ft_printf("key: %i; star: %i\n", key, KEY_STAR);
+	//ft_printf("key: %i; star: %i\n", key, KEY_STAR);
 	if (key == KEY_H)
 		fractol->hue += 0.01f;
 	else if (key == KEY_S)
@@ -118,5 +118,6 @@ int			keypress(int key, void *p)
 		fractol_shift_events(key, ((t_fractol_st *)mlx->datas));
 	else
 		fractol_events(key, ((t_fractol_st *)mlx->datas));
+	set_viewport(mlx);
 	return (0);
 }

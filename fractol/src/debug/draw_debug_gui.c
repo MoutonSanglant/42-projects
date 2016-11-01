@@ -6,11 +6,11 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 14:41:41 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/04 00:44:05 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/30 13:04:11 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include "../fractol.h"
 
 static char		*strjoinat(const char *s1, const char *s2, int idx)
 {

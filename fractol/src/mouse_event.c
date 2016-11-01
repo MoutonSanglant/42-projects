@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/28 04:37:47 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/30 18:42:45 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/30 10:58:51 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ int				mouse_click_event(int button, int x, int y, void *p)
 	int			mouse_capture;
 
 	mlx = (t_mlx_st *)p;
-	ft_printf("[mouse] x:, %i, y: %i\n", x, y);
-	ft_printf("[size ] x:, %i, y: %i\n", mlx->canvas->width, mlx->canvas->height);
+//	ft_printf("[mouse] x:, %i, y: %i\n", x, y);
+//	ft_printf("[size ] x:, %i, y: %i\n", mlx->canvas->width, mlx->canvas->height);
 	x = x - (int)mlx->canvas->width / 2;
 	y = y - (int)mlx->canvas->height / 2;
 	mouse_capture = ((t_fractol_st *)mlx->datas)->capture_mouse_position;

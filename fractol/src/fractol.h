@@ -181,6 +181,12 @@ typedef struct	s_viewport
 	t_vec2f		pos;
 	t_vec2f		size;
 	double		zoom_level;
+	double		x_max;
+	double		x_min;
+	double		y_max;
+	double		y_min;
+	double		step_x;
+	double		step_y;
 }				t_viewport;
 
 typedef struct	s_fractol_st t_fractol_st;
@@ -353,6 +359,14 @@ int				keyrelease(int key, void *p);
 int				mouse_click_event(int button, int x, int y, void *p);
 int				mouse_motion_event(int x, int y, void *p);
 
+/*
+**								: viewport.c :
+*/
+void			set_viewport(t_mlx_st *mlx);
+
+/*
+**								: zoom.c :
+*/
 void			zoom_in(t_mlx_st *mlx, int x, int y);
 void			zoom_out(t_mlx_st *mlx, int x, int y);
 

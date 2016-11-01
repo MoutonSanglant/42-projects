@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/28 01:45:27 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/29 07:23:50 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/10/31 23:34:38 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,10 @@ static void	draw_viewport_point(t_mlx_st *mlx, double x, double y, int color,
 **	Some more reading:
 **		http://linas.org/art-gallery/escape/escape.html
 */
-
-static int	mandel(double complex Z, double complex C, int depth, int max_iterations)
+//static int	mandel(double complex Z, double complex C, int depth, int max_iterations)
+static int	mandel(double c1, double c2, int depth, int max_iterations)
 {
+	/*
 	double		modulus;
 	double		escape_radius = 20.f;
 	double		z_real;
@@ -55,9 +56,61 @@ static int	mandel(double complex Z, double complex C, int depth, int max_iterati
 			break;
 	}
 	return (depth);
+	*/
+	/*/
+	//  BURNING SHEEP
+	double		modulus;
+	double		escape_radius = 200.f;
+	double		a;
+	double		b;
+	double		a_;
+	double		b_;
+
+	(void)max_iterations;
+	a = 0;
+	b = 0;
+	while (1)
+	{
+		a_ = a;
+		b_ = b;
+		a = a_ * a_ - b_ * b_ + c1; // Z
+		b = 2 * a_ * b_ + c2; // C
+		a = (a < 0) ? -a : a;
+		b = (b < 0) ? -b : b;
+		modulus = a + b;
+		depth++;
+		//if (modulus > escape_radius || depth > max_iterations)
+		if (modulus > escape_radius || depth > 100)
+			break;
+	}
+	return (depth);
+	//*/
+	double		modulus;
+	double		escape_radius = 20.f;
+	double		a;
+	double		b;
+	double		a_;
+	double		b_;
+
+	a = 0;
+	b = 0;
+	while (1)
+	{
+		a_ = a;
+		b_ = b;
+		a = a_ * a_ - b_ * b_ + c1; // Z
+		b = 2 * a_ * b_ + c2; // C
+		modulus = fabs(a) + fabs(b);
+		depth++;
+		if (modulus > escape_radius || depth > max_iterations)
+			break;
+	}
+	//return ((depth < 20) ? 0 : 100);
+	return (depth);
+	//*/
 }
 
-
+/*
 static void	draw_mandel_img(t_mlx_st *mlx)
 {
 	double	i;
@@ -100,11 +153,41 @@ static void	draw_mandel_img(t_mlx_st *mlx)
 		j = y_min;
 		while (j < y_max)
 		{
+	//f[z_] := z^2+C;
 			draw_viewport_point(mlx, i - x_min, j - y_min,
 									mandel(C, CMPLX(i, j), 0, max_iterations), colorset);
 			j += step_y;
 		}
 		i += step_x;
+	}
+}
+*/
+
+static void draw_mandel2(t_mlx_st *mlx)
+{
+	//double complex	Z = CMPLX(0, 0);
+	double	i;
+	double	j;
+	int		(*colorset)(int, t_fractol_st *);
+	int		max_iterations;
+
+	colorset = ((t_fractol_st *)mlx->datas)->color_fn;
+	max_iterations = ((t_fractol_st *)mlx->datas)->max_iterations;
+	i = mlx->viewport.x_min;
+	while (i < mlx->viewport.x_max)
+	{
+		j = mlx->viewport.y_min;
+		while (j < mlx->viewport.y_max)
+		{
+			// f[{a_, b_}] := {a*a - b*b + c1, 2*a*b + c2}]
+			draw_viewport_point(mlx, i - mlx->viewport.x_min, j - mlx->viewport.y_min,
+									mandel(i, j, 0, max_iterations), colorset);
+									//mandel(Z, CMPLX(i, j), 0, max_iterations), colorset);
+			j += mlx->viewport.step_y;
+			//j += 0.01;
+		}
+		i += mlx->viewport.step_x;
+		//i += 0.01;
 	}
 }
 
@@ -113,7 +196,8 @@ void	draw_mandel(t_mlx_st *mlx)
 	char	*str;
 
 	ft_asprintf(&str, "Number of iterations: %i", ((t_fractol_st *)mlx->datas)->max_iterations);
-	draw_mandel_img(mlx);
+	//draw_mandel_img(mlx);
+	draw_mandel2(mlx);
 	mlx_string_put(mlx->sess, mlx->win, 10, mlx->canvas->height - 60, WHITE, str);
 	mlx_string_put(mlx->sess, mlx->win, 10, mlx->canvas->height - 30, WHITE, "Press ? for help");
 	ft_strdel(&str);
