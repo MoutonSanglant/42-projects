@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/21 13:03:53 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/29 00:26:39 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/04 09:41:28 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,12 @@ int		mark_all_path(t_node *root, int w, t_graph *graph)
 	t_node	*link;
 	t_node	*shortest_path;
 	int		smallest_depth;
-	int		links_count;
 	int		depth;
 	int		i;
 
 	if (root == graph->start)
 		return (w);
-	links_count = mark_neighbourgs(root, w + 1);
+	mark_neighbourgs(root, w + 1);
 	i = -1;
 	depth = w;
 	smallest_depth = INT_MAX;
