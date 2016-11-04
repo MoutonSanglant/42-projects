@@ -39,22 +39,28 @@ endif
 OBJ = $(subst $(SRC_PREFIX), , $(SRC:.c=$(SUFFIX)))
 OBJ := $(addprefix $(OBJ_PREFIX), $(OBJ))
 
-.PHONY: all clean fclean re libft debug
+.PHONY: all clean fclean re libft libftprintf debug
 
 all: $(NAME)
 
 debug:
 	@$(MAKE) BUILD=Debug all
 
-$(NAME): $(OBJ) libft/libft.a
+$(NAME): $(OBJ) libft/libft.a libftprintf/libftprintf.a
 	@echo "making $@"
 	$(CC) -o $(NAME) $(OBJ) $(CFLAGS) $(LDFLAGS) $(LDLIBS)
 
 libft/libft.a: libft
 
+libftprintf/libftprintf.a: libftprintf
+
 libft:
 	@echo "making $@"
 	@$(MAKE) -C libft BUILD=$(BUILD)
+
+libftprintf:
+	@echo "making $@"
+	@$(MAKE) -C libftprintf BUILD=$(BUILD)
 
 $(OBJ_PREFIX)%$(SUFFIX): $(SRC_PREFIX)%.c
 	@echo "making $<"

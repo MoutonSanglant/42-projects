@@ -42,7 +42,7 @@
 # define MAX_HEIGHT	900
 # define GUI_LINE_HEIGHT 18
 
-# define MAX_ITERATIONS 100
+# define MAX_ITERATIONS 1000
 
 # ifdef BONUS
 #  include <float.h>
