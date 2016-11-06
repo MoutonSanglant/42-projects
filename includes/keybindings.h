@@ -1,6 +1,12 @@
 #ifndef KEYBINDINGS_H
 # define KEYBINDINGS_H
 
+typedef enum	e_key_mod
+{
+	KEY_MODIFIER_SHIFT = 0x1,
+	KEY_MODIFIER_CTRL = 0x2
+}				t_key_mod;
+
 # ifdef LINUX
 #  include "../includes/linux/mlx.h"
 #  include "../includes/linux/mlx_int.h"
