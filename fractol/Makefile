@@ -76,4 +76,10 @@ fclean: clean
 	/bin/rm -f $(NAME)
 	$(MAKE) -C libft fclean
 
+cclean:
+	/bin/rm -rf $(OBJ_PREFIX)
+	/bin/rm -f $(NAME)
+
 re: fclean all
+
+rre: cclean all

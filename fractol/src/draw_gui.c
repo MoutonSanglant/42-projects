@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/04 00:28:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/04 01:18:17 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/06 12:41:43 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void		draw_gui(t_mlx_st *mlx)
 	void	*w;
 	int		line;
 
-	if (!mlx->options.tooltip)
+	if (!mlx->settings.tooltip)
 		return ;
 	line = 1;
 	s = mlx->sess;

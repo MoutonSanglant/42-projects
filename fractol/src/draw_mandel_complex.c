@@ -1,21 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_julia.c                                       :+:      :+:    :+:   */
+/*   draw_mandel_complex.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/05/28 04:20:40 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/06 16:58:47 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/11/06 12:59:31 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/11/06 17:32:25 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
-
-/*
-** Some reading:
-**	http://world.mathigon.org/Fractals
-*/
 
 static void	draw_viewport_point(t_mlx_st *mlx, double x, double y, int color,
 							int (color_fn)(int, t_fractol_st *))
@@ -33,10 +28,8 @@ static void	draw_viewport_point(t_mlx_st *mlx, double x, double y, int color,
 }
 
 /*
-**	Some more reading:
-**		http://linas.org/art-gallery/escape/escape.html
+** f[z_] := z^2+C;
 */
-
 static int	mandel(double complex Z, double complex C, int depth, int max_depth)
 {
 	double		modulus;
@@ -57,10 +50,7 @@ static int	mandel(double complex Z, double complex C, int depth, int max_depth)
 	return (depth);
 }
 
-// TODO: Awful performances, needs optimization
-// Seems I could have a big boost rewritting Complex numbers operations
-
-static void	draw_julia_img(t_mlx_st *mlx)
+static void	ddraw(t_mlx_st *mlx)
 {
 	double	i;
 	double	j;
@@ -95,8 +85,7 @@ static void	draw_julia_img(t_mlx_st *mlx)
 	y_max = y + range_y / 2;
 	step_x = range_x / (mlx->canvas->width + 1);
 	step_y = range_y / (mlx->canvas->height + 1);
-	C = CMPLX(mlx->mouse_pos.x, mlx->mouse_pos.y);
-	//printf("x: %f\n", mlx->mouse_pos.x);
+	C = CMPLX(0, 0);
 	i = x_min;
 	while (i < x_max)
 	{
@@ -111,17 +100,13 @@ static void	draw_julia_img(t_mlx_st *mlx)
 	}
 }
 
-void	draw_julia(t_mlx_st *mlx)
+void	draw_mandel_complex(t_mlx_st *mlx)
 {
-	char	*str;
+	char	str[28];
 
-	draw_julia_img(mlx);
-	//mlx_put_image_to_window(mlx->sess, mlx->win, mlx->canvas->img, 0, 0);
-	ft_asprintf(&str, "Number of iterations: %i", ((t_fractol_st *)mlx->datas)->iterations);
+	ddraw(mlx);
+	mlx_put_image_to_window(mlx->sess, mlx->win, mlx->canvas->img, 0, 0);
+	ft_sprintf(str, "Number of iterations: %i", ((t_fractol_st *)mlx->datas)->iterations);
 	mlx_string_put(mlx->sess, mlx->win, 10, mlx->canvas->height - 60, WHITE, str);
 	mlx_string_put(mlx->sess, mlx->win, 10, mlx->canvas->height - 30, WHITE, "Press ? for help");
-	mlx_string_put(mlx->sess, mlx->win, 10, 10, WHITE, ((t_fractol_st *)mlx->datas)->colorset_name);
-	mlx_string_put(mlx->sess, mlx->win, mlx->canvas->width * 0.5f - 20, 10, WHITE, ((t_fractol_st *)mlx->datas)->fractal->name);
-	ft_strdel(&str);
-	return;
 }

@@ -1,18 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_image.c                                       :+:      :+:    :+:   */
+/*   fractol.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/02/03 16:54:03 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/04 00:35:05 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/11/06 14:15:11 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/11/06 14:29:56 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void	draw_image(t_mlx_st *mlx, void *img, int *x, int *y)
+void	init_fractol(t_fractol_st *fractol)
 {
-	mlx_put_image_to_window(mlx->sess, mlx->win, img, *x, *y);
+	ft_bzero(fractol, sizeof(t_fractol_st));
+	ft_memset(&fractol->color, 1, sizeof(t_color));
+	fractol->iterations = 25;
+	fractol->color.r = 1.f;
+	fractol->color.g = 1.f;
+	fractol->color.b = 1.f;
+	fractol->hue = .5f;
+	fractol->saturation = 1.f;
+	fractol->lightness = .5f;
+	fractol->damp_hue = 1;
+	fractol->damp_saturation = 1;
+	fractol->damp_lightness = 1;
+	set_color_scheme(fractol, 0);
 }

@@ -1,33 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   identity_matrix.c                                  :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/02/02 18:51:47 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/03 18:34:55 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/11/06 13:58:21 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/11/06 14:35:22 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void	identity_matrix4(t_mat4x4 *m)
+void	error(char *str)
 {
-	(*m)[0] = 1.f;
-	(*m)[1] = 0.f;
-	(*m)[2] = 0.f;
-	(*m)[3] = 0.f;
-	(*m)[4] = 0.f;
-	(*m)[5] = 1.f;
-	(*m)[6] = 0.f;
-	(*m)[7] = 0.f;
-	(*m)[8] = 0.f;
-	(*m)[9] = 0.f;
-	(*m)[10] = 1.f;
-	(*m)[11] = 0.f;
-	(*m)[12] = 0.f;
-	(*m)[13] = 0.f;
-	(*m)[14] = 0.f;
-	(*m)[15] = 1.f;
+	ft_eprintf("%s: %s\n", PROGRAM_NAME, str);
+	exit(1);
+}
+
+void	alloc_error(char *error_obj, size_t alloc_size)
+{
+	ft_putstr_fd("Memory allocation error: ", 2);
+	ft_putstr_fd(error_obj, 2);
+	ft_putstr_fd(" required a block of size ", 2);
+	ft_putnbr_fd(alloc_size, 2);
+	ft_putendl_fd(" but couldn't get it.'", 2);
+	exit(1);
 }

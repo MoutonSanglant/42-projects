@@ -25,6 +25,8 @@
 # include <libftprintf.h>
 # include <keybindings.h>
 
+# define PROGRAM_NAME "fdf"
+
 // TODO
 # define USAGE_MSG "usage: fractol [mandelbrot | julia | ...] [width] [height]"
 
@@ -42,7 +44,8 @@
 # define MAX_HEIGHT	900
 # define GUI_LINE_HEIGHT 18
 
-# define MAX_ITERATIONS 1000
+# define ESCAPE_RADIUS 20.0f
+# define MAX_ITERATIONS 100
 
 # ifdef BONUS
 #  include <float.h>
@@ -63,11 +66,6 @@
 # define EDGE_FN(a, b, c) (c.x - a.x) * (b.y - a.y) - (c.y - a.y) * (b.x - a.x)
 # define MIN3(a, b, c) fminf(a, fmin(b, c))
 # define MAX3(a, b, c) fmaxf(a, fmax(b, c))
-
-/*
-**	Matrices are in row-major columns
-*/
-typedef float	t_mat4x4[16];
 
 typedef struct	s_vec2
 {
@@ -93,72 +91,12 @@ typedef struct	s_vec2d
 	double		y;
 }				t_vec2d;
 
-
-typedef struct	s_vec3f
-{
-	float		x;
-	float		y;
-	float		z;
-}				t_vec3f;
-
-typedef struct	s_vec4f
-{
-	float		x;
-	float		y;
-	float		z;
-	float		w;
-}				t_vec4f;
-
 typedef struct	s_color
 {
 	float		r;
 	float		g;
 	float		b;
 }				t_color;
-
-typedef struct	s_vert
-{
-	t_vec3f		coord;
-	t_color		color;
-}				t_vert;
-
-typedef t_vert	t_tri[3];
-
-typedef struct	s_grid
-{
-	int		width;
-	int		height;
-	t_tri	*triangles;
-}				t_grid;
-
-typedef struct	s_camera
-{
-	float	angle_of_view;
-	float	aspect;
-	float	far;
-	float	near;
-	float	top;
-	float	bottom;
-	float	left;
-	float	right;
-}				t_camera;
-
-typedef struct	s_options // settings
-{
-	int				zdraw;
-	int				distance;
-	int				tooltip;
-
-	int				bg_color; // fill_color
-
-	// TODO
-	// discard:
-	float			map_height;
-	float			line_width;
-	int				lines_color;
-	int				faces_color;
-	int				fill_faces;
-}				t_options;
 
 typedef struct	s_image
 {
@@ -170,6 +108,7 @@ typedef struct	s_image
 	int			endian;
 	uint32_t	width;
 	uint32_t	height;
+	float		aspect;
 }				t_image;
 
 /*
@@ -181,133 +120,75 @@ typedef struct	s_viewport
 	t_vec2f		pos;
 	t_vec2f		size;
 	double		zoom_level;
-	double		x_max;
-	double		x_min;
-	double		y_max;
-	double		y_min;
-	double		step_x;
-	double		step_y;
+	t_vec2d		min;
+	t_vec2d		max;
+	t_vec2d		step;
 }				t_viewport;
 
-typedef struct	s_fractol_st t_fractol_st;
-
-struct			s_fractol_st
+typedef struct	s_settings
 {
-	char	*name;
-	int		(*color_fn)(int, t_fractol_st *);
-	char	*colorset_name;
-	int		max_iterations;
-	t_color	color;
-	int		capture_mouse_position;
-	double	hue;
-	double	saturation;
-	double	lightness;
-	int		damp_hue;
-	int		damp_saturation;
-	int		damp_lightness;
-};
-
-typedef struct	s_key_modifiers
-{
-	int		shift;
-	int		ctrl;
-}				t_key_modifiers;
+	int		zdraw;
+	int		distance;
+	int		tooltip;
+	int		fill_color;
+	int		mouse_capture;
+}				t_settings;
 
 typedef struct	s_mlx_st
 {
 	void			*name;
 	void			*sess;
 	void			*win;
-	t_image			*canvas;
-	float			*zbuffer;
-
 	void			*datas;
-	t_viewport		viewport;
-
 	void			(*draw_fn)(struct s_mlx_st *);
+	t_image			*canvas;
+	t_viewport		viewport;
 	t_vec2d			mouse_pos;
-	t_key_modifiers		modifiers;
-
-	t_camera		camera;
-	t_mat4x4		*world;
-	t_mat4x4		*view;
-	t_mat4x4		*projection;
-	t_mat4x4		*world_to_camera;
-	t_mat4x4		m_model;
-	t_options		options;
+	t_key_mod		key_modifiers;
+	t_settings		settings;
 	struct timeval	last_tval;
 	int				need_update;
 	int				system_endian;
 
-	// TODO
-	// discard:
-	t_grid			*grid;
 }				t_mlx_st;
 
-typedef struct	s_bresenham
+typedef struct	s_fractal
 {
-	t_vec2ui32	xy;
-	int			e;
-	int			x1;
-	int			x2;
-	int			y1;
-	int			y2;
-	int			dx;
-	int			dy;
-	int			incx;
-	int			incy;
-	int			inc1;
-	int			inc2;
-}				t_bresenham;
+	char	*name;
+	int		(*fn)(double, double, int);
+	int		interactive;
+}				t_fractal;
 
-typedef struct	s_tree
+typedef struct	s_fractol_st t_fractol_st;
+
+struct			s_fractol_st
 {
-	int	degree;
-}				t_tree;
-
-// TODO:
-// Survey
-float			hex_to_float(char *hex);
-
-
-/*
-**	RENDERING
-*/
-void			draw_3dgrid(t_mlx_st *mlx);
-void			rasterize(t_mlx_st *p, t_tri *triangle);
+	t_fractal	*fractal;
+	char		*colorset_name;
+	int			(*color_fn)(int, t_fractol_st *);
+	int			iterations;
+	t_color		color;
+	double		hue;
+	double		saturation;
+	double		lightness;
+	int			damp_hue;
+	int			damp_saturation;
+	int			damp_lightness;
+};
 
 /*
 **	DRAWING
 */
-void			bresenham_draw_line(t_mlx_st *mlx, t_vec2 *from, t_vec2 *to);
-void			draw_square(t_mlx_st *mlx, int color,
-							t_vec2f *from, t_vec2f *to);
 void			draw_gui(t_mlx_st *mlx);
-//void			draw_image(t_mlx_st *mlx);
-void			draw_image(t_mlx_st *mlx, void *img, int *x, int *y);
-
-void			clear_canvas(t_mlx_st *mlx, int color);
 void			set_image_pixel(t_mlx_st *mlx, t_image *img, int color,
 								t_vec2ui32 *xy);
-
-/*
-**	INIT
-*/
-void			init_grid(t_grid *grid, int width, int height);
-void			init_grid_from_vertmap(t_grid *grid, t_vert **vertmap,
-										int width, int height);
-
+void			init_fractol(t_fractol_st *fractol);
 
 /*
 ********************************************************************************
 **								  :: MLX ::									   *
 ********************************************************************************
 */
-
-/*
-**							: new_mlx_sess.c :
-*/
-t_mlx_st		*new_mlx_sess();
 
 /*
 **							: init_mlx_st.c :
@@ -322,6 +203,9 @@ void			start_mlx_sess(t_mlx_st *mlx);
 */
 void			destroy_mlx_sess(t_mlx_st *mlx);
 
+void			new_canvas(t_mlx_st *mlx, t_vec2 screen_size);
+void			new_window(t_mlx_st *mlx, t_vec2 screen_size);
+
 /*
 ********************************************************************************
 **							 :: Window events ::							   *
@@ -332,10 +216,17 @@ void			destroy_mlx_sess(t_mlx_st *mlx);
 **								: expose.c :
 */
 int				expose(void *p);
+
 /*
 **							   : draw_loop.c :
 */
 int				draw_loop(void *p);
+
+/*
+**							   : draw.c :
+*/
+int				draw_loop(void *p);
+void			draw(t_mlx_st *mlx);
 
 /*
 ********************************************************************************
@@ -360,9 +251,15 @@ int				mouse_click_event(int button, int x, int y, void *p);
 int				mouse_motion_event(int x, int y, void *p);
 
 /*
+********************************************************************************
+**							  :: Viewport ::								   *
+********************************************************************************
+*/
+
+/*
 **								: viewport.c :
 */
-void			set_viewport(t_mlx_st *mlx);
+void			set_viewport(t_viewport *viewport, t_image *canvas);
 
 /*
 **								: zoom.c :
@@ -372,66 +269,16 @@ void			zoom_out(t_mlx_st *mlx, int x, int y);
 
 /*
 ********************************************************************************
-**								:: Matrices ::								   *
-********************************************************************************
-*/
-
-/*
-**								 : matrix.c :
-*/
-void			translation_matrix4(t_mat4x4 *mat, t_vec3f vec);
-void			scaling_matrix4(t_mat4x4 *mat, t_vec3f vec);
-void			rotation_x_matrix4(t_mat4x4 *mat, float alpha);
-void			rotation_y_matrix4(t_mat4x4 *mat, float alpha);
-void			rotation_z_matrix4(t_mat4x4 *mat, float alpha);
-/*
-**							: projection_matrix.c :
-*/
-void			perspective_projection_matrix4(t_mat4x4 *mat, t_camera *camera);
-void			orthographic_projection_matrix4(t_mat4x4 *mat,
-												t_camera *camera);
-/*
-**							 : identity_matrix.c :
-*/
-void			identity_matrix4(t_mat4x4 *mat);
-/*
-**							 : inverse_matrix.c :
-*/
-void			inverse_matrix4(t_mat4x4 *in_mat, t_mat4x4 *out_mat);
-/*
-**							  : matrix_math.c :
-*/
-void			copy_matrix4(t_mat4x4 *dst, const t_mat4x4 *src);
-void			transpose_matrix4(t_mat4x4 *mat);
-void			matrix4_product(t_mat4x4 *mat_b, t_mat4x4 *out);
-t_vec3f			apply_matrix4(t_vec3f vec, t_mat4x4 *mat);
-
-/*
-********************************************************************************
-**								 :: Camera ::								   *
-********************************************************************************
-*/
-
-/*
-**								: camera.c :
-*/
-void			camera(t_mlx_st *mlx, char *str);
-
-/*
-********************************************************************************
 **								:: Fractals ::								   *
 ********************************************************************************
 */
 
 /*
-**								 : draw_mandel.c :
+**								 : mandelbrot.c :
 */
-void			draw_mandel();
-
-/*
-**								 : draw_julia.c :
-*/
-void			draw_julia();
+int				mandelbrot(double c1, double c2, int max_depth);
+int				julia(double c1, double c2, int max_depth);
+int				burning_ship(double c1, double c2, int max_depth);
 
 /*
 **								 : colorsets.c :
@@ -462,8 +309,9 @@ t_color			hsl_to_rgb(double h, double sl, double l);
 */
 
 /*
-**							  : alloc_error.c :
+**							  : error.c :
 */
+void			error(char *str);
 void			alloc_error(char *error_obj, size_t alloc_size);
 
 /*
@@ -471,11 +319,9 @@ void			alloc_error(char *error_obj, size_t alloc_size);
 */
 
 void			set_color_scheme(t_fractol_st *fractol, int scheme);
-void			change_grid_z(t_grid *grid, float factor);
 
 # ifdef DEBUG
 
-void			output_image_info(t_image *image);
 void			draw_debug_gui(t_mlx_st *mlx);
 # endif
 #endif

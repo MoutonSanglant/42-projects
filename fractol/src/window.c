@@ -1,23 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   alloc_error.c                                      :+:      :+:    :+:   */
+/*   window.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/02/04 15:05:56 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/03 18:34:55 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/11/06 14:43:09 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/11/06 14:50:22 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void	alloc_error(char *error_obj, size_t alloc_size)
+void	new_window(t_mlx_st *mlx, t_vec2 size)
 {
-	ft_putstr("Memory allocation error: ");
-	ft_putstr(error_obj);
-	ft_putstr(" required a block of size ");
-	ft_putnbr(alloc_size);
-	ft_putendl(" but couldn't get it.'");
-	exit(1);
+	if (!(mlx->win = mlx_new_window(mlx->sess, size.x, size.y, mlx->name)))
+		alloc_error("new_window: mlx->win", sizeof(int) * size.x * size.y);
 }

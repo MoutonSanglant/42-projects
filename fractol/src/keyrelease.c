@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/30 14:47:12 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/05/30 16:19:41 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/06 12:24:46 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ int			keyrelease(int key, void *p)
 		exit(0);
 	}
 	else if (key == KEY_LEFT_SHIFT || key == KEY_RIGHT_SHIFT)
-		mlx->modifiers.shift = 0;
+		mlx->key_modifiers &= ~KEY_MODIFIER_SHIFT;
 	else if (key == KEY_LEFT_CTRL || key == KEY_RIGHT_CTRL)
-		mlx->modifiers.ctrl = 0;
+		mlx->key_modifiers &= ~KEY_MODIFIER_CTRL;
 	return (0);
 }
