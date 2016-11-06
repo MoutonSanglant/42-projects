@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:14:47 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/06 18:49:57 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/07 00:01:19 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	fractol_shift_events(int key, t_fractol_st *fractol)
 	else if (key == KEY_STAR)
 		fractol->iterations +=
 			(fractol->iterations < MAX_ITERATIONS - 1) ? 1 : 0;
-	fractol->hue = (fractol->hue > 1) ? 1 : fractol->hue;
+	fractol->hue = (fractol->hue > 0.99f) ? 0.01f : fractol->hue;
 	fractol->saturation = (fractol->saturation > 1) ? 1 : fractol->saturation;
 	fractol->lightness = (fractol->lightness > 1) ? 1 : fractol->lightness;
 }
@@ -54,7 +54,7 @@ static void	fractol_ctrl_events(int key, t_fractol_st *fractol)
 		fractol->saturation -= 0.01f;
 	else if (key == KEY_L)
 		fractol->lightness -= 0.01f;
-	fractol->hue = (fractol->hue < 0) ? 0 : fractol->hue;
+	fractol->hue = (fractol->hue < 0.01f) ? 0.99f : fractol->hue;
 	fractol->saturation = (fractol->saturation < 0) ? 0 : fractol->saturation;
 	fractol->lightness = (fractol->lightness < 0) ? 0 : fractol->lightness;
 }
@@ -110,6 +110,6 @@ int			keypress(int key, void *p)
 		fractol_shift_events(key, ((t_fractol_st *)mlx->datas));
 	else
 		fractol_events(key, ((t_fractol_st *)mlx->datas));
-	set_viewport(&mlx->viewport, mlx->canvas);
+	move_viewport(&mlx->viewport, mlx->canvas);
 	return (0);
 }

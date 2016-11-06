@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:02:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/06 18:49:19 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/06 22:42:54 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ int				main(int argc, char **argv)
 	mlx.draw_fn = &draw;
 	new_window(&mlx, win_size);
 	new_canvas(&mlx, win_size);
-	set_viewport(&mlx.viewport, mlx.canvas);
+	zoom_viewport(&mlx.viewport);
+	move_viewport(&mlx.viewport, mlx.canvas);
 	mlx.datas = (void *)&fractol;
 	start_mlx_sess(&mlx);
 	return (0);

@@ -44,8 +44,8 @@
 # define MAX_HEIGHT	900
 # define GUI_LINE_HEIGHT 18
 
-# define ESCAPE_RADIUS 20.0f
-# define MAX_ITERATIONS 100
+# define ESCAPE_RADIUS 2000000000000000000000000000000000000000000000000000000.0
+# define MAX_ITERATIONS 1000
 
 # ifdef BONUS
 #  include <float.h>
@@ -117,12 +117,13 @@ typedef struct	s_image
 
 typedef struct	s_viewport
 {
-	t_vec2f		pos;
-	t_vec2f		size;
-	double		zoom_level;
+	t_vec2d		pos;
+	t_vec2d		range;
+	t_vec2d		size;
 	t_vec2d		min;
 	t_vec2d		max;
 	t_vec2d		step;
+	double		zoom_level;
 }				t_viewport;
 
 typedef struct	s_settings
@@ -174,6 +175,7 @@ struct			s_fractol_st
 	int			damp_hue;
 	int			damp_saturation;
 	int			damp_lightness;
+	int			negative;
 };
 
 /*
@@ -259,7 +261,8 @@ int				mouse_motion_event(int x, int y, void *p);
 /*
 **								: viewport.c :
 */
-void			set_viewport(t_viewport *viewport, t_image *canvas);
+void			move_viewport(t_viewport *viewport, t_image *canvas);
+void			zoom_viewport(t_viewport *viewport);
 
 /*
 **								: zoom.c :
@@ -276,6 +279,7 @@ void			zoom_out(t_mlx_st *mlx, int x, int y);
 /*
 **								 : mandelbrot.c :
 */
+//int				mandelbrot(double c1, double c2, int max_depth);
 int				mandelbrot(double c1, double c2, int max_depth);
 int				julia(double c1, double c2, int max_depth);
 int				burning_ship(double c1, double c2, int max_depth);
@@ -300,7 +304,7 @@ int				colorset_parametric_hsl(int depth, t_fractol_st *fractol_st);
 /*
 **								 : hsl_to_rgb.c :
 */
-t_color			hsl_to_rgb(double h, double sl, double l);
+t_color			hsl_to_rgb(float h, float sl, float l, int negative);
 
 /*
 ********************************************************************************

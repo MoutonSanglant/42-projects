@@ -6,26 +6,11 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/06 16:59:49 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/06 18:47:24 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/06 23:11:19 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
-
-static void	draw_point(t_mlx_st *mlx, double x, double y, int color,
-							int (color_fn)(int, t_fractol_st *))
-{
-	t_vec2ui32	pos;
-	double		zoom;
-
-	zoom = mlx->viewport.zoom_level;
-	color = color_fn(color, ((t_fractol_st *)mlx->datas));
-	pos.x = floor(x * (double)mlx->canvas->width * (.5f * zoom));
-	pos.y = floor(y * (double)mlx->canvas->height * (.5f * zoom));
-	if (pos.x >= mlx->canvas->width || pos.y >= mlx->canvas->height)
-		return ;
-	set_image_pixel(mlx, mlx->canvas, color, &pos);
-}
 
 static void	draw_ui(t_mlx_st *mlx, int iterations)
 {
@@ -44,28 +29,45 @@ static void	draw_ui(t_mlx_st *mlx, int iterations)
 	mlx_string_put(sess, win, canvas->width * 0.5f - 20, 10, WHITE, ((t_fractol_st *)mlx->datas)->fractal->name);
 }
 
+static void	draw_point(t_mlx_st *mlx, unsigned int x, unsigned int y, int color,
+							int (color_fn)(int, t_fractol_st *))
+{
+	t_vec2ui32	pos;
+
+	if (x >= mlx->canvas->width || y >= mlx->canvas->height)
+		return ;
+	pos.x = x;
+	pos.y = y;
+	color = color_fn(color, ((t_fractol_st *)mlx->datas));
+	set_image_pixel(mlx, mlx->canvas, color, &pos);
+}
+
 static void	draw_viewport(t_mlx_st *mlx, t_vec2d min, t_vec2d max, t_vec2d	step)
 {
 	int		(*fn)(double, double, int);
 	int		(*color_fn)(int, t_fractol_st *);
 	int		max_depth;
-	double	i;
-	double	j;
+	t_vec2	coord;
+	t_vec2d	C;
 
-	step = mlx->viewport.step;
 	fn = ((t_fractol_st *)mlx->datas)->fractal->fn;
 	color_fn = ((t_fractol_st *)mlx->datas)->color_fn;
 	max_depth = ((t_fractol_st *)mlx->datas)->iterations;
-	i = min.x;
-	while (i < max.x)
+	C.x = min.x;
+	coord.x = 0;
+	while (C.x < max.x)
 	{
-		j = min.y;
-		while (j < max.y)
+		coord.y = 0;
+		C.y = min.y;
+		while (C.y < max.y)
 		{
-			draw_point(mlx, i - min.x, j - min.y, fn(i, j, max_depth), color_fn);
-			j += step.y;
+			draw_point(mlx, coord.x, coord.y,
+					fn(C.x * mlx->canvas->aspect, C.y, max_depth), color_fn);
+			C.y += step.y;
+			coord.y++;
 		}
-		i += step.x;
+		C.x += step.x;
+		coord.x++;
 	}
 }
 

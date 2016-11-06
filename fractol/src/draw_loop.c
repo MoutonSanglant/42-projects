@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:16:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/06 17:21:25 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/07 00:04:49 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ int			draw_loop(void *p)
 	if (mlx->need_update)
 	{
 		mlx->draw_fn(mlx);
-		//ft_snprintf(str, 7, "%2.2i FPS", (int)fps);
-		ft_sprintf(str, "%2.2i FPS", (int)fps);
+		ft_snprintf(str, 7, "%2.2i FPS", (int)fps);
 		mlx_string_put(mlx->sess, mlx->win, mlx->canvas->width - 100, 20, RED, str);
+		draw_gui(mlx);
 		mlx->need_update = 0;
 	}
 	return (0);
@@ -54,9 +54,7 @@ int			draw_loop(void *p)
 	mlx = (t_mlx_st *)p;
 	if (mlx->need_update)
 	{
-		clear_canvas(mlx, mlx->settings.fill_color);
 		mlx->draw_fn(mlx);
-		//draw_3dgrid(mlx);
 		mlx->need_update = 0;
 	}
 	return (0);
