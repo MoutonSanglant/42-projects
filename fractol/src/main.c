@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:02:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/06 22:42:54 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/07 19:07:46 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,23 @@ static void		get_size(int argc, char **argv, t_vec2 *screen_size)
 static void		set_fractal(char *name, t_fractal *fractal)
 {
 	fractal->interactive = 0;
+	fractal->fn = &julia;
 	if (ft_strequ(name, "mandelbrot"))
-	{
 		fractal->name = "Mandelbrot";
-		fractal->fn = &mandelbrot;
-	}
-	else if (ft_strequ(name, "burning"))
-	{
-		fractal->name = "Burning Ship";
-		fractal->fn = &burning_ship;
-	}
 	else if (ft_strequ(name, "julia"))
 	{
 		fractal->name = "Julia";
-		fractal->fn = &julia;
+		fractal->interactive = 1;
+	}
+	else if (ft_strequ(name, "burning_ship"))
+	{
+		fractal->name = "Burning Ship";
+		fractal->fn = &burning;
+	}
+	else if (ft_strequ(name, "burning_julia"))
+	{
+		fractal->name = "Burning Julia";
+		fractal->fn = &burning;
 		fractal->interactive = 1;
 	}
 	else
@@ -84,6 +87,8 @@ int				main(int argc, char **argv)
 	mlx.draw_fn = &draw;
 	new_window(&mlx, win_size);
 	new_canvas(&mlx, win_size);
+	mlx.viewport.pos.x = -0.6f;
+	mlx.viewport.zoom_level = 0.6f;
 	zoom_viewport(&mlx.viewport);
 	move_viewport(&mlx.viewport, mlx.canvas);
 	mlx.datas = (void *)&fractol;

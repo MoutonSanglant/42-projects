@@ -61,6 +61,10 @@ typedef enum	e_key_mod
 #  define KEY_X		00000000
 #  define KEY_Y		00000000
 #  define KEY_Z		119
+#  define KEY_MORE	00000000
+#  define KEY_LESS	00000000
+#  define KEY_SLASH	00000000
+#  define KEY_DOT	00000000
 #  define KEY_TAB	65289
 #  define KEY_LEFT	65361
 #  define KEY_RIGHT	65363
@@ -118,11 +122,11 @@ typedef enum	e_key_mod
 #  define KEY_G		5
 #  define KEY_H		4
 #  define KEY_I		34
-#  define KEY_J		34
+#  define KEY_J		38
 #  define KEY_K		00000000
 #  define KEY_L		37
 #  define KEY_M		00000000
-#  define KEY_N		00000000
+#  define KEY_N		45
 #  define KEY_O		31
 #  define KEY_P		35
 #  define KEY_Q		12
@@ -135,6 +139,10 @@ typedef enum	e_key_mod
 #  define KEY_X		00000000
 #  define KEY_Y		00000000
 #  define KEY_Z		6
+#  define KEY_SLASH	44
+#  define KEY_DOT	47
+#  define KEY_MORE	24
+#  define KEY_LESS	27
 #  define KEY_TAB	48
 #  define KEY_LEFT	123
 #  define KEY_RIGHT	124

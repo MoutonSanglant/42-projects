@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_mlx_st.c                                    :+:      :+:    :+:   */
+/*   init_mlx_sess.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/02/04 14:39:50 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/06 14:40:33 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/11/07 12:20:34 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/11/07 19:49:07 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void		init_mlx_sess(t_mlx_st *mlx)
 	mlx->viewport.size.y = 2.f;
 	mlx->need_update = 1;
 	mlx->system_endian = get_system_endian();
-	mlx->settings.tooltip = 1;
+	mlx->settings.tooltip = 0;
 	if (!(mlx->sess = mlx_init()))
 		error("Can't create mlx session");
 }

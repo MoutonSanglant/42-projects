@@ -25,10 +25,17 @@
 # include <libftprintf.h>
 # include <keybindings.h>
 
+# ifdef BONUS
+#  include <float.h>
+#  include <sys/time.h>
+#  include <limits.h>
+
+# endif
+
 # define PROGRAM_NAME "fdf"
 
-// TODO
-# define USAGE_MSG "usage: fractol [mandelbrot | julia | ...] [width] [height]"
+# define USAGE_MSG "usage: fractol [mandelbrot | julia | burning_ship | \
+burning_julia] [width] [height]"
 
 # define BUFF_SIZE 32
 # define BLACK	0x00000000
@@ -45,20 +52,7 @@
 # define GUI_LINE_HEIGHT 18
 
 # define ESCAPE_RADIUS 2000000000000000000000000000000000000000000000000000000.0
-# define MAX_ITERATIONS 1000
-
-# ifdef BONUS
-#  include <float.h>
-#  include <sys/time.h>
-#  include <limits.h>
-
-/*
-** FPS in microseconds
-** 16666 for 60 fps
-** 33332 for 30 fps
-*/
-#  define FPS_LIMIT 33332
-# endif
+# define MAX_ITERATIONS 400
 
 # define DEG(x) (x * 180.0 / M_PI)
 # define RAD(x) (x * M_PI / 180.0)
@@ -66,6 +60,8 @@
 # define EDGE_FN(a, b, c) (c.x - a.x) * (b.y - a.y) - (c.y - a.y) * (b.x - a.x)
 # define MIN3(a, b, c) fminf(a, fmin(b, c))
 # define MAX3(a, b, c) fmaxf(a, fmax(b, c))
+
+typedef struct	s_fractol_st t_fractol_st;
 
 typedef struct	s_vec2
 {
@@ -153,14 +149,24 @@ typedef struct	s_mlx_st
 
 }				t_mlx_st;
 
+typedef struct	s_key
+{
+	int		code;
+	int		(*fn)(t_mlx_st *, int);
+}				t_key;
+
 typedef struct	s_fractal
 {
 	char	*name;
-	int		(*fn)(double, double, int);
+	int		(*fn)(t_vec2d, t_vec2d, int);
 	int		interactive;
 }				t_fractal;
 
-typedef struct	s_fractol_st t_fractol_st;
+typedef struct	s_colorset
+{
+	char	*name;
+	int		(*fn)(int, t_fractol_st *);
+}				t_colorset;
 
 struct			s_fractol_st
 {
@@ -247,6 +253,16 @@ int				keypress(int key, void *p);
 int				keyrelease(int key, void *p);
 
 /*
+**								: keyevent.c :
+*/
+int				keyevent(t_mlx_st *mlx, int key,
+									int (exec)(t_mlx_st *, const t_key *, int));
+int				keyevent_ctrl(t_mlx_st *mlx, int key,
+									int (exec)(t_mlx_st *, const t_key *, int));
+int				keyevent_shift(t_mlx_st *mlx, int key,
+									int (exec)(t_mlx_st *, const t_key *, int));
+
+/*
 **								: mouse_event.c :
 */
 int				mouse_click_event(int button, int x, int y, void *p);
@@ -279,16 +295,14 @@ void			zoom_out(t_mlx_st *mlx, int x, int y);
 /*
 **								 : mandelbrot.c :
 */
-//int				mandelbrot(double c1, double c2, int max_depth);
-int				mandelbrot(double c1, double c2, int max_depth);
-int				julia(double c1, double c2, int max_depth);
-int				burning_ship(double c1, double c2, int max_depth);
+int				julia(t_vec2d z, t_vec2d c, int max_depth);
+int				burning(t_vec2d z, t_vec2d c, int max_depth);
 
 /*
 **								 : colorsets.c :
 */
 int				colorset_deepblue(int depth, t_fractol_st *fractol_st);
-int				colorset_greyradiosity(int depth, t_fractol_st *fractol_st);
+int				colorset_pastel(int depth, t_fractol_st *fractol_st);
 int				colorset_burning(int depth, t_fractol_st *fractol_st);
 int				colorset_smooth(int depth, t_fractol_st *fractol_st);
 
@@ -321,8 +335,8 @@ void			alloc_error(char *error_obj, size_t alloc_size);
 /*
 **	EXTRA
 */
-
-void			set_color_scheme(t_fractol_st *fractol, int scheme);
+void			loop_colorschemes(t_fractol_st *fractol, int modifier);
+void			set_colorscheme(t_fractol_st *fractol, int scheme);
 
 # ifdef DEBUG
 

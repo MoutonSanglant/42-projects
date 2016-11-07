@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:16:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/07 00:04:49 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/07 19:48:25 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,41 @@
 
 #ifdef BONUS
 
-int			draw_loop(void *p)
+static int	get_fps(t_mlx_st *mlx)
 {
 	static int		frames = 0;
 	static double	fps = 0;
-	char			str[7];
-	t_mlx_st		*mlx;
 	struct timeval	tval_now;
 
-	mlx = (t_mlx_st *)p;
+	frames++;
 	gettimeofday(&tval_now, NULL);
 	timersub(&tval_now, &mlx->last_tval, &tval_now);
-	frames++;
 	if (tval_now.tv_sec * 1000000 + tval_now.tv_usec > 1000000)
 	{
-		fps = (double)frames / (double)tval_now.tv_sec + (double)tval_now.tv_usec / 1000000;
-		fps = (fps > 60) ? 60: fps;
-		frames = 0;
+		fps = (double)frames / (double)tval_now.tv_sec
+			+ (double)tval_now.tv_usec / 1000000;
+		fps = (fps > 60) ? 60 : fps;
 		gettimeofday(&mlx->last_tval, NULL);
 		mlx->need_update = 1;
+		frames = 0;
 	}
+	return ((int)fps);
+}
+
+int			draw_loop(void *p)
+{
+	t_mlx_st	*mlx;
+	char		str[7];
+	int			fps;
+
+	mlx = (t_mlx_st *)p;
+	fps = get_fps(mlx);
 	if (mlx->need_update)
 	{
 		mlx->draw_fn(mlx);
-		ft_snprintf(str, 7, "%2.2i FPS", (int)fps);
-		mlx_string_put(mlx->sess, mlx->win, mlx->canvas->width - 100, 20, RED, str);
-		draw_gui(mlx);
+		ft_snprintf(str, 7, "%2.2i FPS", fps);
+		mlx_string_put(mlx->sess, mlx->win,
+				mlx->canvas->width - 100, 20, WHITE, str);
 		mlx->need_update = 0;
 	}
 	return (0);

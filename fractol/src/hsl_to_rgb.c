@@ -6,53 +6,53 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/29 16:54:09 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/06 23:57:13 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/07 13:04:05 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-static void	set_sextant_odd(int sextant, t_color *rgb, float mid, float v, float m)
+static void	set_sextant_odd(int sextant, t_color *rgb, float mid, t_vec2f vm)
 {
 	if (sextant == 1)
 	{
 		rgb->r = mid;
-		rgb->g = v;
-		rgb->b = m;
+		rgb->g = vm.x;
+		rgb->b = vm.y;
 	}
 	else if (sextant == 3)
 	{
-		rgb->r = m;
+		rgb->r = vm.y;
 		rgb->g = mid;
-		rgb->b = v;
+		rgb->b = vm.x;
 	}
 	else if (sextant == 5)
 	{
-		rgb->r = v;
-		rgb->g = m;
+		rgb->r = vm.x;
+		rgb->g = vm.y;
 		rgb->b = mid;
 	}
 }
 
-static void	set_sextant_even(int sextant, t_color *rgb, float mid, float v, float m)
+static void	set_sextant_even(int sextant, t_color *rgb, float mid, t_vec2f vm)
 {
 	if (sextant == 0)
 	{
-		rgb->r = v;
+		rgb->r = vm.x;
 		rgb->g = mid;
-		rgb->b = m;
+		rgb->b = vm.y;
 	}
 	else if (sextant == 2)
 	{
-		rgb->r = m;
-		rgb->g = v;
+		rgb->r = vm.y;
+		rgb->g = vm.x;
 		rgb->b = mid;
 	}
 	else if (sextant == 4)
 	{
 		rgb->r = mid;
-		rgb->g = m;
-		rgb->b = v;
+		rgb->g = vm.y;
+		rgb->b = vm.x;
 	}
 }
 
@@ -62,18 +62,19 @@ static void	convert(t_color *rgb, float h, float l, float v)
 	float	fract;
 	float	vsf;
 	float	sv;
-	float	m;
+	t_vec2f	vm;
 
-	m = l + l - v;
-	sv = (v - m ) / v;
+	vm.x = v;
+	vm.y = l + l - v;
+	sv = (v - vm.y) / v;
 	h *= 6.0;
 	sextant = (int)h;
 	fract = h - sextant;
 	vsf = v * sv * fract;
 	if (sextant % 2)
-		set_sextant_odd(sextant, rgb, v - vsf, v, m);
+		set_sextant_odd(sextant, rgb, vm.x - vsf, vm);
 	else
-		set_sextant_even(sextant, rgb, m + vsf, v, m);
+		set_sextant_even(sextant, rgb, vm.y + vsf, vm);
 }
 
 t_color		hsl_to_rgb(float h, float sl, float l, int invert)
@@ -86,8 +87,7 @@ t_color		hsl_to_rgb(float h, float sl, float l, int invert)
 	rgb.b = l;
 	v = (l <= 0.5) ? (l * (1.0 + sl)) : (l + sl - l * sl);
 	if (v < 0)
-		v+= 360.f;
-
+		v += 360.f;
 	convert(&rgb, h, l, v);
 	rgb.r = rgb.r * 255.0f;
 	rgb.g = rgb.g * 255.0f;

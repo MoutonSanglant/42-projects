@@ -1,44 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mandelbrot.c                                       :+:      :+:    :+:   */
+/*   burning.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/06 17:47:22 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/06 22:54:56 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/11/07 10:05:12 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/11/07 10:05:53 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-/*
-** f[{a_, b_}] := {a*a - b*b + c1, 2*a*b + c2}]
-*/
-int		mandelbrot(double c1, double c2, int max_depth)
+int		burning(t_vec2d z, t_vec2d c, int max_depth)
 {
-	double		a;
-	double		b;
-	double		a_;
-	double		b_;
+	t_vec2d		z_;
 	int			depth;
 
-	a = c1;
-	b = c2;
 	depth = 1;
-	while (depth < max_depth && fabs(a) + fabs(b) < ESCAPE_RADIUS)
+	while (depth < max_depth && z.x + z.y < ESCAPE_RADIUS)
 	{
-		a_ = a;
-		b_ = b;
-		a = a_ * a_ - b_ * b_ + c1;
-		a_ += a_;
-		b = a_ * b_ + c2;
+		z_.x = z.x;
+		z_.y = z.y;
+		z.x = z_.x * z_.x - z_.y * z_.y + c.x;
+		z_.x += z_.x;
+		z.y = z_.x * z_.y + c.y;
+		z.x = (z.x < 0) ? -z.x : z.x;
+		z.y = (z.y < 0) ? -z.y : z.y;
 		depth++;
 	}
 	return (depth);
 }
-
-/*
-** //colorless:
-** return ((depth < 20) ? 0 : 100);
-*/

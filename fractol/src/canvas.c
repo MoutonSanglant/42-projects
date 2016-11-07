@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/06 13:40:58 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/06 19:13:31 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/07 12:19:45 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,15 @@
 
 void	new_canvas(t_mlx_st *mlx, t_vec2 size)
 {
-	t_image		*canvas;
+	t_image		*can;
 
-	if (!(canvas = (t_image *)ft_memalloc(sizeof(t_image))))
-		alloc_error("canvas", sizeof(t_image));
-	canvas->width = size.x;
-	canvas->height = size.y;
-	if (!(canvas->img = mlx_new_image(mlx->sess, canvas->width, canvas->height)))
-		alloc_error("canvas->img", sizeof(int) * canvas->width
-												* canvas->height);
-	canvas->data = mlx_get_data_addr(canvas->img, &canvas->bpp,
-										&canvas->sl, &canvas->endian);
-	canvas->aspect = (float)canvas->width / (float)canvas->height;
-	mlx->canvas = canvas;
+	if (!(can = (t_image *)ft_memalloc(sizeof(t_image))))
+		alloc_error("can", sizeof(t_image));
+	can->width = size.x;
+	can->height = size.y;
+	if (!(can->img = mlx_new_image(mlx->sess, can->width, can->height)))
+		alloc_error("can->img", sizeof(int) * can->width * can->height);
+	can->data = mlx_get_data_addr(can->img, &can->bpp, &can->sl, &can->endian);
+	can->aspect = (float)can->width / (float)can->height;
+	mlx->canvas = can;
 }

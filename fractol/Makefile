@@ -1,5 +1,5 @@
 CC		= gcc
-CFLAGS	= -Wall -Werror -Wextra -I./libft -I./includes -D BONUS
+CFLAGS	= -Wall -Werror -Wextra -I./libft -I./includes
 LDFLAGS	= -L./lib -L./libft -L./libftprintf
 LDLIBS	= -lft -lftprintf -lm
 

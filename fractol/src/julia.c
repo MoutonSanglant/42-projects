@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/06 17:48:19 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/06 17:52:03 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/11/07 10:06:34 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/11/07 10:06:45 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,21 @@
 /*
 ** f[{a_, b_}] := {a*a - b*b + c1, 2*a*b + c2}]
 */
-int		julia(double c1, double c2, int max_depth)
+
+int		julia(t_vec2d z, t_vec2d c, int max_depth)
 {
-	double		modulus;
-	double		escape_radius = 20.f;
-	double		a;
-	double		b;
-	double		a_;
-	double		b_;
+	t_vec2d		z_;
 	int			depth;
 
-	a = 0;
-	b = 0;
-	depth = 0;
-	modulus = 0;
-	while (modulus < escape_radius && depth < max_depth)
+	depth = 1;
+	while (depth < max_depth && fabs(z.x) + fabs(z.y) < ESCAPE_RADIUS)
 	{
-		a_ = a;
-		b_ = b;
-		a = a_ * a_ - b_ * b_ + c1;
-		b = 2 * a_ * b_ + c2;
-		modulus = fabs(a) + fabs(b);
+		z_.x = z.x;
+		z_.y = z.y;
+		z.x = z_.x * z_.x - z_.y * z_.y + c.x;
+		z_.x += z_.x;
+		z.y = z_.x * z_.y + c.y;
 		depth++;
 	}
-	//return ((depth < 20) ? 0 : 100);
 	return (depth);
 }
