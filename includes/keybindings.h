@@ -25,6 +25,7 @@ typedef enum	e_key_mod
 #  define KEY_NUMPAD_LESS	65453
 #  define KEY_NUMPAD_STAR	65450
 #  define KEY_NUMPAD_SLASH	65455
+#  define KEY_NUMPAD_DOT	0000000
 #  define KEY_0		224
 #  define KEY_1		38
 #  define KEY_2		233
@@ -103,6 +104,7 @@ typedef enum	e_key_mod
 #  define KEY_NUMPAD_LESS	78
 #  define KEY_NUMPAD_STAR	67
 #  define KEY_NUMPAD_SLASH	75
+#  define KEY_NUMPAD_DOT	65
 #  define KEY_0		29
 #  define KEY_1		18
 #  define KEY_2		19
