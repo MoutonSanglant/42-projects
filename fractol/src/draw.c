@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/06 16:59:49 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/08 14:09:05 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/08 14:47:20 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ static void	draw_ui(t_mlx_st *mlx, int iterations)
 	win = mlx->win;
 	sess = mlx->sess;
 	canvas = mlx->canvas;
-	mlx_put_image_to_window(sess, win, canvas->img, 0, 0);
 	ft_sprintf(str, "Number of iterations: %i", iterations);
 	mlx_string_put(sess, win, 10, canvas->height - 26, WHITE, str);
 	ft_snprintf(str, 32, "Color scheme: %s", fractol->colorset_name);
@@ -88,7 +87,10 @@ void		draw(t_mlx_st *mlx)
 
 	viewport = &mlx->viewport;
 	draw_view(mlx, &viewport->min, &viewport->max, &viewport->step);
-	draw_ui(mlx, ((t_fractol_st *)mlx->datas)->iterations);
-	if (mlx->show_gui)
+	mlx_put_image_to_window(mlx->sess, mlx->win, mlx->canvas->img, 0, 0);
+	if (mlx->settings.draw_gui)
+	{
+		draw_ui(mlx, ((t_fractol_st *)mlx->datas)->iterations);
 		draw_gui(mlx);
+	}
 }

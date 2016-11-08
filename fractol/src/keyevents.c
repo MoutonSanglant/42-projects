@@ -1,16 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   keyevent.c                                         :+:      :+:    :+:   */
+/*   keyevents.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/07 17:30:10 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/08 14:11:34 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/11/08 14:56:01 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/11/08 14:56:02 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
+
+static int	keyevent_numpad(t_mlx_st *mlx, int key)
+{
+	t_fractol_st	*fractol;
+
+	fractol = ((t_fractol_st *)mlx->datas);
+	if (key == KEY_NUMPAD_STAR)
+		fractol->iterations +=
+			(fractol->iterations < MAX_ITERATIONS - 1) ? 1 : 0;
+	else if (key == KEY_NUMPAD_SLASH)
+		fractol->iterations -= (fractol->iterations > 0) ? 1 : 0;
+	else if (key == KEY_NUMPAD_DOT)
+		mlx->settings.draw_gui = (mlx->settings.draw_gui) ? 0 : 1;
+	return (0);
+}
 
 static int	keyevent_char(t_mlx_st *mlx, int key)
 {
@@ -31,15 +46,8 @@ static int	keyevent_char(t_mlx_st *mlx, int key)
 		fractol->damp_saturation = (fractol->damp_saturation) ? 0 : 1;
 	else if (key == KEY_L)
 		fractol->damp_lightness = (fractol->damp_lightness) ? 0 : 1;
-	else if (key == KEY_NUMPAD_STAR)
-		fractol->iterations +=
-			(fractol->iterations < MAX_ITERATIONS - 1) ? 1 : 0;
-	else if (key == KEY_NUMPAD_SLASH)
-		fractol->iterations -= (fractol->iterations > 0) ? 1 : 0;
 	else if (key == KEY_TAB)
 		loop_colorschemes(fractol, 0);
-	else if (key == KEY_NUMPAD_DOT)
-		mlx->show_gui = (mlx->show_gui) ? 0 : 1;
 	return (0);
 }
 
@@ -87,9 +95,9 @@ int			keyevent(t_mlx_st *mlx, int key,
 		{ KEY_L, &keyevent_char },
 		{ KEY_N, &keyevent_char },
 		{ KEY_TAB, &keyevent_char },
-		{ KEY_NUMPAD_DOT, &keyevent_char },
-		{ KEY_NUMPAD_STAR, &keyevent_char },
-		{ KEY_NUMPAD_SLASH, &keyevent_char },
+		{ KEY_NUMPAD_DOT, &keyevent_numpad },
+		{ KEY_NUMPAD_STAR, &keyevent_numpad },
+		{ KEY_NUMPAD_SLASH, &keyevent_numpad },
 		{ 0, NULL }
 	};
 

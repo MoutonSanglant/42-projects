@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 13:08:11 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/08 12:58:19 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/08 14:38:24 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,14 @@ int		colorset_burning(int depth, t_fractol_st *fractol)
 		return (0);
 	ft_bzero(&rgb, sizeof(t_color));
 	c = 2.f * logf((float)depth) / logf((float)fractol->iterations - 1.f);
+	rgb.r = 255.f;
 	if (c < 1.f)
 		rgb.r = 255.f * c;
+	else if (c < 2.f)
+		rgb.g = 255.f * (c - 1.f);
 	else
 	{
-		rgb.r = 255.f;
-		rgb.g = 255.f;
-		if (c < 2.f)
-			rgb.g = 255.f * (c - 1.f);
-		else
-			rgb.b = 255.f * (c - 2.f);
+		rgb.b = 255.f * (c - 2.f);
 	}
 	if (fractol->negative)
 	{

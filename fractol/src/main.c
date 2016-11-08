@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:02:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/07 19:07:46 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/08 15:03:59 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ int				main(int argc, char **argv)
 
 	if (argc < 2 || argc > 4)
 		error(USAGE_MSG);
+	if (ft_strequ(argv[1], "--help") || ft_strequ(argv[1], "-h"))
+		exit(help());
 	get_size(argc, &argv[2], &win_size);
 	set_fractal(argv[1], &fractal);
 	init_fractol(&fractol);
