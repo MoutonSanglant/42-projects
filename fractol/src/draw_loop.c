@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:16:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/07 19:48:25 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/07 23:06:36 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int			draw_loop(void *p)
 		mlx->draw_fn(mlx);
 		ft_snprintf(str, 7, "%2.2i FPS", fps);
 		mlx_string_put(mlx->sess, mlx->win,
-				mlx->canvas->width - 100, 20, WHITE, str);
+				mlx->canvas->width - 80, 4, WHITE, str);
 		mlx->need_update = 0;
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/07 17:39:03 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/07 20:05:21 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/08 02:09:27 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ static int	keyevent_char(t_mlx_st *mlx, int key)
 
 	fractol = ((t_fractol_st *)mlx->datas);
 	if (key == KEY_R)
-		fractol->color.r -= (fractol->color.r - .3 < 0) ? 0 : .3;
+		fractol->color.r -= (fractol->color.r - 3.f < 0) ? 0 : 3.f;
 	else if (key == KEY_G)
-		fractol->color.g -= (fractol->color.g - .3 < 0) ? 0 : .3;
+		fractol->color.g -= (fractol->color.g - 3.f < 0) ? 0 : 3.f;
 	else if (key == KEY_B)
-		fractol->color.b -= (fractol->color.b - .3 < 0) ? 0 : .3;
+		fractol->color.b -= (fractol->color.b - 3.f < 0) ? 0 : 3.f;
 	else if (key == KEY_H)
 		fractol->hue -= 0.01f;
 	else if (key == KEY_S)

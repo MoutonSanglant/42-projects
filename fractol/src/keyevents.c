@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/07 17:30:10 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/07 20:16:36 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/08 02:10:52 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ static int	keyevent_char(t_mlx_st *mlx, int key)
 	if (key == KEY_N)
 		fractol->negative =  (fractol->negative) ? 0 : 1;
 	else if (key == KEY_R)
-		fractol->color.r += .3;
+		fractol->color.r += (fractol->color.r + 3.f > 255.f) ? 0 : 3.f;
 	else if (key == KEY_G)
-		fractol->color.g += .3;
+		fractol->color.g += (fractol->color.g + 3.f > 255.f) ? 0 : 3.f;
 	else if (key == KEY_B)
-		fractol->color.b += .3;
+		fractol->color.b += (fractol->color.b + 3.f > 255.f) ? 0 : 3.f;
 	else if (key == KEY_H)
 		fractol->damp_hue = (fractol->damp_hue) ? 0 : 1;
 	else if (key == KEY_S)

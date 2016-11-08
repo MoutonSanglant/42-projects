@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/07 10:06:34 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/07 10:06:45 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/08 03:19:03 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,27 @@
 ** f[{a_, b_}] := {a*a - b*b + c1, 2*a*b + c2}]
 */
 
-int		julia(t_vec2d z, t_vec2d c, int max_depth)
+int		julia(t_vec2d *z, t_vec2d *c, int depth, int max_depth)
 {
-	t_vec2d		z_;
-	int			depth;
+	double		xy;
+	double		xx;
+	double		yy;
+	double		x;
+	double		y;
 
-	depth = 1;
-	while (depth < max_depth && fabs(z.x) + fabs(z.y) < ESCAPE_RADIUS)
+	xx = 0;
+	xy = 0;
+	yy = 0;
+	x = z->x;
+	y = z->y;
+	depth = max_depth;
+	while (depth-- && xx + yy < ESCAPE_RADIUS)
 	{
-		z_.x = z.x;
-		z_.y = z.y;
-		z.x = z_.x * z_.x - z_.y * z_.y + c.x;
-		z_.x += z_.x;
-		z.y = z_.x * z_.y + c.y;
-		depth++;
+		xy = x * y;
+		xx = x * x;
+		yy = y * y;
+		x = xx - yy + c->x;
+		y = xy + xy + c->y;
 	}
-	return (depth);
+	return (max_depth - depth);
 }

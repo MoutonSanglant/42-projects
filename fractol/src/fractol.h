@@ -51,7 +51,8 @@ burning_julia] [width] [height]"
 # define MAX_HEIGHT	900
 # define GUI_LINE_HEIGHT 18
 
-# define ESCAPE_RADIUS 2000000000000000000000000000000000000000000000000000000.0
+//# define ESCAPE_RADIUS 2000000000000000000000000000000000000000000000000000000.0
+# define ESCAPE_RADIUS 4.0
 # define MAX_ITERATIONS 400
 
 # define DEG(x) (x * 180.0 / M_PI)
@@ -158,7 +159,7 @@ typedef struct	s_key
 typedef struct	s_fractal
 {
 	char	*name;
-	int		(*fn)(t_vec2d, t_vec2d, int);
+	int		(*fn)(t_vec2d *, t_vec2d *, int, int);
 	int		interactive;
 }				t_fractal;
 
@@ -295,30 +296,30 @@ void			zoom_out(t_mlx_st *mlx, int x, int y);
 /*
 **								 : mandelbrot.c :
 */
-int				julia(t_vec2d z, t_vec2d c, int max_depth);
-int				burning(t_vec2d z, t_vec2d c, int max_depth);
+int				julia(t_vec2d *z, t_vec2d *c, int depth, int max_depth);
+int				burning(t_vec2d *z, t_vec2d *c, int depth, int max_depth);
 
 /*
 **								 : colorsets.c :
 */
-int				colorset_deepblue(int depth, t_fractol_st *fractol_st);
-int				colorset_pastel(int depth, t_fractol_st *fractol_st);
-int				colorset_burning(int depth, t_fractol_st *fractol_st);
-int				colorset_smooth(int depth, t_fractol_st *fractol_st);
+int				colorset_deepblue(int depth, t_fractol_st *fractol);
+int				colorset_pastel(int depth, t_fractol_st *fractol);
+int				colorset_burning(int depth, t_fractol_st *fractol);
+int				colorset_smooth(int depth, t_fractol_st *fractol);
 
 /*
 **								 : colorsets_extra.c :
 */
-int				colorset_psycho(int depth, t_fractol_st *fractol_st);
-int				colorset_square(int depth, t_fractol_st *fractol_st);
-int				colorset_prismatic(int depth, t_fractol_st *fractol_st);
-int				colorset_parametric(int depth, t_fractol_st *fractol_st);
-int				colorset_parametric_hsl(int depth, t_fractol_st *fractol_st);
+int				colorset_psycho(int depth, t_fractol_st *fractol);
+int				colorset_square(int depth, t_fractol_st *fractol);
+int				colorset_prismatic(int depth, t_fractol_st *fractol);
+int				colorset_parametric(int depth, t_fractol_st *fractol);
+int				colorset_parametric_hsl(int depth, t_fractol_st *fractol);
 
 /*
 **								 : hsl_to_rgb.c :
 */
-t_color			hsl_to_rgb(float h, float sl, float l, int negative);
+void			hsl_to_rgb(t_color *rgb, float h, float sl, float l);
 
 /*
 ********************************************************************************

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/04 00:28:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/07 19:53:21 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/07 22:38:34 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ static void	draw_help_tooltip(void *s, void *w, int line)
 	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[+] Zoom in");
 	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[-] Zoom out");
 	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[Arrows] Pan");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "HSL:");
+	mlx_string_put(s, w, 5, line++ * GUI_LINE_HEIGHT, WHITE, "HSL:");
 	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[H]ue");
 	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[S]aturation");
 	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[L]ightness");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "RGB:");
+	mlx_string_put(s, w, 5, line++ * GUI_LINE_HEIGHT, WHITE, "RGB:");
 	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[R]ed");
 	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[G]reen");
 	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[B]lue");
@@ -56,7 +56,6 @@ void		draw_gui(t_mlx_st *mlx)
 	line = 1;
 	s = mlx->sess;
 	w = mlx->win;
-	mlx_string_put(s, w, 5, line++ * GUI_LINE_HEIGHT, 0x00ffffff, "[H]elp");
 	draw_help_tooltip(s, w, line);
 }
 

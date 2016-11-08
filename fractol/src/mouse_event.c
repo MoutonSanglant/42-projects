@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/28 04:37:47 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/07 13:04:17 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/08 03:21:54 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int			mouse_click_event(int button, int x, int y, void *p)
 	y = y - (int)mlx->canvas->height / 2;
 	mouse_capture = mlx->settings.mouse_capture;
 	if (button == MOUSE_CLICK_LEFT
-			&& ft_strequ(((t_fractol_st *)mlx->datas)->fractal->name, "Julia"))
+			&& ((t_fractol_st *)mlx->datas)->fractal->interactive)
 		mouse_capture = (mouse_capture) ? 0 : 1;
 	else if (button == MOUSE_CLICK_RIGHT)
 		ft_printf("right click\n");
@@ -35,8 +35,8 @@ int			mouse_click_event(int button, int x, int y, void *p)
 		zoom_in(mlx, x, y);
 	else if (button == MOUSE_SCROLL_DOWN)
 		zoom_out(mlx, x, y);
-	mlx->need_update = 1;
 	mlx->settings.mouse_capture = mouse_capture;
+	mlx->need_update = 1;
 	return (0);
 }
 

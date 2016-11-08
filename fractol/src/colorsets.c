@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 13:08:11 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/07 20:59:06 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/08 03:03:09 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,92 +14,85 @@
 
 int		colorset_deepblue(int depth, t_fractol_st *fractol)
 {
-	unsigned char		r;
-	unsigned char		g;
-	unsigned int		b;
+	t_color		rgb;
 
-	r = 0;
-	g = 0;
-	b = fractol->iterations - depth;
-	b *= 3;
+	if (depth > fractol->iterations)
+		return (0);
+	ft_bzero(&rgb, sizeof(t_color));
+	rgb.g = (float)depth / (float)fractol->iterations * 205.f;
+	rgb.b = (float)depth / (float)fractol->iterations * 255.f;
 	if (fractol->negative)
 	{
-		r = 255 - r;
-		g = 255 - g;
-		b = 255 - b;
+		rgb.r = 255.f - rgb.r;
+		rgb.g = 255.f - rgb.g;
+		rgb.b = 255.f - rgb.b;
 	}
-	b = (b > 255) ? 255 : b;
-	return (((int)r << 16) + ((int)g << 8) + (unsigned char)b);
+	return ((int)(((int)rgb.r << 16) + ((int)rgb.g << 8) + (int)rgb.b) & 0x00ffffff);
 }
 
 int		colorset_burning(int depth, t_fractol_st *fractol)
 {
-	unsigned int		r;
-	unsigned int		g;
-	unsigned int		b;
-	unsigned int		c;
+	t_color		rgb;
+	float		c;
 
-	//c = 3 * log(depth) / log(fractol->iterations - 1.0);
-	c = 3 * log(depth) / log(fractol->iterations - 1.0);
-	if (c < 1)
+	if (depth > fractol->iterations)
+		return (0);
+	ft_bzero(&rgb, sizeof(t_color));
+	c = 2.f * logf((float)depth) / logf((float)fractol->iterations - 1.f);
+	if (c < 1.f)
+		rgb.r = 255.f * c;
+	else if (c < 2.f)
 	{
-		r = 255 * c;
-		g = 0;
-		b = 0;
-	}
-	else if (c < 2)
-	{
-		r = 255;
-		g = 255 * (c - 1);
-		b = 0;
+		rgb.r = 255.f;
+		rgb.g = 255.f * (c - 1.f);
 	}
 	else
 	{
-		r = 255;
-		g = 255;
-		b = 255 * (c - 2);
+		rgb.r = 255.f;
+		rgb.g = 255.f;
+		rgb.b = 255.f * (c - 2.f);
 	}
 	if (fractol->negative)
 	{
-		r = 255 - r;
-		g = 255 - g;
-		b = 255 - b;
+		rgb.r = 255.f - rgb.r;
+		rgb.g = 255.f - rgb.g;
+		rgb.b = 255.f - rgb.b;
 	}
-	return (((int)r << 16) + ((int)g << 8) + b);
+	return ((int)(((int)rgb.r << 16) + ((int)rgb.g << 8) + (int)rgb.b) & 0x00ffffff);
 }
 
 int		colorset_smooth(int depth, t_fractol_st *fractol)
 {
-	unsigned char		r;
-	unsigned char		g;
-	unsigned char		b;
+	t_color		rgb;
 
-	r = depth;
-	g = r + r;
-	b = g + g;
+	if (depth > fractol->iterations)
+		return (0);
+	ft_bzero(&rgb, sizeof(t_color));
+	rgb.r = (float)depth / (float)fractol->iterations * 255.f;
+	rgb.g = rgb.r + rgb.r;
+	rgb.b = rgb.g + rgb.g;
 	if (fractol->negative)
 	{
-		r = 255 - r;
-		g = 255 - g;
-		b = 255 - b;
+		rgb.r = 255.f - rgb.r;
+		rgb.g = 255.f - rgb.g;
+		rgb.b = 255.f - rgb.b;
 	}
-	return (((int)r << 16) + ((int)g << 8) + b);
+	return ((int)(((int)rgb.r << 16) + ((int)rgb.g << 8) + (int)rgb.b) & 0x00ffffff);
 }
 
 int		colorset_pastel(int depth, t_fractol_st *fractol)
 {
-	unsigned char		r;
-	unsigned char		g;
-	unsigned char		b;
+	t_color		rgb;
 
-	r = 0;
-	g = fractol->iterations - depth;
-	b = fractol->iterations - depth;
+	ft_bzero(&rgb, sizeof(t_color));
+	rgb.r = 255.f - (float)depth / (float)fractol->iterations * 195.f;
+	rgb.g = 255.f - (float)depth / (float)fractol->iterations * 75.f;
+	rgb.b = 255.f - (float)depth / (float)fractol->iterations * 145.f;
 	if (fractol->negative)
 	{
-		r = 255 - r;
-		g = 255 - g;
-		b = 255 - b;
+		rgb.r = 255.f - rgb.r;
+		rgb.g = 255.f - rgb.g;
+		rgb.b = 255.f - rgb.b;
 	}
-	return (((int)r << 16) + ((int)g << 8) + b);
+	return ((int)(((int)rgb.r << 16) + ((int)rgb.g << 8) + (int)rgb.b) & 0x00ffffff);
 }

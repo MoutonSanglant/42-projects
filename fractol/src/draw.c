@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/06 16:59:49 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/07 19:48:37 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/08 03:16:02 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	draw_ui(t_mlx_st *mlx, int iterations)
 	ft_snprintf(str, 32, "Color scheme: %s", fractol->colorset_name);
 	mlx_string_put(sess, win, 10, canvas->height - 52, WHITE, str);
 	mlx_string_put(sess, win, canvas->width - 190, canvas->height - 26,
-			WHITE, "Press [H] for help");
+			WHITE, "Press [?] for help");
 	mlx_string_put(sess, win, canvas->width * 0.5f - 20, 4,
 			WHITE, fractol->fractal->name);
 }
@@ -44,16 +44,19 @@ static void	draw_point(t_mlx_st *mlx, t_vec2ui32 *pos, int color,
 	set_image_pixel(mlx, mlx->canvas, color, pos);
 }
 
-static int	fract(t_mlx_st *mlx, t_vec2d c, int max_depth,
-									int (fn)(t_vec2d, t_vec2d, int))
+static int	fract(t_mlx_st *mlx, t_vec2d *c, int max_depth,
+									int (fn)(t_vec2d *, t_vec2d *, int, int))
 {
-	c.y /= mlx->canvas->aspect;
-	return (fn(mlx->mouse_pos, c, max_depth));
+	t_vec2d cc;
+
+	cc.x = c->x;
+	cc.y = c->y / mlx->canvas->aspect;
+	return (fn(&mlx->mouse_pos, &cc, 0, max_depth));
 }
 
-static void	draw_view(t_mlx_st *mlx, t_vec2d min, t_vec2d max, t_vec2d step)
+static void	draw_view(t_mlx_st *mlx, t_vec2d *min, t_vec2d *max, t_vec2d *step)
 {
-	int			(*fn)(t_vec2d, t_vec2d, int);
+	int			(*fn)(t_vec2d *, t_vec2d *, int, int);
 	int			(*color_fn)(int, t_fractol_st *);
 	int			max_depth;
 	t_vec2ui32	coord;
@@ -62,19 +65,19 @@ static void	draw_view(t_mlx_st *mlx, t_vec2d min, t_vec2d max, t_vec2d step)
 	fn = ((t_fractol_st *)mlx->datas)->fractal->fn;
 	color_fn = ((t_fractol_st *)mlx->datas)->color_fn;
 	max_depth = ((t_fractol_st *)mlx->datas)->iterations;
-	c.x = min.x;
+	c.x = min->x;
 	coord.x = 0;
-	while (c.x < max.x)
+	while (c.x < max->x)
 	{
 		coord.y = 0;
-		c.y = min.y;
-		while (c.y < max.y)
+		c.y = min->y;
+		while (c.y < max->y)
 		{
-			draw_point(mlx, &coord, fract(mlx, c, max_depth, fn), color_fn);
-			c.y += step.y;
+			draw_point(mlx, &coord, fract(mlx, &c, max_depth, fn), color_fn);
+			c.y += step->y;
 			coord.y++;
 		}
-		c.x += step.x;
+		c.x += step->x;
 		coord.x++;
 	}
 }
@@ -84,7 +87,7 @@ void		draw(t_mlx_st *mlx)
 	t_viewport *viewport;
 
 	viewport = &mlx->viewport;
-	draw_view(mlx, viewport->min, viewport->max, viewport->step);
+	draw_view(mlx, &viewport->min, &viewport->max, &viewport->step);
 	draw_ui(mlx, ((t_fractol_st *)mlx->datas)->iterations);
 	draw_gui(mlx);
 }

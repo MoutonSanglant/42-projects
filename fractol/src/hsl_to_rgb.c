@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/29 16:54:09 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/07 13:04:05 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/08 01:48:36 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,26 +77,19 @@ static void	convert(t_color *rgb, float h, float l, float v)
 		set_sextant_even(sextant, rgb, vm.y + vsf, vm);
 }
 
-t_color		hsl_to_rgb(float h, float sl, float l, int invert)
+void		hsl_to_rgb(t_color *rgb, float h, float sl, float l)
 {
-	t_color		rgb;
 	float		v;
 
-	rgb.r = l;
-	rgb.g = l;
-	rgb.b = l;
+	ft_bzero(rgb, sizeof(t_color));
+	rgb->r = l;
+	rgb->g = l;
+	rgb->b = l;
 	v = (l <= 0.5) ? (l * (1.0 + sl)) : (l + sl - l * sl);
 	if (v < 0)
 		v += 360.f;
-	convert(&rgb, h, l, v);
-	rgb.r = rgb.r * 255.0f;
-	rgb.g = rgb.g * 255.0f;
-	rgb.b = rgb.b * 255.0f;
-	if (invert)
-	{
-		rgb.r = 255 - rgb.r;
-		rgb.g = 255 - rgb.g;
-		rgb.b = 255 - rgb.b;
-	}
-	return (rgb);
+	convert(rgb, h, l, v);
+	rgb->r = rgb->r * 255.0f;
+	rgb->g = rgb->g * 255.0f;
+	rgb->b = rgb->b * 255.0f;
 }

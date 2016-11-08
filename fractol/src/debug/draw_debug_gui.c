@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 14:41:41 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/30 13:04:11 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/08 00:41:14 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,39 +51,6 @@ static void		draw_image_info(void *s, void *w, t_image *img, int *l)
 	*l = *l + 1;
 }
 
-/*
-**	/!\ Memory of 'camera' will be definetly lost
-*/
-
-static void		draw_camera_info(t_mlx_st *mlx, void *s, void *w, int *line)
-{
-	static char *camera[3];
-	int			i;
-
-	if (!camera[0])
-	{
-		i = 0;
-		if (!(camera[0] = (char *)ft_memalloc(sizeof(char) * 20)))
-			alloc_error("debug: camera[0]", sizeof(char) * 20);
-		camera[0] = ft_strcpy(camera[0], "  x: ");
-		if (!(camera[1] = (char *)ft_memalloc(sizeof(char) * 20)))
-			alloc_error("debug: camera[1]", sizeof(char) * 20);
-		camera[1] = ft_strcpy(camera[1], "  y: ");
-		if (!(camera[2] = (char *)ft_memalloc(sizeof(char) * 20)))
-			alloc_error("debug: camera[2]", sizeof(char) * 20);
-		camera[2] = ft_strcpy(camera[2], "  z: ");
-	}
-	i = 0;
-	while (i < 3)
-	{
-		ft_strncpy(&camera[i][5], ft_itoa((int)(*mlx->world)[3 + i * 4]), 3);
-		camera[i][8] = '\0';
-		mlx_string_put(s, w, 5, *line * GUI_LINE_HEIGHT, 0x00ffffff, camera[i]);
-		*line = *line + 1;
-		i++;
-	}
-}
-
 void			draw_debug_gui(t_mlx_st *mlx)
 {
 	void	*s;
@@ -98,5 +65,4 @@ void			draw_debug_gui(t_mlx_st *mlx)
 	mlx_string_put(s, w, 5, line++ * GUI_LINE_HEIGHT, 0x00ffffff, "Image");
 	draw_image_info(s, w, mlx->canvas, &line);
 	mlx_string_put(s, w, 5, line++ * GUI_LINE_HEIGHT, 0x00ffffff, "Camera");
-	draw_camera_info(mlx, s, w, &line);
 }
