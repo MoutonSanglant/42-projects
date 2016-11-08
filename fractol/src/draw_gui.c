@@ -6,33 +6,40 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/04 00:28:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/07 22:38:34 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/08 13:51:10 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-static void	draw_help_tooltip(void *s, void *w, int line)
+static void	tooltip_str(t_mlx_st *mlx, char *str, int line, int padding)
 {
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[+] Zoom in");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[-] Zoom out");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[Arrows] Pan");
-	mlx_string_put(s, w, 5, line++ * GUI_LINE_HEIGHT, WHITE, "HSL:");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[H]ue");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[S]aturation");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[L]ightness");
-	mlx_string_put(s, w, 5, line++ * GUI_LINE_HEIGHT, WHITE, "RGB:");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[R]ed");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[G]reen");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[B]lue");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[N]egative");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE,
-			"[SHIFT] Increase value");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE,
-			"[CTRL] Decrease value");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE,
-			"[TAB] Change color");
-	mlx_string_put(s, w, 20, line++ * GUI_LINE_HEIGHT, WHITE, "[ESC] Exit");
+	mlx_string_put(mlx->sess, mlx->win,
+			padding, line * GUI_LINE_HEIGHT, GUI_COLOR, str);
+}
+
+static void	draw_help_tooltip(t_mlx_st *mlx)
+{
+	int		line;
+
+	line = 0;
+	tooltip_str(mlx, "Help", line++, 5);
+	tooltip_str(mlx, "[.] Hide GUI", line++, 20);
+	tooltip_str(mlx, "[+] Zoom in", line++, 20);
+	tooltip_str(mlx, "[-] Zoom out", line++, 20);
+	tooltip_str(mlx, "[Arrows] Pan view", line++, 20);
+	tooltip_str(mlx, "HSL", line++, 5);
+	tooltip_str(mlx, "(CTRL)(SHIFT)[H]ue ", line++, 20);
+	tooltip_str(mlx, "(CTRL)(SHIFT)[S]aturation ", line++, 20);
+	tooltip_str(mlx, "(CTRL)(SHIFT)[L]ightness ", line++, 20);
+	tooltip_str(mlx, "RGB", line++, 5);
+	tooltip_str(mlx, "(CTRL)[R]ed ", line++, 20);
+	tooltip_str(mlx, "(CTRL)[G]reen ", line++, 20);
+	tooltip_str(mlx, "(CTRL)[B]lue ", line++, 20);
+	tooltip_str(mlx, "Extra", line++, 5);
+	tooltip_str(mlx, "[N]egative ", line++, 20);
+	tooltip_str(mlx, "(SHIFT)[TAB] Change color scheme", line++, 20);
+	tooltip_str(mlx, "[ESC] Exit", line++, 20);
 }
 
 #ifdef DEBUG
@@ -47,16 +54,9 @@ void		draw_gui(t_mlx_st *mlx)
 
 void		draw_gui(t_mlx_st *mlx)
 {
-	void	*s;
-	void	*w;
-	int		line;
-
 	if (!mlx->settings.tooltip)
 		return ;
-	line = 1;
-	s = mlx->sess;
-	w = mlx->win;
-	draw_help_tooltip(s, w, line);
+	draw_help_tooltip(mlx);
 }
 
 #endif

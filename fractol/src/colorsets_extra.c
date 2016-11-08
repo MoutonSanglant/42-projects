@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/28 16:13:33 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/08 03:09:09 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/08 13:02:14 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ int		colorset_prismatic(int depth, t_fractol_st *fractol)
 
 	if (depth > fractol->iterations)
 		return (0);
-	hsl_to_rgb(&rgb, (float)depth / (float)fractol->iterations,
-			1.f, (float)depth / (float)fractol->iterations);
+	hsl_to_rgb(&rgb, (float)depth / (float)fractol->iterations * 0.3f,
+			1.f, (float)depth / (float)fractol->iterations * 0.9f);
 	if (fractol->negative)
 	{
 		rgb.r = 255.f - rgb.r;

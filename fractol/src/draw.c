@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/06 16:59:49 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/08 03:16:02 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/08 14:09:05 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,6 @@ void		draw(t_mlx_st *mlx)
 	viewport = &mlx->viewport;
 	draw_view(mlx, &viewport->min, &viewport->max, &viewport->step);
 	draw_ui(mlx, ((t_fractol_st *)mlx->datas)->iterations);
-	draw_gui(mlx);
+	if (mlx->show_gui)
+		draw_gui(mlx);
 }

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/07 10:05:12 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/08 03:18:58 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/08 12:54:34 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int		burning(t_vec2d *z, t_vec2d *c, int depth, int max_depth)
 	x = z->x;
 	y = z->y;
 	depth = max_depth;
-	//while (depth < max_depth && z->x + z->y < ESCAPE_RADIUS)
 	while (depth-- && xx + yy < ESCAPE_RADIUS)
 	{
 		xy = x * y;

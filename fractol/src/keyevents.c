@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/07 17:30:10 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/08 02:10:52 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/08 14:11:34 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	keyevent_char(t_mlx_st *mlx, int key)
 
 	fractol = ((t_fractol_st *)mlx->datas);
 	if (key == KEY_N)
-		fractol->negative =  (fractol->negative) ? 0 : 1;
+		fractol->negative = (fractol->negative) ? 0 : 1;
 	else if (key == KEY_R)
 		fractol->color.r += (fractol->color.r + 3.f > 255.f) ? 0 : 3.f;
 	else if (key == KEY_G)
@@ -38,6 +38,8 @@ static int	keyevent_char(t_mlx_st *mlx, int key)
 		fractol->iterations -= (fractol->iterations > 0) ? 1 : 0;
 	else if (key == KEY_TAB)
 		loop_colorschemes(fractol, 0);
+	else if (key == KEY_NUMPAD_DOT)
+		mlx->show_gui = (mlx->show_gui) ? 0 : 1;
 	return (0);
 }
 
@@ -68,7 +70,7 @@ static int	keyevent_arrow(t_mlx_st *mlx, int key)
 int			keyevent(t_mlx_st *mlx, int key,
 							int (exec)(t_mlx_st *, const t_key *, int))
 {
-	static const t_key	key_list[19] = {
+	static const t_key	key_list[20] = {
 		{ KEY_NUMPAD_MORE, &keyevent_zoom },
 		{ KEY_NUMPAD_LESS, &keyevent_zoom },
 		{ KEY_MORE, &keyevent_zoom },
@@ -85,6 +87,7 @@ int			keyevent(t_mlx_st *mlx, int key,
 		{ KEY_L, &keyevent_char },
 		{ KEY_N, &keyevent_char },
 		{ KEY_TAB, &keyevent_char },
+		{ KEY_NUMPAD_DOT, &keyevent_char },
 		{ KEY_NUMPAD_STAR, &keyevent_char },
 		{ KEY_NUMPAD_SLASH, &keyevent_char },
 		{ 0, NULL }
