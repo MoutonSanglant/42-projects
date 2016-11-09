@@ -1,7 +1,9 @@
 CC		= gcc
-CFLAGS	= -Wall -Werror -Wextra -I./libft -I./includes -D BONUS
+CFLAGS	= -Wall -Werror -Wextra -I./includes -D BONUS
 LDFLAGS	= -L./lib -L./libft
 LDLIBS	= -lft -lm
+
+CORR_FILES = ./Makefile ./src ./lib ./includes
 
 ifeq ($(BUILD), Debug)
 CFLAGS	+= -g -O0 -fsanitize=address -D DEBUG
@@ -33,13 +35,13 @@ OBJ_PREFIX	= ./obj/
 SRC	=	$(shell ls $(SRC_PREFIX)*.c)
 
 ifeq ($(BUILD), Debug)
-SRC += draw_debug_gui
+	SRC	+= $(shell ls $(SRC_PREFIX)debug/*.c)
 endif
 
 OBJ = $(subst $(SRC_PREFIX), , $(SRC:.c=$(SUFFIX)))
 OBJ := $(addprefix $(OBJ_PREFIX), $(OBJ))
 
-.PHONY: all clean fclean re libft debug
+.PHONY: all clean fclean re libft debug correction
 
 all: $(NAME)
 
@@ -59,6 +61,7 @@ libft:
 $(OBJ_PREFIX)%$(SUFFIX): $(SRC_PREFIX)%.c
 	@echo "making $<"
 	@mkdir -p $(OBJ_PREFIX)
+	@mkdir -p $(OBJ_PREFIX)debug/
 	@$(CC) -o $@ -c $< $(CFLAGS)
 
 clean:
@@ -70,3 +73,10 @@ fclean: clean
 	$(MAKE) -C libft fclean
 
 re: fclean all
+
+correction:
+	@echo "\033[32mCopying $(NAME) into \033[33m/tmp/\033[0m"
+	@mkdir -p /tmp/$(NAME)
+	@mkdir -p /tmp/$(NAME)/includes
+	@rsync -r --copy-links $(CORR_FILES) /tmp/$(NAME)
+	@$(MAKE) -C libft correction_$(NAME)

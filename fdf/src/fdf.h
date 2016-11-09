@@ -22,6 +22,19 @@
 # include <libft.h>
 # include <keybindings.h>
 
+# ifdef LINUX
+#  include <linux/keybindings.h>
+#  include <linux/mlx.h>
+#  include <linux/mlx_int.h>
+# else
+#  include <keybindings.h>
+#  include <mlx.h>
+# endif
+
+# ifdef BONUS
+#  include "bonus/bonus.h"
+# endif
+
 # define USAGE_MSG "Usage: fdf [Path] [Width] [Height]"
 
 # define BUFF_SIZE 32
@@ -36,20 +49,6 @@
 # define MIN_HEIGHT	100
 # define MAX_HEIGHT	900
 # define GUI_LINE_HEIGHT 18
-
-# ifdef BONUS
-#  include <float.h>
-#  include <sys/time.h>
-#  include <limits.h>
-
-/*
-** FPS in microseconds
-** 16666 for 60 fps
-** 33332 for 30 fps
-*/
-#  define FPS 33332
-# endif
-
 
 # define DEG(x) (x * 180.0 / M_PI)
 # define RAD(x) (x * M_PI / 180.0)

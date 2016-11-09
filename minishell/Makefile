@@ -1,7 +1,9 @@
 CC		= gcc
-CFLAGS	= -Wall -Werror -Wextra -I./libft -I./includes -D BONUS
+CFLAGS	= -Wall -Werror -Wextra -I./includes -D BONUS
 LDFLAGS	= -L./libft -L./libftprintf
 LDLIBS	= -lft -lftprintf
+
+CORR_FILES = ./Makefile ./src ./includes
 
 ifeq ($(BUILD), Debug)
 	CFLAGS	+= -g -O0 -D DEBUG
@@ -39,22 +41,28 @@ endif
 OBJ = $(subst $(SRC_PREFIX), , $(SRC:.c=$(SUFFIX)))
 OBJ := $(addprefix $(OBJ_PREFIX), $(OBJ))
 
-.PHONY: all clean fclean re libft debug
+.PHONY: all clean fclean re libft libftprintf debug correction
 
 all: $(NAME)
 
 debug:
 	@$(MAKE) BUILD=Debug all
 
-$(NAME): $(OBJ) libft/libft.a
+$(NAME): $(OBJ) libft/libft.a libftprintf/libftprintf.a
 	@echo "making $@"
 	$(CC) -o $(NAME) $(OBJ) $(CFLAGS) $(LDFLAGS) $(LDLIBS)
 
 libft/libft.a: libft
 
+libftprintf/libftprintf.a: libftprintf
+
 libft:
 	@echo "making $@"
 	@$(MAKE) -C libft BUILD=$(BUILD)
+
+libftprintf:
+	@echo "making $@"
+	@$(MAKE) -C libftprintf BUILD=$(BUILD)
 
 $(OBJ_PREFIX)%$(SUFFIX): $(SRC_PREFIX)%.c
 	@echo "making $<"
@@ -64,10 +72,12 @@ $(OBJ_PREFIX)%$(SUFFIX): $(SRC_PREFIX)%.c
 clean:
 	/bin/rm -rf $(OBJ_PREFIX)
 	$(MAKE) -C libft clean
+	$(MAKE) -C libftprintf clean
 
 fclean: clean
 	/bin/rm -f $(NAME)
 	$(MAKE) -C libft fclean
+	$(MAKE) -C libftprintf fclean
 
 cclean:
 	/bin/rm -rf $(OBJ_PREFIX)
@@ -76,3 +86,11 @@ cclean:
 re: fclean all
 
 rre: cclean all
+
+correction:
+	@echo "\033[32mCopying $(NAME) into \033[33m/tmp/\033[0m"
+	@mkdir -p /tmp/$(NAME)
+	@mkdir -p /tmp/$(NAME)/includes
+	@rsync -r --copy-links $(CORR_FILES) /tmp/$(NAME)
+	@$(MAKE) -C libft correction_$(NAME)
+	@$(MAKE) -C libftprintf correction_$(NAME)

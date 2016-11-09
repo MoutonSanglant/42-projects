@@ -3,8 +3,7 @@ CFLAGS	= -Wall -Werror -Wextra -I./includes
 LDFLAGS	= -L./libft
 LDLIBS	= -lft
 
-SUFFIX	= .o
-NAME	= fillit
+CORR_FILES = ./Makefile ./src ./includes
 
 # DEBUG routine
 ifeq ($(BUILD), Debug)
@@ -41,7 +40,7 @@ endif
 OBJ = $(subst $(SRC_PREFIX), , $(SRC:.c=$(SUFFIX)))
 OBJ := $(addprefix $(OBJ_PREFIX), $(OBJ))
 
-.PHONY: all clean fclean re libft debug
+.PHONY: all clean fclean re libft debug correction
 
 all: $(NAME)
 
@@ -77,3 +76,11 @@ cclean:
 re: fclean all
 
 rre: cclean all
+
+correction:
+	@echo "\033[32mCopying $(NAME) into \033[33m/tmp/\033[0m"
+	@mkdir -p /tmp/$(NAME)
+	@mkdir -p /tmp/$(NAME)/includes
+	@rsync -r --copy-links $(CORR_FILES) /tmp/$(NAME)
+	@$(MAKE) -C libft correction_$(NAME)
+	@$(MAKE) -C libftprintf correction_$(NAME)
