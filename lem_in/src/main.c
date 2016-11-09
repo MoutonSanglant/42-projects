@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/18 04:19:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/29 05:03:52 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/09 17:05:06 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,10 @@ static void	print_room(t_room *room)
 	ft_printf("%s %i %i\n", room->name, room->x, room->y);
 }
 
-
 static void	print_connection(t_connection *connection)
 {
 	ft_printf("%s-%s\n", connection->from, connection->to);
 }
-
 
 static void	print_anthill(t_parser *parser)
 {
@@ -98,7 +96,6 @@ static void	print_anthill(t_parser *parser)
 	while (queue)
 	{
 		key = (t_key *)queue->content;
-
 		if (key->type & TYPE_COMMENT)
 			ft_printf("%s\n", (char *)key->value);
 		else if (key->type & TYPE_ROOM)
@@ -112,7 +109,7 @@ static void	print_anthill(t_parser *parser)
 	write(1, "\n", 1);
 }
 
-int main(void)
+int			main(void)
 {
 	t_parser	parser;
 	t_graph		graph;

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/19 06:33:28 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/21 13:44:44 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/09 16:58:32 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	node_exist(t_node *graph, t_room *room)
 	return (0);
 }
 
-static void	build_graph(t_graph * graph, t_node *root, t_parser *parser)
+static void	build_graph(t_graph *graph, t_node *root, t_parser *parser)
 {
 	t_queue	*queue;
 	t_key	*key;
@@ -49,7 +49,8 @@ static void	build_graph(t_graph * graph, t_node *root, t_parser *parser)
 		}
 		if (!node_exist(root, (t_room *)key->value))
 		{
-			root->links[idx] = new_node(((t_room *)key->value), parser->connections);
+			root->links[idx] = new_node(((t_room *)key->value),
+													parser->connections);
 			if (key->type & TYPE_START)
 				graph->start = root->links[idx];
 			else if (key->type & TYPE_END)
@@ -69,6 +70,7 @@ static void	build_graph(t_graph * graph, t_node *root, t_parser *parser)
 ** x Rewrite existing nodes
 ** ========================
 */
+
 void		new_graph(t_graph *graph, t_parser *parser)
 {
 	t_node	root;

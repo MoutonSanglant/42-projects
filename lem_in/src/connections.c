@@ -6,18 +6,18 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/18 17:39:21 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/19 02:57:05 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/09 16:54:29 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-
 
 /*
 ** Check for:
 ** - space count is 0
 ** - `-` count is 1
 */
+
 static int	valid_str(char *str)
 {
 	int		i;
@@ -52,8 +52,6 @@ static int	is_duplicate(t_queue *queue, char *from, char *to)
 		{
 			match_a = 0;
 			match_b = 0;
-			//ft_printf("connection type: %i\n", ((t_key *)queue->content)->type);
-			//if (!(((t_key *)queue->content)->type & TYPE_CONNECTION))
 			connection = (t_connection *)((t_key *)queue->content)->value;
 			match_a |= ft_strequ(from, connection->from);
 			match_a |= ft_strequ(from, connection->to);
@@ -72,12 +70,11 @@ int			new_connection(t_queue **queue, char *line)
 	t_connection	*connection;
 	t_queue			*el;
 	t_key			key;
-	char	**split;
+	char			**split;
 
 	if (valid_str(line))
 	{
 		split = ft_strsplit(line, '-');
-
 		if (is_duplicate((*queue)->next, split[0], split[1]))
 		{
 			ft_memdel((void *)&split[0]);

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/19 06:34:20 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/28 21:51:52 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/09 17:00:43 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static int	match_link(char *node_name, t_connection *link)
 ** Count links in input
 ** allow duplicates
 */
+
 static int		count_node_links(char *node_name, t_queue *link)
 {
 	t_key	*key;
@@ -45,7 +46,7 @@ static void	link_to(t_node *a, t_node *b)
 	while (i < a->links_count)
 	{
 		if (!a->links[i])
-			break;
+			break ;
 		i++;
 	}
 	a->links[i] = b;
@@ -54,6 +55,7 @@ static void	link_to(t_node *a, t_node *b)
 /*
 ** Create bidirectionnal links
 */
+
 void		connect_nodes(t_node *a, t_node *b)
 {
 	t_node	*link;
@@ -67,9 +69,9 @@ void		connect_nodes(t_node *a, t_node *b)
 	{
 		link = a->links[i];
 		if (!link)
-			continue;
+			continue ;
 		else if (ft_strequ(b->name, link->name))
-			return;
+			return ;
 	}
 	link_to(a, b);
 	link_to(b, a);
@@ -91,6 +93,5 @@ t_node		*new_node(t_room *room, t_queue *links)
 	node->links_count = count;
 	node->x = room->x;
 	node->y = room->y;
-
 	return (node);
 }

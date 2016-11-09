@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/19 00:09:45 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/29 05:27:50 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/09 17:14:46 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	parse_connection(t_parser *parser, char *line)
 		while (queue)
 		{
 			if (!queue->next)
-				break;
+				break ;
 			queue = queue->next;
 		}
 	}
@@ -93,11 +93,10 @@ static int	parse_ants(t_parser *parser, char *line)
 	return (1);
 }
 
-int				parse_line(char *line, void *st)
+int			parse_line(char *line, void *st)
 {
 	static int		state = 0;
-	static int		(*parse_fn[3])(t_parser *, char *) =
-	{
+	static int		(*parse_fn[3])(t_parser *, char *) = {
 		&parse_ants,
 		&parse_room,
 		&parse_connection

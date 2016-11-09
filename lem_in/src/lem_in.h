@@ -18,17 +18,16 @@
 
 # define ERR_MISSING_ROOM "missing start or end room"
 # define ERR_HIDDEN_ROOM "start or end room is hidden by multiple records"
-# define ERR_BAD_FORMAT "bad parser format (start or end commands hidden by \
-duplicate rooms)"
+# define ERR_BAD_FORMAT "bad parser format (start/end commands on duplicate)"
 # define ERR_INVALID_ANT_LINE "ant line format error"
 # define ERR_INVALID_ANT_NUMBER "ant_count < 1"
 # define ERR_L_PREFIX "a room name starts with a L"
 # define ERR_NO_LINK "no link between START & END"
 
-#define CMD_START 1
-#define CMD_END 2
-#define CMD_UNKNOWN 3
-#define CMD_COMMENT 0
+# define CMD_START 1
+# define CMD_END 2
+# define CMD_UNKNOWN 3
+# define CMD_COMMENT 0
 
 typedef enum	e_type
 {
@@ -49,9 +48,9 @@ typedef enum	e_state
 	STATE_END = 0x8
 }				t_state;
 
-typedef unsigned int uint;
+typedef unsigned int	uint;
 
-typedef struct	s_node t_node;
+typedef struct s_node	t_node;
 
 /*
 ** 8 + 8 + (4 + 4) + (4 + 4) + (4)
@@ -120,8 +119,7 @@ typedef struct	s_graph
 	t_ant		**ants;
 	int			ants_count;
 	int			sleeping_ants;
-}
-t_graph;
+}				t_graph;
 
 /*
 ** 8 + 8 + (4 + 4) + (4)
@@ -139,59 +137,58 @@ typedef struct	s_parser
 /*
 ** =============================== read_stin.c ==============================
 */
-void	read_stdin(int (read_line)(char *, void *), void *st);
+void			read_stdin(int (read_line)(char *, void *), void *st);
 
 /*
 ** ================================= rooms.c ================================
 */
-int		new_room(t_queue **queue, char *line, t_type type);
+int				new_room(t_queue **queue, char *line, t_type type);
 
 /*
 ** =============================== connection.c =============================
 */
-int		new_connection(t_queue **queue, char *line);
+int				new_connection(t_queue **queue, char *line);
 
 /*
 ** ================================ parser.c ================================
 */
-int		parse_line(char *line, void *st);
+int				parse_line(char *line, void *st);
 
 /*
 ** ============================== queue_tools.c =============================
 */
-void	queue_add_key(t_queue **queue, t_key *key);
-
+void			queue_add_key(t_queue **queue, t_key *key);
 
 /*
 ** ================================= graph.c =================================
 */
-void	new_graph(t_graph *graph, t_parser *parser);
+void			new_graph(t_graph *graph, t_parser *parser);
 
 /*
 ** ================================= node.c =================================
 */
-t_node	*new_node(t_room *room, t_queue *links);
-void	connect_nodes(t_node *a, t_node *b);
+t_node			*new_node(t_room *room, t_queue *links);
+void			connect_nodes(t_node *a, t_node *b);
 
 /*
 ** ================================= link.c =================================
 */
-void	create_node_links(t_node *graph, t_node *node, t_queue *connections);
+void			create_node_links(t_node *graph, t_node *node, t_queue *connections);
 
 /*
 ** ================================= path.c =================================
 */
-int		mark_all_path(t_node *root, int weight, t_graph *graph);
+int				mark_all_path(t_node *root, int weight, t_graph *graph);
 
 /*
 ** ================================ resolve.c ===============================
 */
-void	resolve(t_graph *graph);
+void			resolve(t_graph *graph);
 
 /*
 ** ================================ errors.c ================================
 */
-void	error(char *str);
-void	memerror(void);
+void			error(char *str);
+void			memerror(void);
 
 #endif
