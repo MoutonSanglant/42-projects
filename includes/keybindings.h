@@ -86,10 +86,4 @@
 # define MOUSE_SCROLL_DOWN	4
 # define MOUSE_SCROLL_UP	5
 
-typedef enum	e_key_mod
-{
-	KEY_MODIFIER_SHIFT = 0x1,
-	KEY_MODIFIER_CTRL = 0x2
-}				t_key_mod;
-
 #endif
