@@ -81,10 +81,10 @@ fclean: clean
 
 re: fclean all
 
-correction:
-	@echo "\033[32mCopying $(NAME) into \033[33m/tmp/\033[0m"
-	@mkdir -p /tmp/$(NAME)
-	@mkdir -p /tmp/$(NAME)/includes
-	@rsync -r --copy-links $(CORR_FILES) /tmp/$(NAME)
-	@$(MAKE) -C libft correction_$(NAME)
-	@$(MAKE) -C libftprintf correction_$(NAME)
+correction_%:
+	@echo "\033[32mCopying $* into \033[33m/tmp/\033[0m"
+	@mkdir -p /tmp/$*
+	@mkdir -p /tmp/$*/includes
+	@rsync -r --copy-links $(CORR_FILES) /tmp/$*
+	@$(MAKE) -C libft correction_$*
+	@$(MAKE) -C libftprintf correction_$*

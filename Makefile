@@ -5,7 +5,8 @@ PROJECTS = fillit push_swap lem_in ls minishell 42sh fdf fractol
 all:
 
 $(PROJECTS):
-	@$(MAKE) -C $@ correction
+	@echo "=== $@ ==="
+	@$(MAKE) -C $@ correction_$@
 	@cp ./auteur /tmp/$@
 
 libft:
