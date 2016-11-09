@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:02:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/08 15:03:59 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/09 13:05:52 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,15 @@ static void		set_fractal(char *name, t_fractal *fractal)
 		fractal->name = "Julia";
 		fractal->interactive = 1;
 	}
+	else if (ft_strequ(name, "mandelbrot"))
+	{
+		fractal->name = "Mandelbrot";
+		fractal->fn = &burning;
+	}
 	else if (ft_strequ(name, "burning_ship"))
 	{
 		fractal->name = "Burning Ship";
 		fractal->fn = &burning;
-	}
-	else if (ft_strequ(name, "burning_julia"))
-	{
-		fractal->name = "Burning Julia";
-		fractal->fn = &burning;
-		fractal->interactive = 1;
 	}
 	else
 		error(USAGE_MSG);

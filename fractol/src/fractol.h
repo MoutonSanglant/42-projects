@@ -26,10 +26,11 @@
 
 # ifdef LINUX
 #  include <linux/keybindings.h>
-#  include "linux/mlx.h"
-#  include "linux/mlx_int.h"
+#  include <linux/mlx.h>
+#  include <linux/mlx_int.h>
 # else
-#  include "./mlx.h"
+#  include <keybindings.h>
+#  include <mlx.h>
 # endif
 
 # ifdef BONUS
@@ -45,7 +46,7 @@
 
 # define USAGE_MSG "usage: fractol [--help] [fractal ...] [width] [height]"
 # define HELP_LINE1 "fractal : fractal to display"
-# define HELP_LINE2 "\tjulia\n\tmandelbrot\n\tburning_ship\n\tburning_julia"
+# define HELP_LINE2 "\tjulia\n\tmandelbrot\n\tburning_ship"
 
 # define BUFF_SIZE 32
 # define BLACK	0x00000000
@@ -143,6 +144,12 @@ typedef struct	s_settings
 	int		mouse_capture;
 	int		draw_gui;
 }				t_settings;
+
+typedef enum	e_key_mod
+{
+	KEY_MODIFIER_SHIFT = 0x1,
+	KEY_MODIFIER_CTRL = 0x2
+}				t_key_mod;
 
 typedef struct	s_mlx_st
 {
@@ -308,6 +315,7 @@ void			zoom_out(t_mlx_st *mlx, int x, int y);
 **								 : mandelbrot.c :
 */
 int				julia(t_vec2d *z, t_vec2d *c, int depth, int max_depth);
+int				mandelbrot(t_vec2d *z, t_vec2d *c, int depth, int max_depth);
 int				burning(t_vec2d *z, t_vec2d *c, int depth, int max_depth);
 
 /*
