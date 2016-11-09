@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:02:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/09 13:05:52 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/09 15:47:45 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ static void		get_size(int argc, char **argv, t_vec2 *screen_size)
 		screen_size->y = ft_atoi(argv[1]);
 		if (screen_size->x < MIN_WIDTH || screen_size->x > MAX_WIDTH)
 		{
-			ft_snprintf(str, 99, "Width must be a value between %i and %i\n",
+			ft_snprintf(str, 99, "Width must be a value between %i and %i",
 														MIN_WIDTH, MAX_WIDTH);
 			error(str);
 		}
 		if (screen_size->y < MIN_HEIGHT || screen_size->y > MAX_HEIGHT)
 		{
-			ft_snprintf(str, 99, "Height must be a value between %i and %i\n",
+			ft_snprintf(str, 99, "Height must be a value between %i and %i",
 														MIN_HEIGHT, MAX_HEIGHT);
 			error(str);
 		}
@@ -46,18 +46,16 @@ static void		get_size(int argc, char **argv, t_vec2 *screen_size)
 static void		set_fractal(char *name, t_fractal *fractal)
 {
 	fractal->interactive = 0;
-	fractal->fn = &julia;
-	if (ft_strequ(name, "mandelbrot"))
-		fractal->name = "Mandelbrot";
-	else if (ft_strequ(name, "julia"))
+	if (ft_strequ(name, "julia"))
 	{
 		fractal->name = "Julia";
+		fractal->fn = &julia;
 		fractal->interactive = 1;
 	}
 	else if (ft_strequ(name, "mandelbrot"))
 	{
 		fractal->name = "Mandelbrot";
-		fractal->fn = &burning;
+		fractal->fn = &mandelbrot;
 	}
 	else if (ft_strequ(name, "burning_ship"))
 	{

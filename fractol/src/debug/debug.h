@@ -13,6 +13,8 @@
 #ifndef DEBUG_H
 # define DEBUG_H
 
+typedef struct s_mlx_st	t_mlx_st;
+
 void			draw_debug_gui(t_mlx_st *mlx);
 
 #endif
