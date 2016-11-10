@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/21 13:03:53 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/10 00:56:55 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/10 14:55:53 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,53 +33,58 @@ static int	mark_neighbourgs(t_node *node, int w)
 	return (count);
 }
 
-static void	mark_invalid(t_node *node, t_graph *graph)
+static void	mark_invalid(t_node *node)
 {
 	int		i;
+	int		count;
+	t_state	state;
+	t_node	**links;
 
-	if (!node->state || node->links_count > 2 || node == graph->end
-			|| node == graph->start)
+	state = node->state;
+	count = node->links_count;
+	if (!state || state & (STATE_START | STATE_END) || count > 2)
 		return ;
+	links = node->links;
 	node->state = STATE_INVALID;
 	i = -1;
 	while (++i < node->links_count)
-		mark_invalid(node->links[i], graph);
+		mark_invalid(links[i]);
 }
 
-int			mark_all_path(t_node *root, int w, t_graph *graph)
+t_node		*compare_paths(t_node *link, t_node *best_path, int *best_depth,
+																	int depth)
+{
+	if (best_path)
+		mark_invalid(best_path);
+	*best_depth = depth;
+	return (link);
+}
+
+int			mark_all_path(t_node *root, int w, t_graph *graph, int links)
 {
 	t_node	*link;
-	t_node	*shortest_path;
-	int		smallest_depth;
+	t_node	*best_path;
+	int		best_depth;
 	int		depth;
-	int		i;
 
-	if (root == graph->start)
-		return (w);
-	mark_neighbourgs(root, w + 1);
-	i = -1;
 	depth = w;
-	smallest_depth = INT_MAX;
-	shortest_path = NULL;
-	while (++i < root->links_count)
+	best_path = NULL;
+	best_depth = INT_MAX;
+	mark_neighbourgs(root, w + 1);
+	while (links)
 	{
-		link = root->links[i];
-		if (link->weight >= w)
-		{
-			depth = mark_all_path(link, w + 1, graph);
-			if (root != graph->end)
-			{
-				if (depth < smallest_depth)
-				{
-					if (shortest_path)
-						mark_invalid(shortest_path, graph);
-					smallest_depth = depth;
-					shortest_path = link;
-				}
-				else
-					mark_invalid(link, graph);
-			}
-		}
+		link = root->links[root->links_count - links--];
+		if (link->weight < w)
+			continue ;
+		if (link == graph->start)
+			return (w + 1);
+		depth = mark_all_path(link, w + 1, graph, link->links_count);
+		if (root == graph->end)
+			continue ;
+		if (depth < best_depth)
+			best_path = compare_paths(link, best_path, &best_depth, depth);
+		else
+			mark_invalid(link);
 	}
 	return (depth);
 }

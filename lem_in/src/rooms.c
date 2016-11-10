@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/18 17:39:56 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/10 00:58:03 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/10 14:58:33 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,24 +62,29 @@ static int	is_duplicate(t_queue *queue, char *name)
 	return (0);
 }
 
+static int	free_split(char **split)
+{
+	int		i;
+
+	i = 0;
+	while (split[i])
+		ft_memdel((void *)&split[i++]);
+	ft_memdel((void *)&split);
+	return (1);
+}
+
 int			new_room(t_queue **queue, char *line, t_type type)
 {
+	char	**split;
 	t_room	*room;
 	t_key	key;
-	char	**split;
 	int		i;
 
 	if (valid_room_str(line))
 	{
 		split = ft_strsplit(line, ' ');
 		if (is_duplicate(*queue, split[0]))
-		{
-			i = 0;
-			while (split[i])
-				ft_memdel((void *)&split[i++]);
-			ft_memdel((void *)&split);
-			return (1);
-		}
+			return (free_split(split));
 		room = (t_room *)malloc(sizeof(t_room));
 		room->name = split[0];
 		room->x = ft_atoi(split[1]);

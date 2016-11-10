@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/19 06:33:28 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/10 01:06:43 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/10 18:00:16 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,26 @@ static void		build_graph(t_graph *g, t_node *root, t_parser *parser)
 	}
 }
 
+void			clear_graph(t_graph *graph)
+{
+	t_node	*link;
+	int		i;
+
+	i = graph->root_links_count;
+	while (--i >= 0)
+	{
+		if ((link = graph->root_links[i]))
+		{
+			if (link->name)
+				ft_memdel((void *)&link->name);
+			if (link->links)
+				ft_memdel((void *)&link->links);
+			ft_memdel((void *)&link);
+		}
+	}
+	ft_memdel((void **)&graph->root_links);
+}
+
 /*
 ** Create all nodes, connected to a root node
 ** Then, connect nodes together
@@ -87,5 +107,6 @@ void			new_graph(t_graph *graph, t_parser *parser)
 	i = -1;
 	while (++i < root.links_count)
 		create_node_links(&root, root.links[i], parser->connections);
-	free(root.links);
+	graph->root_links = root.links;
+	graph->root_links_count = root.links_count;
 }

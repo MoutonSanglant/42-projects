@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/18 04:19:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/09 17:05:06 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/10 16:01:46 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ static void	print_room(t_room *room)
 static void	print_connection(t_connection *connection)
 {
 	ft_printf("%s-%s\n", connection->from, connection->to);
+	ft_memdel((void *)&connection->from);
+	ft_memdel((void *)&connection->to);
 }
 
 static void	print_anthill(t_parser *parser)
@@ -128,7 +130,7 @@ int			main(void)
 	graph.start->state = STATE_START;
 	graph.start->weight = INT_MAX;
 	graph.ants_count = parser.ants_count;
-	mark_all_path(graph.end, 0, &graph);
+	mark_all_path(graph.end, 0, &graph, graph.end->links_count);
 	if (graph.start->weight == INT_MAX)
 		error(ERR_NO_LINK);
 	graph.start->weight = INT_MAX;

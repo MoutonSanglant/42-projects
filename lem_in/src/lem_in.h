@@ -45,7 +45,8 @@ typedef enum	e_state
 	STATE_VALID = 0x1,
 	STATE_BUSY = 0x2,
 	STATE_START = 0x4,
-	STATE_END = 0x8
+	STATE_END = 0x8,
+	STATE_DELETED = 0x100
 }				t_state;
 
 typedef struct s_node	t_node;
@@ -114,7 +115,9 @@ typedef struct	s_graph
 {
 	t_node		*start;
 	t_node		*end;
+	t_node		**root_links;
 	t_ant		**ants;
+	int			root_links_count;
 	int			ants_count;
 	int			sleeping_ants;
 }				t_graph;
@@ -161,6 +164,7 @@ void			queue_add_key(t_queue **queue, t_key *key);
 ** ================================= graph.c =================================
 */
 void			new_graph(t_graph *graph, t_parser *parser);
+void			clear_graph(t_graph *graph);
 
 /*
 ** ================================= node.c =================================
@@ -176,12 +180,17 @@ void			create_node_links(t_node *g, t_node *n, t_queue *connections);
 /*
 ** ================================= path.c =================================
 */
-int				mark_all_path(t_node *root, int weight, t_graph *graph);
+int				mark_all_path(t_node *root, int weight, t_graph *graph, int c);
 
 /*
 ** ================================ resolve.c ===============================
 */
 void			resolve(t_graph *graph);
+
+/*
+** ================================= ways.c =================================
+*/
+t_node			**new_ways_list(t_node *room);
 
 /*
 ** ================================ errors.c ================================

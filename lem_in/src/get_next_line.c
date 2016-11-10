@@ -6,13 +6,13 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 14:44:53 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/10 01:04:06 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/10 15:26:09 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int		clear_fd_parser(t_list **parser_list, int fd)
+static int			clear_fd_parser(t_list **parser_list, int fd)
 {
 	t_list	*fd_list;
 	t_list	*prev;
@@ -66,7 +66,7 @@ static t_gnl_parser	*get_fd_parser(t_list **s_parsers, t_list *parser_list,
 	return ((t_gnl_parser *)parser_list->content);
 }
 
-static int		read_until_eol(t_list **s, t_gnl_parser *p, size_t *bcount)
+static int			read_until_eol(t_list **s, t_gnl_parser *p, size_t *bcount)
 {
 	size_t	eol;
 
@@ -101,7 +101,7 @@ static int		read_until_eol(t_list **s, t_gnl_parser *p, size_t *bcount)
 **	++ r = total_bcount;
 */
 
-static int		get_fd_line(char **line, t_list **s_parsers,
+static int			get_fd_line(char **line, t_list **s_parsers,
 							int fd, t_list **strings)
 {
 	t_list			*first;
@@ -131,7 +131,7 @@ static int		get_fd_line(char **line, t_list **s_parsers,
 	return (r);
 }
 
-int				get_next_line(const int fd, char **line)
+int					get_next_line(const int fd, char **line)
 {
 	static t_list	*s_parsers = NULL;
 	t_list			*strings;

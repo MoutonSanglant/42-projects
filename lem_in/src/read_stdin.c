@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/18 14:45:21 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/10 00:56:26 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/10 18:07:54 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,6 @@ void	read_stdin(int (read_line)(char *, void *), void *st)
 		else
 			memerror();
 	}
+	if (line)
+		ft_memdel((void **)&line);
 }
