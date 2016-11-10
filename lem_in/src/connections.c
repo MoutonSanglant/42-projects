@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/18 17:39:21 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/09 16:54:29 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/10 00:21:21 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,23 +65,26 @@ static int	is_duplicate(t_queue *queue, char *from, char *to)
 	return (0);
 }
 
+static int	free_split(char **split)
+{
+	ft_memdel((void *)&split[0]);
+	ft_memdel((void *)&split[1]);
+	ft_memdel((void *)&split);
+	return (1);
+}
+
 int			new_connection(t_queue **queue, char *line)
 {
+	char			**split;
 	t_connection	*connection;
 	t_queue			*el;
 	t_key			key;
-	char			**split;
 
 	if (valid_str(line))
 	{
 		split = ft_strsplit(line, '-');
 		if (is_duplicate((*queue)->next, split[0], split[1]))
-		{
-			ft_memdel((void *)&split[0]);
-			ft_memdel((void *)&split[1]);
-			ft_memdel((void *)&split);
-			return (1);
-		}
+			return (free_split(split));
 		connection = (t_connection *)malloc(sizeof(t_connection));
 		connection->from = split[0];
 		connection->to = split[1];

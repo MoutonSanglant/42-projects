@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/18 17:39:56 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/20 19:39:22 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/10 00:58:03 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 ** - consecutive spaces
 ** - space count is 2
 */
+
 static int	valid_room_str(char *str)
 {
 	int		i;
@@ -61,8 +62,7 @@ static int	is_duplicate(t_queue *queue, char *name)
 	return (0);
 }
 
-
-int		new_room(t_queue **queue, char *line, t_type type)
+int			new_room(t_queue **queue, char *line, t_type type)
 {
 	t_room	*room;
 	t_key	key;

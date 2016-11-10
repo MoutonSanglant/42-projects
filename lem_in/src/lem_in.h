@@ -48,8 +48,6 @@ typedef enum	e_state
 	STATE_END = 0x8
 }				t_state;
 
-typedef unsigned int	uint;
-
 typedef struct s_node	t_node;
 
 /*
@@ -173,7 +171,7 @@ void			connect_nodes(t_node *a, t_node *b);
 /*
 ** ================================= link.c =================================
 */
-void			create_node_links(t_node *graph, t_node *node, t_queue *connections);
+void			create_node_links(t_node *g, t_node *n, t_queue *connections);
 
 /*
 ** ================================= path.c =================================

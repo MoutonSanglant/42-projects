@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/21 13:59:13 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/29 05:42:06 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/10 01:06:06 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,13 +97,12 @@ static t_node	*find_best_path(t_node *room, t_graph *graph)
 				break ;
 		}
 		total_weight += path_list[i]->weight;
-
 	}
 	free(path_list);
 	return (path);
 }
 
-static int	ant_move(t_ant *ant, t_graph *graph)
+static int		ant_move(t_ant *ant, t_graph *graph)
 {
 	t_node	*best_room;
 
@@ -119,8 +118,7 @@ static int	ant_move(t_ant *ant, t_graph *graph)
 	return (best_room != NULL);
 }
 
-
-static int	resolve_turn(t_graph *graph)
+static int		resolve_turn(t_graph *graph)
 {
 	t_ant	*ant;
 	int		update;
@@ -130,9 +128,7 @@ static int	resolve_turn(t_graph *graph)
 	update = 0;
 	while (++i < graph->ants_count)
 	{
-		ant = graph->ants[i];
-
-		if (ant && ant_move(ant, graph))
+		if ((ant = graph->ants[i]) && ant_move(ant, graph))
 		{
 			if (ant->room->state & STATE_END)
 			{
@@ -140,10 +136,12 @@ static int	resolve_turn(t_graph *graph)
 				graph->ants[i] = NULL;
 			}
 			if (update)
-				ft_printf(" %s%s-%s", "L", ant->name, ant->room->name, ant->room->weight);
+				ft_printf(" %s%s-%s", "L", ant->name, ant->room->name,
+						ant->room->weight);
 			else
 			{
-				ft_printf("%s%s-%s", "L", ant->name, ant->room->name, ant->room->weight);
+				ft_printf("%s%s-%s", "L", ant->name, ant->room->name,
+						ant->room->weight);
 				update = 1;
 			}
 		}
@@ -151,7 +149,7 @@ static int	resolve_turn(t_graph *graph)
 	return (update);
 }
 
-void	resolve(t_graph *graph)
+void			resolve(t_graph *graph)
 {
 	t_ant	*ant;
 	int		i;

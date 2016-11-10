@@ -6,13 +6,13 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/19 06:33:28 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/09 16:58:32 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/10 01:06:43 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-static int	node_exist(t_node *graph, t_room *room)
+static int		node_exist(t_node *graph, t_room *room)
 {
 	t_node	*link;
 	size_t	count;
@@ -30,7 +30,18 @@ static int	node_exist(t_node *graph, t_room *room)
 	return (0);
 }
 
-static void	build_graph(t_graph *graph, t_node *root, t_parser *parser)
+static t_node	*insert_node(t_graph *graph, t_node *link, t_key *key,
+															t_parser *parser)
+{
+	link = new_node(((t_room *)key->value), parser->connections);
+	if (key->type & TYPE_START)
+		graph->start = link;
+	else if (key->type & TYPE_END)
+		graph->end = link;
+	return (link);
+}
+
+static void		build_graph(t_graph *g, t_node *root, t_parser *parser)
 {
 	t_queue	*queue;
 	t_key	*key;
@@ -45,17 +56,10 @@ static void	build_graph(t_graph *graph, t_node *root, t_parser *parser)
 		{
 			queue = queue->next;
 			key = (t_key *)queue->content;
-			continue;
+			continue ;
 		}
 		if (!node_exist(root, (t_room *)key->value))
-		{
-			root->links[idx] = new_node(((t_room *)key->value),
-													parser->connections);
-			if (key->type & TYPE_START)
-				graph->start = root->links[idx];
-			else if (key->type & TYPE_END)
-				graph->end = root->links[idx];
-		}
+			root->links[idx] = insert_node(g, root->links[idx], key, parser);
 		queue = queue->next;
 		key = (t_key *)queue->content;
 		idx++;
@@ -71,7 +75,7 @@ static void	build_graph(t_graph *graph, t_node *root, t_parser *parser)
 ** ========================
 */
 
-void		new_graph(t_graph *graph, t_parser *parser)
+void			new_graph(t_graph *graph, t_parser *parser)
 {
 	t_node	root;
 	int		i;

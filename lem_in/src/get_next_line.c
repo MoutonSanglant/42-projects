@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 14:44:53 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/10/17 09:11:21 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/10 01:04:06 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ static int		clear_fd_parser(t_list **parser_list, int fd)
 	return (0);
 }
 
-static t_gnl_parser	*get_fd_parser(t_list **s_parsers, t_list *parser_list, int fd)
+static t_gnl_parser	*get_fd_parser(t_list **s_parsers, t_list *parser_list,
+																		int fd)
 {
 	t_gnl_parser	p;
 
@@ -65,13 +66,13 @@ static t_gnl_parser	*get_fd_parser(t_list **s_parsers, t_list *parser_list, int 
 	return ((t_gnl_parser *)parser_list->content);
 }
 
-static int		read_until_eol(t_list **s, t_gnl_parser *p, size_t *total_bcount)
+static int		read_until_eol(t_list **s, t_gnl_parser *p, size_t *bcount)
 {
 	size_t	eol;
 
 	if (p->bs == 0 && (!(p->bs = read(p->fd, p->buf, BUFF_SIZE)) || p->bs <= 0))
 		return (1 + (2 * p->bs));
-	*total_bcount += (size_t)p->bs;
+	*bcount += (size_t)p->bs;
 	if (!*s)
 		*s = ft_lstnew(NULL, 0);
 	else
@@ -98,8 +99,8 @@ static int		read_until_eol(t_list **s, t_gnl_parser *p, size_t *total_bcount)
 **	To allow GNL to return characters count, switch
 **	-- r = (total_bcount > 0) ? 1 : 0;
 **	++ r = total_bcount;
-**
 */
+
 static int		get_fd_line(char **line, t_list **s_parsers,
 							int fd, t_list **strings)
 {

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/18 14:45:21 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/09 17:06:35 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/10 00:56:26 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** Generic stdin reader with callback 'read_line'
 */
 
-void read_stdin(int (read_line)(char *, void *), void *st)
+void	read_stdin(int (read_line)(char *, void *), void *st)
 {
 	char	*line;
 	int		r;

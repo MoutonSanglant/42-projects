@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/21 13:03:53 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/04 09:41:28 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/10 00:56:55 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	mark_invalid(t_node *node, t_graph *graph)
 		mark_invalid(node->links[i], graph);
 }
 
-int		mark_all_path(t_node *root, int w, t_graph *graph)
+int			mark_all_path(t_node *root, int w, t_graph *graph)
 {
 	t_node	*link;
 	t_node	*shortest_path;

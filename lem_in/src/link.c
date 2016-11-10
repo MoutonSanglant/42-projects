@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/09/19 20:33:18 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/09 17:00:06 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/11/10 00:49:32 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/11/10 01:07:18 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ static t_node	*find_node(char *name, t_node *root)
 	return (NULL);
 }
 
-void		create_node_links(t_node *root, t_node *node, t_queue *connections)
+void			create_node_links(t_node *root, t_node *node,
+													t_queue *connections)
 {
 	t_key			*key;
 	t_node			*to;

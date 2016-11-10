@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/19 06:34:20 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/09 17:00:43 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/10 00:56:04 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	match_link(char *node_name, t_connection *link)
 ** allow duplicates
 */
 
-static int		count_node_links(char *node_name, t_queue *link)
+static int	count_node_links(char *node_name, t_queue *link)
 {
 	t_key	*key;
 	int		i;
