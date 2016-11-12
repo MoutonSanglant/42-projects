@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/21 13:59:13 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/10 18:23:32 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/12 14:10:56 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ void			resolve(t_graph *graph)
 	{
 		ant = (t_ant *)malloc(sizeof(t_ant));
 		ant->name = ft_itoa(i + 1);
-		ft_printf("ant %i %s\n", i, ant->name);
 		ant->room = graph->start;
 		graph->ants[i] = ant;
 	}
