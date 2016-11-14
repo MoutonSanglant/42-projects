@@ -1,7 +1,7 @@
 CC		= gcc
 CFLAGS	= -Wall -Werror -Wextra -I./includes
 LDFLAGS	= -L./libft -L./libftprintf
-LDLIBS	= -lft -lftprintf
+LDLIBS	= -lft -lftprintf -ltermcap
 
 SUFFIX	= .o
 NAME	= ft_select
@@ -34,7 +34,8 @@ endif
 SRC_PREFIX = ./src/
 OBJ_PREFIX = ./obj/
 
-SRC	=	ft_select.c
+SRC	=	ft_select.c signals.c termios.c \
+		get_next_line.c errors.c
 
 ifeq ($(BUILD), Debug)
 	SRC +=

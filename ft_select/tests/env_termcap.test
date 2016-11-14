@@ -1,0 +1,7 @@
+export TERMCAP="/"
+export TERMCAP="/etc/termcap"
+export TERMCAP="/path/to/valid/termcap/file"
+
+# read: https://www.gnu.org/software/termutils/manual/termcap-1.3/html_chapter/termcap_3.html#SEC17
+
+export TERMCAP="terminal_description"
