@@ -14,20 +14,20 @@
 # define KEYBINDINGS_H
 
 # define KEYPRESS		2
-# define KEYRELEASE	3
+# define KEYRELEASE		3
 # define MOTIONNOTIFY	6
 # define DESTROYNOTIFY	17
 # define KEYPRESSMASK		(1L<<0)
-# define KEYRELEASEMASK	(1L<<1)
+# define KEYRELEASEMASK		(1L<<1)
 # define POINTERMOTIONMASK	(1L<<6)
 
-# define KEY_ESCAPE	53
+# define KEY_ESCAPE		53
 # define KEY_STAR		30
 # define KEY_NUMPAD_MORE	69
 # define KEY_NUMPAD_LESS	78
 # define KEY_NUMPAD_STAR	67
 # define KEY_NUMPAD_SLASH	75
-# define KEY_NUMPAD_DOT	65
+# define KEY_NUMPAD_DOT		65
 # define KEY_0		29
 # define KEY_1		18
 # define KEY_2		19
@@ -71,15 +71,15 @@
 # define KEY_TAB	48
 # define KEY_LEFT	123
 # define KEY_RIGHT	124
-# define KEY_UP	126
+# define KEY_UP		126
 # define KEY_DOWN	125
 # define KEY_PAGE_UP		116
 # define KEY_PAGE_DOWN		121
 
 # define KEY_LEFT_CTRL		256
-# define KEY_LEFT_SHIFT	257
+# define KEY_LEFT_SHIFT		257
 # define KEY_RIGHT_SHIFT	258
-# define KEY_RIGHT_CTRL	269
+# define KEY_RIGHT_CTRL		269
 
 # define MOUSE_CLICK_LEFT	1
 # define MOUSE_CLICK_RIGHT	2
