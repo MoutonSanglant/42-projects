@@ -1,0 +1,12 @@
+#ceci est un commentaire
+3
+##start
+a 1 1
+#ici aussi
+b 1 2
+c 1 3
+##end
+d 1 2
+a-b
+b-c
+c-d

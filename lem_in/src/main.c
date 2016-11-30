@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/18 04:19:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/12 14:35:14 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/29 23:52:13 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,19 +76,23 @@
 ** exit
 */
 
-static void	print_room(t_room *room)
+static void	print_room(t_room *room, t_graph *graph)
 {
+	if (graph->flags & FLAG_COLORS)
+		ft_printf("\033[33m");
 	ft_printf("%s %i %i\n", room->name, room->x, room->y);
 }
 
-static void	print_connection(t_connection *connection)
+static void	print_connection(t_connection *connection, t_graph *graph)
 {
+	if (graph->flags & FLAG_COLORS)
+		ft_printf("\033[35m");
 	ft_printf("%s-%s\n", connection->from, connection->to);
 	ft_memdel((void *)&connection->from);
 	ft_memdel((void *)&connection->to);
 }
 
-static void	print_anthill(t_parser *parser)
+static void	print_anthill(t_parser *parser, t_graph *graph)
 {
 	t_queue		*queue;
 	t_key		*key;
@@ -98,33 +102,37 @@ static void	print_anthill(t_parser *parser)
 	while (queue)
 	{
 		key = (t_key *)queue->content;
+		if (graph->flags & FLAG_COLORS)
+			ft_printf("\033[32m");
 		if (key->type & TYPE_COMMENT)
 			ft_printf("%s\n", (char *)key->value);
 		else if (key->type & TYPE_ROOM)
-			print_room((t_room *)key->value);
+			print_room((t_room *)key->value, graph);
 		else if (key->type & TYPE_CONNECTION)
-			print_connection((t_connection *)key->value);
+			print_connection((t_connection *)key->value, graph);
 		ft_memdel((void *)&key->value);
 		ft_memdel((void *)&queue->content);
 		ft_queuepop(&queue);
 	}
+	if (graph->flags & FLAG_COLORS)
+		ft_printf("\033[0m");
 	write(1, "\n", 1);
 }
 
-int			main(void)
+int			main(int argc, char **argv)
 {
 	t_parser	parser;
 	t_graph		graph;
 
 	ft_bzero(&graph, sizeof(t_graph));
 	ft_bzero(&parser, sizeof(t_parser));
+	if (argc > 1)
+		parse_arguments(argc, argv, &graph);
 	parser.ants_count = -1;
 	read_stdin(&parse_line, (void*)&parser);
 	if (parser.ants_count < 1)
 		error(ERR_INVALID_ANT_NUMBER);
 	new_graph(&graph, &parser);
-	if (!graph.start || !graph.end)
-		error(ERR_HIDDEN_ROOM);
 	graph.end->weight = 0;
 	graph.end->state = STATE_END;
 	graph.start->state = STATE_START;
@@ -135,7 +143,7 @@ int			main(void)
 		error(ERR_NO_LINK);
 	graph.start->weight = INT_MAX;
 	graph.start->state = STATE_START;
-	print_anthill(&parser);
+	print_anthill(&parser, &graph);
 	resolve(&graph);
 	return (0);
 }

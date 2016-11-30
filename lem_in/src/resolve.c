@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/21 13:59:13 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/12 14:10:56 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/30 01:21:41 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static t_node	*find_best_path(t_node *room, t_graph *graph)
 	total_weight = 0;
 	while (path_list[++i])
 	{
-		if (graph->sleeping_ants >= total_weight)
+		if (total_weight < graph->ants_count)
 		{
 			path = path_list[i];
 			if (path->state & STATE_BUSY)
@@ -52,6 +52,7 @@ static int		ant_move(t_ant *ant, t_graph *graph)
 		ant->room = best_room;
 	}
 	ant->room->state |= STATE_BUSY;
+	graph->start->state &= ~STATE_BUSY;
 	return (best_room != NULL);
 }
 
@@ -70,7 +71,7 @@ static int		resolve_turn(t_graph *graph, int count)
 			room = ant->room;
 			if (update)
 				write(1, " ", 1);
-			ft_printf("%s%s-%s", "L", ant->name, room->name, room->weight);
+			ft_printf("\033[%smL%s-%s\033[0m", ant->color, ant->name, room->name, room->weight);
 			update = 1;
 			if (room->state & STATE_END)
 			{
@@ -81,6 +82,17 @@ static int		resolve_turn(t_graph *graph, int count)
 		}
 	}
 	return (update);
+}
+
+static int		get_ant_color()
+{
+	static int	color = 31;
+
+	if (color > 96)
+		color = 31;
+	if (color > 37 && color < 90)
+		color = 90;
+	return (color++);
 }
 
 void			resolve(t_graph *graph)
@@ -95,7 +107,8 @@ void			resolve(t_graph *graph)
 	while (--i >= 0)
 	{
 		ant = (t_ant *)malloc(sizeof(t_ant));
-		ant->name = ft_itoa(i + 1);
+		ant->name = ft_itoa(graph->ants_count - i);
+		ant->color = ft_itoa(get_ant_color());
 		ant->room = graph->start;
 		graph->ants[i] = ant;
 	}
@@ -107,6 +120,8 @@ void			resolve(t_graph *graph)
 	}
 	ft_memdel((void **)&graph->ants);
 	clear_graph(graph);
+	if (graph->flags & FLAG_TURNS)
+		ft_printf("\033[31mresolve in %i turns\033[0m\n", count);
 }
 /*
 ** ft_printf("resolve in %i turns\n", count);

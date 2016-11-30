@@ -29,6 +29,12 @@
 # define CMD_UNKNOWN 3
 # define CMD_COMMENT 0
 
+typedef enum	e_flags
+{
+	FLAG_COLORS = 0x1,
+	FLAG_TURNS = 0x2
+}				t_flags;
+
 typedef enum	e_type
 {
 	TYPE_INVALID = 0x0,
@@ -67,12 +73,13 @@ struct			s_node
 };
 
 /*
-** 8 + 8
-** = 16 {-}
+** 8 + 8 + 8
+** = 24 {-}
 */
 typedef struct	s_ant
 {
 	char		*name;
+	char		*color;
 	t_node		*room;
 }				t_ant;
 
@@ -108,8 +115,8 @@ typedef struct	s_key
 }				t_key;
 
 /*
-** 8 + 8 + 8 + (4 + 4)
-** = 32 {-}
+** 8 + 8 + 8 + (4 + 4) + (4 + ...)
+** = 36 {4}
 */
 typedef struct	s_graph
 {
@@ -120,6 +127,7 @@ typedef struct	s_graph
 	int			root_links_count;
 	int			ants_count;
 	int			sleeping_ants;
+	t_flags		flags;
 }				t_graph;
 
 /*
@@ -134,6 +142,11 @@ typedef struct	s_parser
 	int		ants_count;
 	int		rooms_count;
 }				t_parser;
+
+/*
+** =============================== arguments.c ==============================
+*/
+void			parse_arguments(int count, char **arguments, t_graph *graph);
 
 /*
 ** =============================== read_stin.c ==============================

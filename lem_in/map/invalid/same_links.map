@@ -1,0 +1,13 @@
+#ceci est un commentaire
+3
+##start
+banane 1 1
+#ici aussi
+poire 1 2
+pomme 1 3
+##end
+vache 1 4
+banane-poire
+poire-pomme
+pomme-vache
+poire-pomme

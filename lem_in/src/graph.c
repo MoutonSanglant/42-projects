@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/19 06:33:28 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/10 18:00:16 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/29 23:20:38 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,4 +109,6 @@ void			new_graph(t_graph *graph, t_parser *parser)
 		create_node_links(&root, root.links[i], parser->connections);
 	graph->root_links = root.links;
 	graph->root_links_count = root.links_count;
+	if (!graph->start || !graph->end)
+		error(ERR_HIDDEN_ROOM);
 }
