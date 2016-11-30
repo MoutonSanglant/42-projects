@@ -1,17 +1,31 @@
 CC		= gcc
-CFLAGS	= -Wall -Werror -Wextra -I./includes -D BONUS
+CFLAGS	= -Wall -Werror -Wextra -I./includes
 LDFLAGS	= -L./lib -L./libft -L./libftprintf
 LDLIBS	= -lft -lftprintf -lm
 
+SRC		= main error help \
+		mlx set_image_pixel mouse_event \
+		keypress keyrelease keyevents keyevents_ctrl keyevents_shift \
+		window viewport canvas draw_loop expose \
+		fractol draw draw_gui \
+		julia mandelbrot burning \
+		colorscheme colorsets colorsets_extra hsl_to_rgb
+
 CORR_FILES = ./Makefile ./lib ./src ./includes
 
+ifeq ($(BUILD), Bonus)
+	CFLAGS	+= -D BONUS
+	SRC		+=
+endif
+
 ifeq ($(BUILD), Debug)
-CFLAGS	+= -fsanitize=address -g -O0 -D DEBUG
-SUFFIX	= .debug.o
-NAME	= fractol.debug
+	CFLAGS	+= -fsanitize=address -g -O0 -D DEBUG
+	SUFFIX	= .debug.o
+	NAME	= fractol.debug
+	SRC		+= debug/draw_debug_gui
 else
-SUFFIX	= .o
-NAME	= fractol
+	NAME	= fractol
+	SUFFIX	= .o
 endif
 
 ARCH	= $(shell uname -m)
@@ -32,18 +46,17 @@ endif
 SRC_PREFIX	= ./src/
 OBJ_PREFIX	= ./obj/
 
-SRC	=	$(shell ls $(SRC_PREFIX)*.c)
-
-ifeq ($(BUILD), Debug)
-	SRC	+= $(shell ls $(SRC_PREFIX)debug/*.c)
-endif
+SRC := $(addsuffix .c, $(SRC))
 
 OBJ = $(subst $(SRC_PREFIX), , $(SRC:.c=$(SUFFIX)))
 OBJ := $(addprefix $(OBJ_PREFIX), $(OBJ))
 
-.PHONY: all clean fclean re libft libftprintf debug correction
+.PHONY: all clean fclean re libft libftprintf debug bonus correction
 
 all: $(NAME)
+
+bonus:
+	@$(MAKE) BUILD=Bonus all
 
 debug:
 	@$(MAKE) BUILD=Debug all
@@ -68,6 +81,7 @@ $(OBJ_PREFIX)%$(SUFFIX): $(SRC_PREFIX)%.c
 	@echo "making $<"
 	@mkdir -p $(OBJ_PREFIX)
 	@mkdir -p $(OBJ_PREFIX)debug/
+	@mkdir -p $(OBJ_PREFIX)bonus/
 	@$(CC) -o $@ -c $< $(CFLAGS)
 
 clean:

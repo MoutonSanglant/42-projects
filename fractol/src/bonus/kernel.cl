@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   destroy_mlx_sess.c                                 :+:      :+:    :+:   */
+/*   kernel.cl                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/07 10:13:56 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/07 10:13:57 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/11/14 13:30:07 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/11/14 13:30:07 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+/*
+** Simple OpenCL kernel that squares an input array.
+*/
 
-void	destroy_mlx_sess(t_mlx_st *mlx)
+kernel void square(global float *input, global float *ouput)
 {
-	mlx_destroy_image(mlx->sess, mlx->canvas->img);
-	mlx_destroy_window(mlx->sess, mlx->win);
-	ft_memdel((void **)&mlx->canvas);
-	ft_memdel((void **)&mlx->sess);
-	ft_memdel((void **)&mlx->name);
+	size_t	i;
+
+	i = get_global_id(0);
+	ouput[i] = input[i] * input[i];
 }
