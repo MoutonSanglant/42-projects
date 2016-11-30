@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/12 13:05:18 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/14 12:46:50 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/11/30 07:17:46 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,18 +101,9 @@ int		init_terminal()
 	return (1);
 }
 
-int		get_fd(void)
-{
-	static int fd;
-
-	if (fd == 0)
-		fd = open(ttyname(0), O_WRONLY);
-	return (fd);
-}
-
 int		ft_put(int c)
 {
-	ft_putchar(c);
+	write(((t_termios *)termios_if(&termios_get))->fd, &c, 1);
 	return (1);
 }
 
@@ -133,95 +124,45 @@ void	list_termcaps()
 	tputs(str, 1, &ft_put);
 }
 
-void	init_termcaps(int fd)
+int		compute_col_width(char **list, int count)
 {
-	(void)fd;
-	ft_printf("unix mode\n");
-	// use code TIOCLSET to set bit LLITOUT
-	// use code TIOCSETN to clear bit ANYDELAY
-	//ioctl(fd, TIOCLSET, LLITOUT);
-}
+	int		max;
+	int		l;
 
-
-int		get_tty_fd()
-{
-	struct ttyent	*t;
-	int				slot;
-	char	*nb;;
-
-	slot = ttyslot();
-	nb = ft_itoa(slot);
-
-	while ((t = getttyent()))
+	l = 0;
+	max = 0;
+	while (--count)
 	{
-		if (t->ty_name)
-		{
-			if (ft_strequ(&t->ty_name[4], nb))
-				break ;
-		}
+		l = ft_strlen(list[count]);
+		if (l > max)
+			max = l;
 	}
-	ft_printf("ty_name: %s\n", t->ty_name);
-	ft_printf("ty_getty: %s\n", t->ty_getty);
-	ft_printf("ty_type: %s\n", t->ty_type);
-	ft_printf("ty_window: %s\n", t->ty_window);
-	ft_printf("ty_comment: %s\n", t->ty_comment);
-	return (slot);
+	return (max);
 }
-
-void	set_tty(t_tty *tty)
-{
-	if (!isatty(tty->fd))
-		fatal("fd %i is not a valid tty.", tty->fd);
-	tty->name = ttyname(0);
-
-	ft_printf("tty %s on fd %i\n", tty->name, tty->fd);
-}
-
-
-void	wait_for_input()
-{
-	while(1) // while !return
-	{
-		// if key...
-	}
-}
-
 
 int		main(int argc, char **argv)
 {
-	t_tty	tty;
-
-	(void)argv;
+	t_select	select;
 
 	if (argc < 2)
 		return (0);
-	if (signal(SIGINT, sig_handler) == SIG_ERR)
-		fatal("can't catch SIGINT");
-	if (signal(SIGQUIT, sig_handler) == SIG_ERR)
-		fatal("can't catch SIGQUIT");
 
-	ft_bzero(&tty, sizeof(t_tty));
-	set_tty(&tty);
+	init_signals();
+	// select.tty is no more used
+	ft_bzero(&select.tty, sizeof(t_tty));
+	//set_tty(&select.tty);
 	if (!init_terminal())
 		return (1);
-
-	init_termcaps(tty.fd);
 	termios_if(&termios_raw);
+	//init_termcaps(select.tty.fd);
 	//list_termcaps();
-
-	ft_printf("Hello ");
-	//tputs(tgetstr("IC", &a), 1, &ft_put); // insert N characters ?
-	//tputs(tgetstr("im", 0), 1, &ft_put); // insert mode ?
-	//tputs(tgetstr("al", 0), 1, &ft_put); // add line ?
-	//tputs(tgoto(tgetstr("cm", 0), 10, 2), 1, &ft_put); // cursor move
-	tputs(tgetstr("so", 0), 1, &ft_put); // standout on
-	ft_printf("world");
-	tputs(tgetstr("se", 0), 1, &ft_put); // standout end
-	ft_printf(" !");
-	tputs(tgetstr("do", 0), 1, &ft_put); // down
-	tputs(tgetstr("cr", 0), 1, &ft_put); // cariage return
-	wait_for_input();
-
+	//get_cursor_position(&select.cursor_x, &select.cursor_y);
+	select.nb_elem = argc - 2;
+	select.list = &argv[1];
+	select.col_width = compute_col_width(select.list, select.nb_elem);
+	refresh(&select);
+	listen_input(&select);
 	termios_if(&termios_release);
+	print_list(&select);
 	return (0);
 }

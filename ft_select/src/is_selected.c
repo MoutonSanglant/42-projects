@@ -1,34 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   is_selected.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/13 19:55:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/17 19:04:21 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/11/17 19:08:18 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/11/17 19:08:30 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
-
 #include "ft_select.h"
 
-void	quit(void)
+int		is_selected(t_select *select, char *el)
 {
-	termios_if(&termios_release);
-	exit (1);
-}
+	t_list	*l;
 
-void	fatal(char *format, ...)
-{
-	va_list	ap;
-
-	va_start(ap, format);
-	ft_eprintf("%s: ", PROGRAM_NAME);
-	ft_veprintf(format, &ap);
-	write(1, "\n", 1);
-	va_end(ap);
-	quit();
+	l = select->selected;
+	while (l)
+	{
+		if (ft_strequ(el, (char *)l->content))
+			return (1);
+		l = l->next;
+	}
+	return (0);
 }

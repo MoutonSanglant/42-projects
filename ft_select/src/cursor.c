@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   cursor.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/13 19:55:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/17 19:04:21 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/11/30 02:12:08 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/11/30 04:26:10 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
-
 #include "ft_select.h"
 
-void	quit(void)
+// Query cursor position
+void	get_cursor_position(int *x, int *y)
 {
-	termios_if(&termios_release);
-	exit (1);
-}
+	char	buf[10];
+	int		fd;
+	int		ret;
+	int		i;
 
-void	fatal(char *format, ...)
-{
-	va_list	ap;
-
-	va_start(ap, format);
-	ft_eprintf("%s: ", PROGRAM_NAME);
-	ft_veprintf(format, &ap);
-	write(1, "\n", 1);
-	va_end(ap);
-	quit();
+	//fd = 0;
+	//fd = ((t_termios *)termios_if(&termios_get))->fd;
+	//ft_dprintf(2, "using fd: %i\n", fd);
+	fd = 0;
+	ft_dprintf(fd, "\033[6n");
+	ret = read(fd, buf, 9);
+	buf[ret] = '\0';
+	i = 0;
+	*y = ft_atoi(&buf[2]) - 1;
+	while (buf[i] != ';')
+		i++;
+	*x = ft_atoi(&buf[i + 1]);
 }

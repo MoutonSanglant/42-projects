@@ -3,16 +3,28 @@ CFLAGS	= -Wall -Werror -Wextra -I./includes
 LDFLAGS	= -L./libft -L./libftprintf
 LDLIBS	= -lft -lftprintf -ltermcap
 
-SUFFIX	= .o
-NAME	= ft_select
+SRC	=	ft_select signals termios inputs cursor move list \
+		get_next_line errors
 
 CORR_FILES = ./Makefile ./src ./includes
+
+ifeq ($(BUILD), Bonus)
+	CFLAGS	+= -D BONUS
+	SRC		+=
+endif
 
 # DEBUG routine
 ifeq ($(BUILD), Debug)
 	CFLAGS	+= -fsanitize=address -g -O0 -D DEBUG
 	SUFFIX	= .debug.o
-	NAME	= $(NAME).debug
+	NAME	= ft_select.debug
+	SRC		+=
+else
+	SUFFIX	= .o
+	NAME	= ft_select
+endif
+
+ifeq ($(BUILD), Debug)
 endif
 
 # OS flags
@@ -34,12 +46,7 @@ endif
 SRC_PREFIX = ./src/
 OBJ_PREFIX = ./obj/
 
-SRC	=	ft_select.c signals.c termios.c \
-		get_next_line.c errors.c
-
-ifeq ($(BUILD), Debug)
-	SRC +=
-endif
+SRC := $(addsuffix .c, $(SRC))
 
 OBJ = $(subst $(SRC_PREFIX), , $(SRC:.c=$(SUFFIX)))
 OBJ := $(addprefix $(OBJ_PREFIX), $(OBJ))
