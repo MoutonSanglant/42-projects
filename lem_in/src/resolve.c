@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/21 13:59:13 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/30 01:21:41 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/03 09:19:03 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,12 @@ static int		resolve_turn(t_graph *graph, int count)
 	return (update);
 }
 
-static int		get_ant_color()
+static int		get_ant_color(t_graph *graph)
 {
 	static int	color = 31;
+
+	if (!(graph->flags & FLAG_COLORS))
+		return (0);
 
 	if (color > 96)
 		color = 31;
@@ -108,7 +111,7 @@ void			resolve(t_graph *graph)
 	{
 		ant = (t_ant *)malloc(sizeof(t_ant));
 		ant->name = ft_itoa(graph->ants_count - i);
-		ant->color = ft_itoa(get_ant_color());
+		ant->color = ft_itoa(get_ant_color(graph));
 		ant->room = graph->start;
 		graph->ants[i] = ant;
 	}
