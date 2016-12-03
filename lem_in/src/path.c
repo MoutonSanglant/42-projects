@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/21 13:03:53 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/10 14:55:53 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/03 21:18:27 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ static void	mark_invalid(t_node *node)
 	count = node->links_count;
 	if (!state || state & (STATE_START | STATE_END) || count > 2)
 		return ;
+	// ICI CE PRODUIT LE BUG:
+	// ANTONIN FAIT TOUT PLANTER,
+	// start est marque comme invalide ?!
+	ft_printf("invalid: %s, %i\n", node->name, node->weight);
 	links = node->links;
 	node->state = STATE_INVALID;
 	i = -1;
