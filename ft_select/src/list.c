@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/17 00:19:03 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/30 07:37:49 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/03 10:59:30 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	select_element(t_select *select)
 	int		idx;
 
 	idx = select->cursor_idx;
-	if (idx < 0 || idx > select->nb_elem)
+	if (idx < 0 || idx >= select->nb_elem)
 		return ;
 	el = select->list[idx];
 	if (!is_selected(select, el))
@@ -102,7 +102,7 @@ void	remove_element(t_select *select)
 	int		idx;
 
 	idx = select->cursor_idx;
-	if (idx < 0 || idx > select->nb_elem)
+	if (idx < 0 || idx >= select->nb_elem)
 		return ;
 	el = select->list[select->cursor_idx];
 	if (is_selected(select, el))
@@ -128,6 +128,31 @@ void	remove_element(t_select *select)
 	}
 }
 
+static int	print_list_elem(int fd, char *el)
+{
+	char	*ext;
+	int		wcount;
+	int		color;
+
+	if ((ext = ft_strchr(el, '.')))
+	{
+		ext++;
+		color = 0;
+		while (*ext)
+			color += *ext++;
+		color %= 11;
+		color++;
+		if (color <= 6)
+			color += 30;
+		else if (color > 6)
+			color = 90 + color - 6;
+		ft_dprintf(fd, "\033[%im", color);
+	}
+	wcount = write(fd, el, ft_strlen(el));
+	write(fd, "\033[0m", 4);
+	return (wcount);
+}
+
 void	display_list(t_select *select)
 {
 	char	**list;
@@ -142,11 +167,10 @@ void	display_list(t_select *select)
 
 	ft_memset(&blank, ' ', 512);
 	list = select->list;
-	//fd = select->tty.fd;
 	fd = ((t_termios *)termios_if(&termios_get))->fd;
 	ioctl(fd, TIOCGWINSZ, &ws);
 	select->col_width = (select->col_width < ws.ws_col - 2) ? select->col_width : ws.ws_col - 2;
-	//fd = 3;
+	select->row_size = ws.ws_col % select->col_width + 1;
 	i = 0;
 	select->wcount = 0;
 	while (*list)
@@ -165,7 +189,7 @@ void	display_list(t_select *select)
 			TERM_UNDERLINE_START(&ft_put);
 		if (selected)
 			TERM_STANDOUT_START(&ft_put);
-		width = ft_dprintf(fd, *list);
+		width = print_list_elem(fd, *list);
 		select->wcount += width + select->col_width + 2;
 		if (selected)
 			TERM_STANDOUT_END(&ft_put);

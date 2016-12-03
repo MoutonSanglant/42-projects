@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/12 13:05:18 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/30 07:17:46 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/03 10:51:45 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,23 +107,6 @@ int		ft_put(int c)
 	return (1);
 }
 
-void	list_termcaps()
-{
-	int		pb_num;
-	char	str[100];
-	char	*cl_string;
-	char	*cm_string;
-
-	cl_string = tgetstr("cl", 0);
-	cm_string = tgetstr("cm", 0);
-	tputs(cl_string, 1, &ft_put);
-	tputs(cm_string, 1, &ft_put);
-
-	pb_num = tgetnum("pb");
-	ft_snprintf(str, 100, "\npb: %i\n", pb_num);
-	tputs(str, 1, &ft_put);
-}
-
 int		compute_col_width(char **list, int count)
 {
 	int		max;
@@ -149,7 +132,8 @@ int		main(int argc, char **argv)
 
 	init_signals();
 	// select.tty is no more used
-	ft_bzero(&select.tty, sizeof(t_tty));
+	//ft_bzero(&select.tty, sizeof(t_tty));
+	ft_bzero(&select, sizeof(t_select));
 	//set_tty(&select.tty);
 	if (!init_terminal())
 		return (1);
@@ -157,7 +141,7 @@ int		main(int argc, char **argv)
 	//init_termcaps(select.tty.fd);
 	//list_termcaps();
 	//get_cursor_position(&select.cursor_x, &select.cursor_y);
-	select.nb_elem = argc - 2;
+	select.nb_elem = argc - 1;
 	select.list = &argv[1];
 	select.col_width = compute_col_width(select.list, select.nb_elem);
 	refresh(&select);
