@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/21 13:03:53 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/03 21:18:27 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/04 18:58:05 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	mark_neighbourgs(t_node *node, int w)
 		link = node->links[i];
 		if (!link->state || link->weight > w)
 		{
-			link->state = STATE_VALID;
+			link->state |= STATE_VALID;
 			link->weight = w;
 			count++;
 		}
@@ -44,10 +44,6 @@ static void	mark_invalid(t_node *node)
 	count = node->links_count;
 	if (!state || state & (STATE_START | STATE_END) || count > 2)
 		return ;
-	// ICI CE PRODUIT LE BUG:
-	// ANTONIN FAIT TOUT PLANTER,
-	// start est marque comme invalide ?!
-	ft_printf("invalid: %s, %i\n", node->name, node->weight);
 	links = node->links;
 	node->state = STATE_INVALID;
 	i = -1;
