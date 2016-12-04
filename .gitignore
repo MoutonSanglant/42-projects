@@ -22,18 +22,6 @@ vgcore.*
 !/lib/*
 
 
-### Executables ###
-/fillit/fillit*
-/get_next_line/test_gnl*
-/fdf/fdf*
-/ls/ft_ls*
-/minishell/minishell*
-/42sh/42sh*
-/fractol/fractol*
-/push_swap/push_swap*
-/lem_in/lem-in*
-/ft_select/ft_select*
-
 ### Rushes ###
 /Rushes/hotrace/hotrace*
 /Rushes/puissance4/puissance4*
