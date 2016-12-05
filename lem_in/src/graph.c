@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/19 06:33:28 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/29 23:20:38 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/05 07:33:03 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ static void		build_graph(t_graph *g, t_node *root, t_parser *parser)
 		if (!node_exist(root, (t_room *)key->value))
 			root->links[idx] = insert_node(g, root->links[idx], key, parser);
 		queue = queue->next;
+		if (!queue)
+			break ;
 		key = (t_key *)queue->content;
 		idx++;
 	}
