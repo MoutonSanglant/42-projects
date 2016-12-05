@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/12 13:05:18 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/05 18:26:14 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/05 20:50:27 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,19 +143,11 @@ int		main(int argc, char **argv)
 
 	ft_bzero(&select, sizeof(t_select));
 	args_count = parse_arguments(argc, argv, &select);
-
-	// select.tty is no more used
-	//ft_bzero(&select.tty, sizeof(t_tty));
-	//set_tty(&select.tty);
 	init_terminal();
 	init_signals();
 	termios_if(&termios_raw);
-	//init_termcaps(select.tty.fd);
-	//list_termcaps();
-	//get_cursor_position(&select.cursor_x, &select.cursor_y);
-	//get_cursor_position(&select.cursor_x, &select.cursor_y);
-	select.nb_elem = argc - (1 + args_count);
-	select.list = &argv[1 + args_count];
+	select.nb_elem = argc - args_count;
+	select.list = &argv[args_count];
 	select.col_width = compute_col_width(select.list, select.nb_elem);
 	refresh(&select);
 	listen_input(&select);

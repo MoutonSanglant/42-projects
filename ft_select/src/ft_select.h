@@ -62,44 +62,73 @@ typedef struct	s_select
 	t_flags	flags;
 }				t_select;
 
-// arguments.c
+/*
+** arguments.c
+*/
 int		parse_arguments(int count, char **arguments, t_select *select);
 
-// signals.c
+/*
+** signals.c
+*/
 void	init_signals();
 void	sig_handler(int signo);
 
-// ft_select.c
+/*
+** ft_select.c
+*/
 int		ft_put(int c);
 
-// list.c
+/*
+** selection.c
+*/
+int		is_selected(t_select *select, char *el);
+
+/*
+** display.c
+**/
 void	clear(t_select *select);
 void	refresh(t_select *select);
 void	display_list(t_select *select);
+
+/*
+** list.c
+*/
 void	select_element(t_select *select);
 void	remove_element(t_select *select);
+int		print_element(int fd, char *el);
+
 void	print_list (t_select *select);
 
-// termios.c
+/*
+** termios.c
+*/
 void	*termios_if(void *(*fn)(t_termios *));
 void	*termios_get(t_termios *termios);
 void	*termios_raw(t_termios *termios);
 void	*termios_release(t_termios *termios);
 void	*termios_suspend(t_termios *termios);
 
-// inputs.c
+/*
+** inputs.c
+*/
 void	listen_input(t_select *select);
 
-// cursor.c
+/*
+** cursor.c
+*/
 void	get_cursor_position(int *x, int *y);
 
-// move.c
+/*
+** move.c
+*/
 void	move_prev_row();
 void	move_next_row();
 void	move_prev_col();
 void	move_next_col();
 
-// errors.c
+/*
+** errors.c
+*/
 void	quit(void);
 void	fatal(char *format, ...);
 

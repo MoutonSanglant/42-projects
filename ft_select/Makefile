@@ -3,8 +3,8 @@ CFLAGS	= -Wall -Werror -Wextra -I./includes
 LDFLAGS	= -L./libft -L./libftprintf
 LDLIBS	= -lft -lftprintf -ltermcap
 
-SRC	=	ft_select signals termios inputs cursor move list arguments \
-		get_next_line errors
+SRC	=	ft_select signals termios inputs display cursor move list arguments \
+		selection get_next_line errors
 
 CORR_FILES = ./Makefile ./src ./includes
 

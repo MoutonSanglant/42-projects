@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/29 23:20:52 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/05 18:14:11 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/05 20:49:52 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,20 @@ int			parse_arguments(int count, char **arguments, t_select *select)
 {
 	char	*arg;
 	int		c;
+	int		i;
 
-	c = 0;
-	while (--count)
+	i = 1;
+	c = 1;
+	while (i < count)
 	{
-		arg = arguments[count];
+		arg = arguments[i];
 		if (arg[0] != '-')
-			ft_eprintf("incorrect argument: %s\n", arg);
+			break ;
 		else if (arg[1] == '-')
 			c += parse_long(arg, select);
 		else
 			c += parse_short(arg, select);
+		i++;
 	}
 	return (c);
 }
