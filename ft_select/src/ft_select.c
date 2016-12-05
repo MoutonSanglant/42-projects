@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/12 13:05:18 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/03 10:51:45 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/05 18:26:14 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,6 @@
 ** signal*
 */
 
-/*
-void	select_item()
-{
-	//move_cursor_next();
-}
-*/
-
 #include <sys/ioctl.h>
 #include <fcntl.h>
 #include <ttyent.h>
@@ -78,13 +71,12 @@ void	select_item()
 #include "get_next_line.h"
 #include "ft_select.h"
 
-
 /*
 ** termtype: terminal type
 ** tgetent: terminal description (list of capabilities)
 */
 
-int		init_terminal()
+void	init_terminal()
 {
 	char	*termtype;
 	int		success;
@@ -92,13 +84,12 @@ int		init_terminal()
 
 	termtype = getenv("TERM");
 	if (termtype == 0)
-		fatal("Specify a terminal type with `setenv TERM ...`.\n");
+		fatal(ERR_TERM_NOT_DEFINED);
 	success = tgetent(term_buffer, termtype);
 	if (success < 0)
-		fatal("Could not access the termcap data base.\n");
+		fatal(ERR_NO_TERM_DB);
 	if (success == 0)
-		fatal("Terminal type %s is not defined.\n", termtype);
-	return (1);
+		fatal(ERR_TERM_TYPE_UNDEFINED, termtype);
 }
 
 int		ft_put(int c)
@@ -120,33 +111,56 @@ int		compute_col_width(char **list, int count)
 		if (l > max)
 			max = l;
 	}
-	return (max);
+	return (max + 2);
+}
+
+/*
+** Output to stout
+*/
+static void	print_output(t_select *select)
+{
+	t_list	*l;
+	int		fd;
+
+	fd = 1;
+	l = select->selected;
+	while (l)
+	{
+		ft_dprintf(fd, "%s", (char *)l->content);
+		l = l->next;
+		if (l)
+			write(fd, " ", 1);
+	}
 }
 
 int		main(int argc, char **argv)
 {
 	t_select	select;
+	int			args_count;
 
 	if (argc < 2)
 		return (0);
 
-	init_signals();
+	ft_bzero(&select, sizeof(t_select));
+	args_count = parse_arguments(argc, argv, &select);
+
 	// select.tty is no more used
 	//ft_bzero(&select.tty, sizeof(t_tty));
-	ft_bzero(&select, sizeof(t_select));
 	//set_tty(&select.tty);
-	if (!init_terminal())
-		return (1);
+	init_terminal();
+	init_signals();
 	termios_if(&termios_raw);
 	//init_termcaps(select.tty.fd);
 	//list_termcaps();
 	//get_cursor_position(&select.cursor_x, &select.cursor_y);
-	select.nb_elem = argc - 1;
-	select.list = &argv[1];
+	//get_cursor_position(&select.cursor_x, &select.cursor_y);
+	select.nb_elem = argc - (1 + args_count);
+	select.list = &argv[1 + args_count];
 	select.col_width = compute_col_width(select.list, select.nb_elem);
 	refresh(&select);
 	listen_input(&select);
+	clear(&select);
 	termios_if(&termios_release);
-	print_list(&select);
+	print_output(&select);
 	return (0);
 }

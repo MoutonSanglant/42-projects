@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/13 14:25:27 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/30 06:21:28 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/05 15:39:24 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,10 @@ void	sig_handler(int signo)
 {
 	//ft_printf("Received signal: %i\n", signo);
 	if (signo == SIGWINCH)
+	{
+		refresh(NULL);
 		return ;
+	}
 	if (signo == SIGCONT)
 	{
 		if (signal(SIGTSTP, sig_handler) == SIG_ERR)
@@ -81,5 +84,8 @@ void	sig_handler(int signo)
 	else if (signo == SIGTSTP)
 		termios_if(&termios_suspend);
 	else
+	{
+		printf("signal: %i // %i\n", signo, SIGFPE);
 		quit();
+	}
 }

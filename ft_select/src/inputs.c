@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/16 22:07:41 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/30 05:57:54 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/05 17:46:42 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #define KEY_SIGTSTP	'\032'
 #define KEY_SPACE	'\040'
 #define KEY_BACKSPACE	'\177'
-#define KEY_DELETE	'\177'
+#define KEY_DELETE	('\033' | ('[' << 8) | ('3' << 16) | ('~' << 24))
 #define KEY_UP		('\033' | ('[' << 8) | ('A' << 16))
 #define KEY_DOWN	('\033' | ('[' << 8) | ('B' << 16))
 #define KEY_RIGHT	('\033' | ('[' << 8) | ('C' << 16))
@@ -43,9 +43,14 @@ void	listen_input(t_select *select)
 	while ((input = read_input()))
 	{
 		if (input == KEY_ESC)
-			quit() ;
+		{
+			clear(select);
+			quit();
+		}
 		else if (input == KEY_RETURN)
 			break ;
+		if (select->stop)
+			continue ;
 		else if (input == KEY_UP)
 			move_prev_row(select);
 		else if (input == KEY_DOWN)
@@ -59,5 +64,4 @@ void	listen_input(t_select *select)
 		else if (input == KEY_BACKSPACE || input == KEY_DELETE)
 			remove_element(select);
 	}
-	clear(select);
 }

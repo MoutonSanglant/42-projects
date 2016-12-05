@@ -20,6 +20,18 @@
 
 # define PROGRAM_NAME "ft_select"
 
+# define ERR_TERM_NOT_DEFINED "Specify a terminal type with `setenv TERM ...`."
+# define ERR_NO_TERM_DB "Could not access the termcap data base."
+# define ERR_TERM_TYPE_UNDEFINED "Terminal type '%s' is not defined."
+
+# define MSG_SCREEN_TOO_SMALL "Terminal screen is too small."
+
+typedef enum	e_flags
+{
+	FLAG_INLINE = 0x1,
+	FLAG_COLUMNS = 0x1
+}				t_flags;
+
 typedef struct	s_tty
 {
 	int		fd;
@@ -46,7 +58,12 @@ typedef struct	s_select
 	int		col_width;
 	int		num_row;
 	int		row_size;
+	int		stop;
+	t_flags	flags;
 }				t_select;
+
+// arguments.c
+int		parse_arguments(int count, char **arguments, t_select *select);
 
 // signals.c
 void	init_signals();
