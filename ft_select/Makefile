@@ -25,9 +25,6 @@ else
 	NAME	= ft_select
 endif
 
-ifeq ($(BUILD), Debug)
-endif
-
 # OS flags
 ARCH	= $(shell uname -m)
 OS		= $(shell uname -s)
