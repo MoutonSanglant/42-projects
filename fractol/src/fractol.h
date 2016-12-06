@@ -302,8 +302,8 @@ void			zoom_viewport(t_viewport *viewport);
 /*
 **								: zoom.c :
 */
-void			zoom_in(t_mlx_st *mlx, int x, int y);
-void			zoom_out(t_mlx_st *mlx, int x, int y);
+void			zoom_in(t_mlx_st *mlx, double x, double y);
+void			zoom_out(t_mlx_st *mlx, double x, double y);
 
 /*
 ********************************************************************************
