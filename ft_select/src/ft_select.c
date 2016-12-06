@@ -6,11 +6,9 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/12 13:05:18 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/05 20:50:27 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/06 13:40:42 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include <libft.h>
 
 /*
 ** programme: ft_select
@@ -64,41 +62,9 @@
 ** signal*
 */
 
-#include <sys/ioctl.h>
-#include <fcntl.h>
-#include <ttyent.h>
-
-#include "get_next_line.h"
 #include "ft_select.h"
 
-/*
-** termtype: terminal type
-** tgetent: terminal description (list of capabilities)
-*/
-
-void	init_terminal()
-{
-	char	*termtype;
-	int		success;
-	char	term_buffer[2048];
-
-	termtype = getenv("TERM");
-	if (termtype == 0)
-		fatal(ERR_TERM_NOT_DEFINED);
-	success = tgetent(term_buffer, termtype);
-	if (success < 0)
-		fatal(ERR_NO_TERM_DB);
-	if (success == 0)
-		fatal(ERR_TERM_TYPE_UNDEFINED, termtype);
-}
-
-int		ft_put(int c)
-{
-	write(((t_termios *)termios_if(&termios_get))->fd, &c, 1);
-	return (1);
-}
-
-int		compute_col_width(char **list, int count)
+static int	compute_col_width(char **list, int count)
 {
 	int		max;
 	int		l;
@@ -115,10 +81,39 @@ int		compute_col_width(char **list, int count)
 }
 
 /*
+** termtype: terminal type
+** tgetent: terminal description (list of capabilities)
+*/
+
+static void	init_terminal(void)
+{
+	char	*termtype;
+	int		success;
+	char	term_buffer[2048];
+
+	termtype = getenv("TERM");
+	if (termtype == 0)
+		fatal(ERR_TERM_NOT_DEFINED);
+	success = tgetent(term_buffer, termtype);
+	if (success < 0)
+		fatal(ERR_NO_TERM_DB);
+	if (success == 0)
+		fatal(ERR_TERM_TYPE_UNDEFINED, termtype);
+}
+
+int			ft_put(int c)
+{
+	write(((t_termios *)termios_if(&termios_get))->fd, &c, 1);
+	return (1);
+}
+
+/*
 ** Output to stout
 */
+
 static void	print_output(t_select *select)
 {
+	t_list	*next;
 	t_list	*l;
 	int		fd;
 
@@ -127,20 +122,23 @@ static void	print_output(t_select *select)
 	while (l)
 	{
 		ft_dprintf(fd, "%s", (char *)l->content);
-		l = l->next;
-		if (l)
+		next = l->next;
+		if (next)
 			write(fd, " ", 1);
+		ft_memdel((void *)&l->content);
+		ft_memdel((void *)&l);
+		l = next;
 	}
+	select->selected = NULL;
 }
 
-int		main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
 	t_select	select;
 	int			args_count;
 
 	if (argc < 2)
 		return (0);
-
 	ft_bzero(&select, sizeof(t_select));
 	args_count = parse_arguments(argc, argv, &select);
 	init_terminal();

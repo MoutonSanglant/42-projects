@@ -6,13 +6,11 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/13 19:41:48 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/05 16:21:57 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/06 14:52:20 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include <fcntl.h>
-#include <signal.h>
 #include <sys/ioctl.h>
 
 #include "termcap_macros.h"
@@ -33,11 +31,12 @@ void	*termios_get(t_termios *termios)
 /*
 ** Add ISIG to lflag for Signals
 */
+
 void	*termios_raw(t_termios *termios)
 {
 	termios->fd = open(ttyname(0), O_WRONLY);
 	tcgetattr(termios->fd, &termios->original);
-	termios->raw = termios->original;
+	ft_memcpy(&termios->raw, &termios->original, sizeof(termios->raw));
 	termios->raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
 	termios->raw.c_oflag &= ~(OPOST);
 	termios->raw.c_cflag |= (CS8);

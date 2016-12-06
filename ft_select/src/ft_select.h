@@ -53,7 +53,6 @@ typedef struct	s_select
 	int		cursor_idx;
 	int		cursor_x;
 	int		cursor_y;
-	int		wcount;
 	int		nb_elem;
 	int		col_width;
 	int		num_row;
@@ -65,71 +64,72 @@ typedef struct	s_select
 /*
 ** arguments.c
 */
-int		parse_arguments(int count, char **arguments, t_select *select);
+int				parse_arguments(int count, char **arguments, t_select *select);
 
 /*
 ** signals.c
 */
-void	init_signals();
-void	sig_handler(int signo);
+void			init_signals();
+void			sig_handler(int signo);
 
 /*
 ** ft_select.c
 */
-int		ft_put(int c);
+int				ft_put(int c);
 
 /*
 ** selection.c
 */
-int		is_selected(t_select *select, char *el);
+int				is_selected(t_select *select, char *el);
 
 /*
 ** display.c
-**/
-void	clear(t_select *select);
-void	refresh(t_select *select);
-void	display_list(t_select *select);
+*/
+void			clear(t_select *select);
+void			refresh(t_select *select);
+void			display_list(t_select *select, char **list);
 
 /*
 ** list.c
 */
-void	select_element(t_select *select);
-void	remove_element(t_select *select);
-int		print_element(int fd, char *el);
+void			select_element(t_select *select);
+void			remove_element(t_select *select);
+int				print_element(int fd, char *el);
 
-void	print_list (t_select *select);
+void			print_list (t_select *select);
 
 /*
 ** termios.c
 */
-void	*termios_if(void *(*fn)(t_termios *));
-void	*termios_get(t_termios *termios);
-void	*termios_raw(t_termios *termios);
-void	*termios_release(t_termios *termios);
-void	*termios_suspend(t_termios *termios);
+void			*termios_if(void *(*fn)(t_termios *));
+void			*termios_get(t_termios *termios);
+void			*termios_raw(t_termios *termios);
+void			*termios_release(t_termios *termios);
+void			*termios_suspend(t_termios *termios);
 
 /*
 ** inputs.c
 */
-void	listen_input(t_select *select);
+void			listen_input(t_select *select);
 
 /*
 ** cursor.c
 */
-void	get_cursor_position(int *x, int *y);
+void			push_cursor(int i);
+void			get_cursor_position(int *x, int *y);
 
 /*
 ** move.c
 */
-void	move_prev_row();
-void	move_next_row();
-void	move_prev_col();
-void	move_next_col();
+void			move_prev_row();
+void			move_next_row();
+void			move_prev_col();
+void			move_next_col();
 
 /*
 ** errors.c
 */
-void	quit(void);
-void	fatal(char *format, ...);
+void			quit(void);
+void			fatal(char *format, ...);
 
 #endif

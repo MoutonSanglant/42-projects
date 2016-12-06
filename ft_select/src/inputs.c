@@ -6,11 +6,9 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/16 22:07:41 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/05 17:46:42 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/06 12:12:36 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include <unistd.h>
 
 #include "ft_select.h"
 
@@ -25,8 +23,13 @@
 #define KEY_RIGHT	('\033' | ('[' << 8) | ('C' << 16))
 #define KEY_LEFT	('\033' | ('[' << 8) | ('D' << 16))
 
+static void	presskey_esc(t_select *select)
+{
+	clear(select);
+	quit();
+}
 
-int		read_input()
+static int	read_input(void)
 {
 	int		input;
 
@@ -36,17 +39,14 @@ int		read_input()
 	return (input);
 }
 
-void	listen_input(t_select *select)
+void		listen_input(t_select *select)
 {
 	int		input;
 
 	while ((input = read_input()))
 	{
 		if (input == KEY_ESC)
-		{
-			clear(select);
-			quit();
-		}
+			presskey_esc(select);
 		else if (input == KEY_RETURN)
 			break ;
 		if (select->stop)
