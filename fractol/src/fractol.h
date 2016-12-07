@@ -46,7 +46,9 @@
 
 # define USAGE_MSG "usage: fractol [--help] [fractal ...] [width] [height]"
 # define HELP_LINE1 "fractal : fractal to display"
-# define HELP_LINE2 "\tjulia\n\tmandelbrot\n\tburning_ship"
+# define HELP_FRACT1 "\tjulia\n\tmandelbrot\n\tburning_ship\n\tglynn"
+# define HELP_FRACT2 "\tshell\n\tmultibrot6\n\tjulia_sun\n\tjulia_wave"
+# define HELP_FRACT3 "\tmandel_spider"
 
 # define BUFF_SIZE 32
 # define BLACK	0x00000000
@@ -176,6 +178,7 @@ typedef struct	s_key
 
 typedef struct	s_fractal
 {
+	char	*str;
 	char	*name;
 	int		(*fn)(t_vec2d *, t_vec2d *, int, int);
 	int		interactive;
@@ -315,8 +318,14 @@ void			zoom_out(t_mlx_st *mlx, double x, double y);
 **								 : mandelbrot.c :
 */
 int				julia(t_vec2d *z, t_vec2d *c, int depth, int max_depth);
+int				julia_wave(t_vec2d *z, t_vec2d *c, int depth, int max_depth);
+int				julia_sun(t_vec2d *z, t_vec2d *c, int depth, int max_depth);
 int				mandelbrot(t_vec2d *z, t_vec2d *c, int depth, int max_depth);
 int				burning(t_vec2d *z, t_vec2d *c, int depth, int max_depth);
+int				glynn(t_vec2d *z, t_vec2d *c, int depth, int max_depth);
+int				shell(t_vec2d *z, t_vec2d *c, int depth, int max_depth);
+int				multibrot6(t_vec2d *z, t_vec2d *c, int depth, int max_depth);
+int				mandel_spider(t_vec2d *z, t_vec2d *c, int depth, int max_depth);
 
 /*
 **								 : colorsets.c :

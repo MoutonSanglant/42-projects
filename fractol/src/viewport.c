@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/07 17:59:54 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/07 02:03:17 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/07 07:11:50 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 **	Step 4:
 **	move back from offset (mouse pos after zoom)
 */
+
 void		zoom_in(t_mlx_st *mlx, double x, double y)
 {
 	t_viewport	*viewport;

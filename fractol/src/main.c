@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:02:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/09 15:47:45 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/07 09:12:49 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,25 +45,30 @@ static void		get_size(int argc, char **argv, t_vec2 *screen_size)
 
 static void		set_fractal(char *name, t_fractal *fractal)
 {
-	fractal->interactive = 0;
-	if (ft_strequ(name, "julia"))
+	static const t_fractal	fractal_list[9] = {
+		{ "julia", "Julia", &julia, 1 },
+		{ "mandelbrot", "Mandelbrot", &mandelbrot, 0 },
+		{ "burning_ship", "Burning Ship", &burning, 0 },
+		{ "glynn", "Glynn", &glynn, 0 },
+		{ "shell", "Shell", &shell, 0 },
+		{ "multibrot6", "Multibrot (power of 6)", &multibrot6, 0 },
+		{ "julia_sun", "Julia wave", &julia_sun, 0 },
+		{ "julia_wave", "Julia wave", &julia_wave, 0 },
+		{ "mandel_spider", "Mandelbrot spider (variant)", &mandel_spider, 0 }
+	};
+	int						i;
+
+	i = 0;
+	while (i < 9)
 	{
-		fractal->name = "Julia";
-		fractal->fn = &julia;
-		fractal->interactive = 1;
+		if (ft_strequ(name, fractal_list[i].str))
+		{
+			*fractal = fractal_list[i];
+			return ;
+		}
+		i++;
 	}
-	else if (ft_strequ(name, "mandelbrot"))
-	{
-		fractal->name = "Mandelbrot";
-		fractal->fn = &mandelbrot;
-	}
-	else if (ft_strequ(name, "burning_ship"))
-	{
-		fractal->name = "Burning Ship";
-		fractal->fn = &burning;
-	}
-	else
-		error(USAGE_MSG);
+	error(USAGE_MSG);
 }
 
 int				main(int argc, char **argv)
