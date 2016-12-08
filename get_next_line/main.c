@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/07 14:13:06 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/07 18:18:53 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/08 18:22:08 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@
 void	read_file(char *name)
 {
 	char	*line;
-	int		lineno;
+	long long int		lineno;
 	int		fd;
 	int		ret;
 
-	lineno = 0;
+	lineno = 1;
 	write(1, COLOR_YELLOW, 5);
 	write(1, READING_FILE, strlen(READING_FILE));
 	write(1, COLOR_NONE, 5);
@@ -43,12 +43,18 @@ void	read_file(char *name)
 		write(1, COULD_NOT_READ, strlen(COULD_NOT_READ));
 		return ;
 	}
+	line = 0x0 + (char *)lineno;
+	line = NULL;
+	//printf("lineno: %lli\n", line);
 	while ((ret = get_next_line(fd, &line)))
 	{
 		if (ret < 0)
 			write(1, GNL_ERROR, strlen(GNL_ERROR));
-		printf("%s%i: %s\n", COLOR_BLUE, lineno, line);
+		printf("%s%lli: %s%s\n", COLOR_BLUE, lineno, line, COLOR_NONE);
 		free(line);
+		line = NULL;
+		lineno++;
+		line = 0x0 + (char *)lineno;
 		line = NULL;
 	}
 	close(fd);
