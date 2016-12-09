@@ -17,13 +17,34 @@
 
 # define BUFF_SIZE 32
 
+# define TREE_RIGHT 1
+# define TREE_LEFT 2
+# define BRANCH(t, x) (x == TREE_RIGHT) ? t->right : t->left
+
 int		get_next_line(const int fd, char **line);
+
+
+typedef struct	s_2tree t_2tree;
+
+// full_size
+
+struct	s_2tree
+{
+	char	*content;
+	t_2tree	*left;
+	t_2tree	*right;
+};
+
+/*
+** pad: 8 + 4 + 4
+*/
 
 typedef struct	s_gnl
 {
-	t_list	*lines;
-	t_list	*last;
-	t_list	*keep;
+	t_2tree	*lines;
+	//t_list	*lines;
+	//t_list	*last;
+	//t_list	*keep;
 	int		count;
 	int		idx;
 }				t_gnl;
