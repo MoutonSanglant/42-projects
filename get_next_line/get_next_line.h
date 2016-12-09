@@ -23,7 +23,7 @@ typedef struct	s_gnl
 {
 	t_list	*lines;
 	t_list	*last;
-	char	*keep;
+	t_list	*keep;
 	int		count;
 	int		idx;
 }				t_gnl;

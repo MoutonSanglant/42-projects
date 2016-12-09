@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/07 14:13:06 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/08 18:22:08 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/09 01:17:38 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 #include "get_next_line.h"
 
 #define READING_FILE "reading file: "
-#define COULD_NOT_READ "error: could not read file"
-#define GNL_ERROR "Error while reading file..."
+#define COULD_NOT_READ "error: could not read file\n"
+#define GNL_ERROR "Error while reading file...\n"
 
 #define COLOR_NONE "\033[0m"
 #define COLOR_BLUE "\033[94m"
@@ -45,11 +45,15 @@ void	read_file(char *name)
 	}
 	line = 0x0 + (char *)lineno;
 	line = NULL;
+	line = 0x0 + (char *)0;
 	//printf("lineno: %lli\n", line);
 	while ((ret = get_next_line(fd, &line)))
 	{
 		if (ret < 0)
+		{
 			write(1, GNL_ERROR, strlen(GNL_ERROR));
+			break ;
+		}
 		printf("%s%lli: %s%s\n", COLOR_BLUE, lineno, line, COLOR_NONE);
 		free(line);
 		line = NULL;
