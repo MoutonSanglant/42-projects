@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/07 14:13:06 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/09 01:17:38 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/10 17:33:33 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,37 @@
 #define COLOR_BLUE "\033[94m"
 #define COLOR_YELLOW "\033[93m"
 
+void	print_line(char **line, char **lineno, int ret)
+{
+	//printf("[line: %p]\n", *line);
+	//printf("[lino: %p]\n", *lineno);
+	if (ret <= 0)
+		return ;
+	printf("%sligne %s [%s%i%s]: %s%s\n", COLOR_BLUE, *lineno, COLOR_YELLOW, ret, COLOR_BLUE, *line, COLOR_NONE);
+	if (*line != *lineno)
+	{
+		free(*line);
+		*line = NULL;
+		free(*lineno);
+		*lineno = NULL;
+	}
+	else
+	{
+		*line = NULL;
+		free(*lineno);
+		*lineno = NULL;
+	}
+}
+
 void	read_file(char *name)
 {
 	char	*line;
-	long long int		lineno;
+	char	*lineno_str;
+	int		lineno;
 	int		fd;
 	int		ret;
 
-	lineno = 1;
+	lineno = 0;
 	write(1, COLOR_YELLOW, 5);
 	write(1, READING_FILE, strlen(READING_FILE));
 	write(1, COLOR_NONE, 5);
@@ -43,9 +66,8 @@ void	read_file(char *name)
 		write(1, COULD_NOT_READ, strlen(COULD_NOT_READ));
 		return ;
 	}
-	line = 0x0 + (char *)lineno;
-	line = NULL;
-	line = 0x0 + (char *)0;
+	lineno_str = ft_itoa(lineno);
+	line = lineno_str;
 	//printf("lineno: %lli\n", line);
 	while ((ret = get_next_line(fd, &line)))
 	{
@@ -54,13 +76,37 @@ void	read_file(char *name)
 			write(1, GNL_ERROR, strlen(GNL_ERROR));
 			break ;
 		}
-		printf("%s%lli: %s%s\n", COLOR_BLUE, lineno, line, COLOR_NONE);
-		free(line);
-		line = NULL;
+		print_line(&line, &lineno_str, ret);
 		lineno++;
-		line = 0x0 + (char *)lineno;
-		line = NULL;
+		if (lineno == 3)
+			break ;
+		if (lineno == 2)
+			lineno = 3;
+		if (lineno == 4)
+			lineno = 2;
+
+		lineno_str = ft_itoa(lineno);
+		line = lineno_str;
 	}
+
+	lineno_str = ft_itoa(4);
+	line = lineno_str;
+	ret = get_next_line(fd, &line);
+	print_line(&line, &lineno_str, ret);
+
+	lineno_str = ft_itoa(0);
+	line = lineno_str;
+	ret = get_next_line(fd, &line);
+	print_line(&line, &lineno_str, ret);
+
+	lineno_str = "-1";
+	get_next_line(fd, &lineno_str);
+
+	lineno_str = ft_itoa(4);
+	line = lineno_str;
+	ret = get_next_line(fd, &line);
+	print_line(&line, &lineno_str, ret);
+	//get_next_line(fd, &line);
 	close(fd);
 }
 

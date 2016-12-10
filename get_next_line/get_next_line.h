@@ -15,7 +15,7 @@
 
 # include <libft.h>
 
-# define BUFF_SIZE 32
+# define BUFF_SIZE 128
 
 # define TREE_RIGHT 1
 # define TREE_LEFT 2
@@ -23,30 +23,32 @@
 
 int		get_next_line(const int fd, char **line);
 
+typedef struct	s_2tree t_btree;
 
-typedef struct	s_2tree t_2tree;
-
-// full_size
+/*
+** >> 8 + 8 + 8 + (4)
+** >> 32
+*/
 
 struct	s_2tree
 {
 	char	*content;
-	t_2tree	*left;
-	t_2tree	*right;
+	t_btree	*left;
+	t_btree	*right;
+	int		length;
 };
 
 /*
-** pad: 8 + 4 + 4
+** >> 8 + (4 + 4) + (4)
+** 24
 */
 
 typedef struct	s_gnl
 {
-	t_2tree	*lines;
-	//t_list	*lines;
-	//t_list	*last;
-	//t_list	*keep;
+	t_btree	*lines;
 	int		count;
 	int		idx;
+	int		eof;
 }				t_gnl;
 
 #endif
