@@ -6,20 +6,20 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/07 13:47:00 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/10 17:42:43 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/11 18:59:23 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 // 16 lignes
-static int		flush_btree(t_btree **btree)
+static void		flush_btree(t_btree **btree)
 {
 	t_btree	*left;
 	t_btree	*right;
 
 	if (!*btree)
-		return (-1);
+		return ;
 	left = (*btree)->left;
 	right = (*btree)->right;
 	if (left)
@@ -29,7 +29,6 @@ static int		flush_btree(t_btree **btree)
 	free((*btree)->content);
 	free(*btree);
 	*btree = NULL;
-	return (-1);
 }
 
 // 10 lignes
@@ -134,44 +133,54 @@ static int		push(t_btree *last, char *buf)
 **	ft_putchar('\n');
 */
 
-// 25 lignes
+// 25 lignes + 3
 int				get_next_line(const int fd, char **line)
 {
-	static t_gnl	gnl_st = { .lines = NULL, .count = 0, .idx = 0, .eof = 0 };
+	//static t_gnl	*gnl_st[MAX_FD] = { .lines = NULL, .count = 0, .idx = 0, .eof = 0 };
+	static t_gnl	fd_table[MAX_FD] = { [0 ... MAX_FD - 1] = { .fd = -1 } };
 	char			buf[BUFF_SIZE + 1];
 	int				ret;
+	t_gnl			*p_fd;
 
-	// si le fd est négatif... ou qu'un index est spécifié et qu'il est négatif'
-	if (fd < 0 || (*line && (gnl_st.idx = ft_atoi(*line)) < 0))
-		return (flush_btree(&gnl_st.lines));
+	p_fd = fd_table;
+	// on récupère, si il y en a une, la structure qui correspond au fd
+	while (BUSY_FD(p_fd, fd) && p_fd < fd_table + MAX_FD - 1)
+		p_fd++;
+	// si fd négatif, pointeur nul, table fd pleine, on avorte
+	if (fd < 0 || !line || BUSY_FD(p_fd, fd))
+		return (-1);
+	p_fd->fd = fd;
 	// si la fin du fichier est atteint
-	if (gnl_st.eof)
-		return (0);
+	// OU si l'index spécifié est négatif
+	// on nettoie l'arbre et on renvoie 0 ou -1
+	if (p_fd->eof > 0 || (*line && (p_fd->idx = ft_atoi(*line)) < 0))
+	{
+		flush_btree(&p_fd->lines);
+		p_fd->fd = -1;
+		p_fd->eof = 0;
+		return (-!p_fd->eof);
+	}
 	// si aucune ligne n'a été lue, on créé un noeud vide
-	if (!gnl_st.lines)
-		gnl_st.lines = (t_btree *)ft_memalloc(sizeof(t_btree));
+	if (!p_fd->lines)
+		p_fd->lines = (t_btree *)ft_memalloc(sizeof(t_btree));
 	// tant que la ligne demandée n'a pas été stockée
 	while ((ret = read(fd, buf, BUFF_SIZE)) >= 0)
 	{
 		// on stocke les charactères du fichier dans le buffer
 		buf[ret] = '\0';
 		// on récupère la/les lignes stockés dans le buffer
-		gnl_st.count += push(b_search(gnl_st.lines, -1, TREE_LEFT), buf);
+		p_fd->count += push(b_search(p_fd->lines, -1, TREE_LEFT), buf);
 		// si on a récupéré suffisament de lignes
-		if (gnl_st.count > gnl_st.idx + 1)
+		// OU BIEN si on est arrivé au bout du fichier
+		if (p_fd->count > p_fd->idx + 1 || (ret == 0 && (p_fd->eof = 1)))
 			break ;
-		// si on est arrivé au bout du fichier
-		if (ret == 0)
-		{
-			gnl_st.eof = 1;
-			break ;
-		}
 	}
+	//p_fd->eof = 1;
 	// si l'utilisateur demande une ligne inexistante, on renvoie -1
-	if (gnl_st.idx > gnl_st.count || ret < 0)
+	if (p_fd->idx > p_fd->count || ret < 0)
 		return (-1);
 	// on stocke dans `line` une copie de la ligne à l'index `idx`
 	// PUIS on incrémente idx
 	// PUIS on renvoie le nombre de caractères lus
-	return (cpy_line(line, b_search(gnl_st.lines, gnl_st.idx++, TREE_LEFT)));
+	return (cpy_line(line, b_search(p_fd->lines, p_fd->idx++, TREE_LEFT)));
 }

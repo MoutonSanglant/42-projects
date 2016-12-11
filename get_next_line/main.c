@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/07 14:13:06 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/10 17:33:33 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/11 16:35:46 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ void	read_file(char *name)
 		if (lineno == 3)
 			break ;
 		if (lineno == 2)
-			lineno = 3;
-		if (lineno == 4)
+			lineno = 4;
+		if (lineno == 5)
 			lineno = 2;
 
 		lineno_str = ft_itoa(lineno);

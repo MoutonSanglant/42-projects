@@ -15,7 +15,10 @@
 
 # include <libft.h>
 
-# define BUFF_SIZE 128
+# define BUFF_SIZE	128
+# define MAX_FD		1
+
+# define BUSY_FD(st, d) (st->fd >= 0 && st->fd != d)
 
 # define TREE_RIGHT 1
 # define TREE_LEFT 2
@@ -39,7 +42,7 @@ struct	s_2tree
 };
 
 /*
-** >> 8 + (4 + 4) + (4)
+** >> 8 + (4 + 4) + (4 + 4)
 ** 24
 */
 
@@ -49,6 +52,7 @@ typedef struct	s_gnl
 	int		count;
 	int		idx;
 	int		eof;
+	int		fd;
 }				t_gnl;
 
 #endif
