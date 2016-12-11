@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/07 13:47:00 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/11 18:59:23 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/12 00:46:43 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int		cpy_line(char **line, t_btree *node)
 	while (node)
 	{
 		// taille de la chaîne
-		length = ft_strlen(node->content);
+		length = node->content_size;
 		// copie de la chaîne vers 'line' décalé de 'offset' octet
 		ft_memcpy(&(*line)[offset], node->content, length);
 		// récupération du maillon suivant
@@ -83,6 +83,7 @@ static int		cpy_line(char **line, t_btree *node)
 	return (offset + 1);
 }
 
+#include <stdio.h>
 // 25 lignes
 static int		push(t_btree *last, char *buf)
 {
@@ -92,12 +93,9 @@ static int		push(t_btree *last, char *buf)
 
 	// par défaut, on estime que les lignes sont terminées par '\n'
 	n_count = 1;
-	// si le tampon est vide, on aborte
-	if (*buf == '\0')
-		return (0);
 	// on récupère l'élément le plus à droite
 	right = b_search(last, -1, TREE_RIGHT);
-	// si celui-ci contient déjà des données (cas d'une ligne tronquée')
+	// si celui-ci contient déjà des données (cas d'une ligne tronquée)
 	if (right->content)
 	{
 		// dans ce cas, le compteur a déjà été incrémenté, pas d'incrémentation
@@ -114,17 +112,20 @@ static int		push(t_btree *last, char *buf)
 		*eol = '\0';
 		// on copie la portion de buffer dans le noeud le plus à droite
 		right->content = ft_strdup(buf);
-		last->length += ft_strlen(buf);
+		right->content_size = ft_strlen(buf);
+		last->length += right->content_size;
 		// on créé un noeud à gauche
 		last->left = (t_btree *)ft_memalloc(sizeof(t_btree));
 		// appel récursif sur l'élément 'left' pour récupérer le reste du tampon
-		return (push(last->left, eol + 1) + n_count);
+		return (push(last->left, eol + 1) + 1);
 	}
 	// pas de '\n' présent
 	// on copie le reste du buffer dans le noeud le plus à droite
 	right->content = ft_strdup(buf);
-	last->length += ft_strlen(buf);
-	return (n_count);
+	right->content_size = ft_strlen(buf);
+	last->length += right->content_size;
+	//return (n_count);
+	return (0);
 }
 
 /*
@@ -146,41 +147,51 @@ int				get_next_line(const int fd, char **line)
 	// on récupère, si il y en a une, la structure qui correspond au fd
 	while (BUSY_FD(p_fd, fd) && p_fd < fd_table + MAX_FD - 1)
 		p_fd++;
-	// si fd négatif, pointeur nul, table fd pleine, on avorte
+	// si fd négatif, pointeur nul, table fd pleine, on arrete l'opération
 	if (fd < 0 || !line || BUSY_FD(p_fd, fd))
 		return (-1);
 	p_fd->fd = fd;
-	// si la fin du fichier est atteint
-	// OU si l'index spécifié est négatif
-	// on nettoie l'arbre et on renvoie 0 ou -1
-	if (p_fd->eof > 0 || (*line && (p_fd->idx = ft_atoi(*line)) < 0))
-	{
-		flush_btree(&p_fd->lines);
-		p_fd->fd = -1;
-		p_fd->eof = 0;
-		return (-!p_fd->eof);
-	}
+	if (*line)
+		p_fd->idx = ft_atoi(*line);
 	// si aucune ligne n'a été lue, on créé un noeud vide
 	if (!p_fd->lines)
 		p_fd->lines = (t_btree *)ft_memalloc(sizeof(t_btree));
+	// avant de poursuivre la lecture du buffer, on affiche les lignes no lues
+	// TODO, ça casse le bonus "lire à partir"
+	//if (p_fd->idx < p_fd->count)
+	//	return (cpy_line(line, b_search(p_fd->lines, p_fd->idx++, TREE_LEFT)));
 	// tant que la ligne demandée n'a pas été stockée
-	while ((ret = read(fd, buf, BUFF_SIZE)) >= 0)
+	while (p_fd->idx < p_fd->count + 1)
 	{
-		// on stocke les charactères du fichier dans le buffer
-		buf[ret] = '\0';
-		// on récupère la/les lignes stockés dans le buffer
-		p_fd->count += push(b_search(p_fd->lines, -1, TREE_LEFT), buf);
 		// si on a récupéré suffisament de lignes
 		// OU BIEN si on est arrivé au bout du fichier
-		if (p_fd->count > p_fd->idx + 1 || (ret == 0 && (p_fd->eof = 1)))
+		if (p_fd->idx < p_fd->count)
+		{
+			if (ret == 0 || *buf == '\0')
+				p_fd->eof = 1;
+			return (cpy_line(line, b_search(p_fd->lines, p_fd->idx++, TREE_LEFT)));
+		}
+		// lecture du buffer
+		if ((ret = read(fd, buf, BUFF_SIZE)) >= 0)
+		{
+			// si le tampon est vide, on arrête l'opération
+			if (ret == 0 || *buf == '\0')
+			{
+				ret = cpy_line(line, b_search(p_fd->lines, p_fd->idx++, TREE_LEFT));
+				ret = (ret > 1) ? ret : 0;
+				flush_btree(&p_fd->lines);
+				ft_bzero(p_fd, sizeof(t_gnl));
+				p_fd->fd = -1;
+				return (ret);
+			}
+			buf[ret] = '\0';
+			p_fd->count += push(b_search(p_fd->lines, -1, TREE_LEFT), buf);
+		}
+		if (ret < 0)
 			break ;
 	}
-	//p_fd->eof = 1;
-	// si l'utilisateur demande une ligne inexistante, on renvoie -1
-	if (p_fd->idx > p_fd->count || ret < 0)
-		return (-1);
-	// on stocke dans `line` une copie de la ligne à l'index `idx`
-	// PUIS on incrémente idx
-	// PUIS on renvoie le nombre de caractères lus
-	return (cpy_line(line, b_search(p_fd->lines, p_fd->idx++, TREE_LEFT)));
+	flush_btree(&p_fd->lines);
+	ft_bzero(p_fd, sizeof(t_gnl));
+	p_fd->fd = -1;
+	return (-1);
 }
