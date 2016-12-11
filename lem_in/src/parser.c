@@ -6,13 +6,13 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/19 00:09:45 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/09 17:14:46 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/10 17:58:33 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-static int	parse_comment(t_parser *parser, char *line)
+static int	parse_comment(t_lemin_parser *parser, char *line)
 {
 	t_key	key;
 
@@ -34,7 +34,7 @@ static int	parse_comment(t_parser *parser, char *line)
 	return (1);
 }
 
-static int	parse_connection(t_parser *parser, char *line)
+static int	parse_connection(t_lemin_parser *parser, char *line)
 {
 	static t_queue	*queue = NULL;
 
@@ -57,7 +57,7 @@ static int	parse_connection(t_parser *parser, char *line)
 	return (1);
 }
 
-static int	parse_room(t_parser *parser, char *line)
+static int	parse_room(t_lemin_parser *parser, char *line)
 {
 	static t_type	mask = 0;
 	t_type			type;
@@ -79,7 +79,7 @@ static int	parse_room(t_parser *parser, char *line)
 	return (1);
 }
 
-static int	parse_ants(t_parser *parser, char *line)
+static int	parse_ants(t_lemin_parser *parser, char *line)
 {
 	char	**split;
 
@@ -96,7 +96,7 @@ static int	parse_ants(t_parser *parser, char *line)
 int			parse_line(char *line, void *st)
 {
 	static int		state = 0;
-	static int		(*parse_fn[3])(t_parser *, char *) = {
+	static int		(*parse_fn[3])(t_lemin_parser *, char *) = {
 		&parse_ants,
 		&parse_room,
 		&parse_connection
@@ -104,9 +104,9 @@ int			parse_line(char *line, void *st)
 
 	if (line[0] == 'L')
 		error(ERR_L_PREFIX);
-	if (parse_comment((t_parser *)st, line))
+	if (parse_comment((t_lemin_parser *)st, line))
 		return (1);
-	if ((parse_fn[state])((t_parser *)st, line))
+	if ((parse_fn[state])((t_lemin_parser *)st, line))
 		state++;
 	return (state < 3);
 }
