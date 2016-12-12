@@ -5,156 +5,193 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/13 14:44:53 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/06 12:12:29 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/12/07 13:47:00 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/12/12 00:46:43 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int		clear_fd_parser(t_list **parser_list, int fd)
+// 16 lignes
+static void		flush_btree(t_btree **btree)
 {
-	t_list	*fd_list;
-	t_list	*prev;
+	t_btree	*left;
+	t_btree	*right;
 
-	prev = NULL;
-	fd_list = *parser_list;
-	while (((t_parser *)fd_list->content)->fd != fd)
-	{
-		prev = fd_list;
-		fd_list = fd_list->next;
-		if (!fd_list)
-			return (-1);
-	}
-	if (prev)
-		prev->next = fd_list->next;
-	if (fd_list == *parser_list)
-		*parser_list = (*parser_list)->next;
-	ft_memdel((void **)&((t_parser *)fd_list->content)->buf);
-	ft_memdel((void **)&fd_list->content);
-	ft_memdel((void **)&fd_list);
-	return (0);
+	if (!*btree)
+		return ;
+	left = (*btree)->left;
+	right = (*btree)->right;
+	if (left)
+		flush_btree(&left);
+	if (right)
+		flush_btree(&right);
+	free((*btree)->content);
+	free(*btree);
+	*btree = NULL;
 }
 
-static t_parser	*get_fd_parser(t_list **s_parsers, t_list *parser_list, int fd)
+// 10 lignes
+static t_btree	*b_search(t_btree *btree, size_t idx, int side)
 {
-	t_parser	p;
+	size_t	n;
 
-	p.fd = fd;
-	p.bs = 0;
-	if (!*s_parsers && (!(p.buf = (char *)ft_memalloc(BUFF_SIZE + 1))
-		|| !(*s_parsers = ft_lstnew((void *)&p, sizeof(p)))))
+	n = 0;
+	while (BRANCH(btree, side))
 	{
-		if (p.buf)
-			ft_memdel((void **)&p.buf);
-		return (NULL);
+		if (n++ == idx)
+			break ;
+		btree = BRANCH(btree, side);
 	}
-	parser_list = *s_parsers;
-	while (((t_parser *)parser_list->content)->fd != fd)
-	{
-		if (!parser_list->next
-				&& (!(p.buf = (char *)ft_memalloc((BUFF_SIZE + 1)))
-				|| !(parser_list->next = ft_lstnew((void *)&p, sizeof(p)))))
-		{
-			if (p.buf)
-				ft_memdel((void **)&p.buf);
-			return (NULL);
-		}
-		parser_list = parser_list->next;
-	}
-	return ((t_parser *)parser_list->content);
+	return (btree);
 }
 
-static int		read_until_eol(t_list **s, t_parser *p, size_t *total_bcount)
+// 22 lignes
+static int		cpy_line(char **line, t_btree *node)
 {
-	size_t	eol;
+	int		length;
+	int		offset;
 
-	if (p->bs == 0 && (!(p->bs = read(p->fd, p->buf, BUFF_SIZE)) || p->bs <= 0))
-		return (1 + (2 * p->bs));
-	*total_bcount += (size_t)p->bs;
-	if (!*s)
-		*s = ft_lstnew(NULL, 0);
-	else
-		*s = (*s)->next;
-	(*s)->content = (char *)ft_memalloc(p->bs + 1);
-	if (!(*s)->content)
-		return (-1);
-	(*s)->content_size = (size_t)p->bs;
-	if ((eol = (size_t)ft_memccpy((*s)->content, (void *)p->buf,
-									'\n', (size_t)p->bs)))
+	// si le noeud existe mais ne contient pas de données (dernière ligne)
+	if (!node->content)
+		return (0);
+	// si il n'y a pas de noeud à droite (la ligne est entière)
+	if (!node->right)
 	{
-		eol -= (size_t)(*s)->content;
-		p->bs -= (long)eol;
-		((char *)(*s)->content)[eol - 1] = '\0';
-		p->buf = (char *)ft_memmove((void *)p->buf,
-							(void *)&(p->buf[eol]), (long)p->bs);
-		return (1);
+		*line = ft_strdup(node->content);
+		return (node->length + 1);
 	}
-	p->bs = 0;
+	length = node->length;
+	// allocation de l'espace nécessaire à la chaîne
+	*line = (char *)malloc(length + 1);
+	// charactère de fin de chaîne
+	(*line)[length] = '\0';
+	// marqueur de décalage dans la mémoire
+	offset = 0;
+	// tant que la chaîne n'est pas terminée...
+	while (node)
+	{
+		// taille de la chaîne
+		length = node->content_size;
+		// copie de la chaîne vers 'line' décalé de 'offset' octet
+		ft_memcpy(&(*line)[offset], node->content, length);
+		// récupération du maillon suivant
+		node = node->right;
+		// incrémentation de l'offset
+		offset += length;
+	}
+	return (offset + 1);
+}
+
+#include <stdio.h>
+// 25 lignes
+static int		push(t_btree *last, char *buf)
+{
+	t_btree *right;
+	char	*eol;
+	int		n_count;
+
+	// par défaut, on estime que les lignes sont terminées par '\n'
+	n_count = 1;
+	// on récupère l'élément le plus à droite
+	right = b_search(last, -1, TREE_RIGHT);
+	// si celui-ci contient déjà des données (cas d'une ligne tronquée)
+	if (right->content)
+	{
+		// dans ce cas, le compteur a déjà été incrémenté, pas d'incrémentation
+		n_count = 0;
+		// création du prochain noeud 'droite'
+		right->right = (t_btree *)ft_memalloc(sizeof(t_btree));
+		// positionnement sur le noeud créé
+		right = right->right;
+	}
+	// dans le cas ou un '\n' est présent dans le buffer
+	if ((eol = ft_strchr(buf, '\n')))
+	{
+		// on remplace le '\n' par un '\0' pour faciliter strdup
+		*eol = '\0';
+		// on copie la portion de buffer dans le noeud le plus à droite
+		right->content = ft_strdup(buf);
+		right->content_size = ft_strlen(buf);
+		last->length += right->content_size;
+		// on créé un noeud à gauche
+		last->left = (t_btree *)ft_memalloc(sizeof(t_btree));
+		// appel récursif sur l'élément 'left' pour récupérer le reste du tampon
+		return (push(last->left, eol + 1) + 1);
+	}
+	// pas de '\n' présent
+	// on copie le reste du buffer dans le noeud le plus à droite
+	right->content = ft_strdup(buf);
+	right->content_size = ft_strlen(buf);
+	last->length += right->content_size;
+	//return (n_count);
 	return (0);
 }
 
 /*
-**	To allow GNL to return characters count, switch
-**	-- r = (total_bcount > 0) ? 1 : 0;
-**	++ r = total_bcount;
+**	ft_putstr("[DEBUG] idx: ");
+**	ft_putnbr(gnl_st.idx);
+**	ft_putchar('\n');
 */
 
-static int		get_fd_line(char **line, t_list **s_parsers,
-							int fd, t_list **strings)
-{
-	t_list		*first;
-	t_parser	*parser;
-	size_t		total_bcount;
-	int			r;
-
-	r = 0;
-	total_bcount = 0;
-	first = NULL;
-	if (!(parser = get_fd_parser(s_parsers, *s_parsers, fd)))
-		return (-1);
-	while (!r)
-	{
-		if ((r = read_until_eol(strings, parser, &total_bcount)) && r < 0)
-			return (clear_fd_parser(s_parsers, fd) ? -1 : -1);
-		if (!first && *strings)
-			first = *strings;
-		if (r == 0)
-			(*strings)->next = ft_lstnew(NULL, 0);
-	}
-	*strings = first;
-	if (!(*line = (char *)ft_memalloc(total_bcount + 1)))
-		return (-1);
-	*line[0] = '\0';
-	r = total_bcount;
-	return (r);
-}
-
+// 25 lignes + 3
 int				get_next_line(const int fd, char **line)
 {
-	static t_list	*s_parsers = NULL;
-	t_list			*strings;
-	t_list			*prev_str;
-	int				r;
+	//static t_gnl	*gnl_st[MAX_FD] = { .lines = NULL, .count = 0, .idx = 0, .eof = 0 };
+	static t_gnl	fd_table[MAX_FD] = { [0 ... MAX_FD - 1] = { .fd = -1 } };
+	char			buf[BUFF_SIZE + 1];
+	int				ret;
+	t_gnl			*p_fd;
 
-	if (fd < 0 || !line)
+	p_fd = fd_table;
+	// on récupère, si il y en a une, la structure qui correspond au fd
+	while (BUSY_FD(p_fd, fd) && p_fd < fd_table + MAX_FD - 1)
+		p_fd++;
+	// si fd négatif, pointeur nul, table fd pleine, on arrete l'opération
+	if (fd < 0 || !line || BUSY_FD(p_fd, fd))
 		return (-1);
-	strings = NULL;
-	if ((r = get_fd_line(line, &s_parsers, fd, &strings)))
+	p_fd->fd = fd;
+	if (*line)
+		p_fd->idx = ft_atoi(*line);
+	// si aucune ligne n'a été lue, on créé un noeud vide
+	if (!p_fd->lines)
+		p_fd->lines = (t_btree *)ft_memalloc(sizeof(t_btree));
+	// avant de poursuivre la lecture du buffer, on affiche les lignes no lues
+	// TODO, ça casse le bonus "lire à partir"
+	//if (p_fd->idx < p_fd->count)
+	//	return (cpy_line(line, b_search(p_fd->lines, p_fd->idx++, TREE_LEFT)));
+	// tant que la ligne demandée n'a pas été stockée
+	while (p_fd->idx < p_fd->count + 1)
 	{
-		while (strings)
+		// si on a récupéré suffisament de lignes
+		// OU BIEN si on est arrivé au bout du fichier
+		if (p_fd->idx < p_fd->count)
 		{
-			prev_str = strings;
-			if (strings->content)
-			{
-				ft_strcat(*line, (char *)strings->content);
-				ft_memdel((void **)&prev_str->content);
-			}
-			strings = strings->next;
-			ft_memdel((void **)&prev_str);
+			if (ret == 0 || *buf == '\0')
+				p_fd->eof = 1;
+			return (cpy_line(line, b_search(p_fd->lines, p_fd->idx++, TREE_LEFT)));
 		}
+		// lecture du buffer
+		if ((ret = read(fd, buf, BUFF_SIZE)) >= 0)
+		{
+			// si le tampon est vide, on arrête l'opération
+			if (ret == 0 || *buf == '\0')
+			{
+				ret = cpy_line(line, b_search(p_fd->lines, p_fd->idx++, TREE_LEFT));
+				ret = (ret > 1) ? ret : 0;
+				flush_btree(&p_fd->lines);
+				ft_bzero(p_fd, sizeof(t_gnl));
+				p_fd->fd = -1;
+				return (ret);
+			}
+			buf[ret] = '\0';
+			p_fd->count += push(b_search(p_fd->lines, -1, TREE_LEFT), buf);
+		}
+		if (ret < 0)
+			break ;
 	}
-	else
-		r = clear_fd_parser(&s_parsers, fd);
-	return (r);
+	flush_btree(&p_fd->lines);
+	ft_bzero(p_fd, sizeof(t_gnl));
+	p_fd->fd = -1;
+	return (-1);
 }
