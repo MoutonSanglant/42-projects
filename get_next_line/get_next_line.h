@@ -20,46 +20,39 @@
 ** limit until the file size grows bigger
 */
 
-# define BUFF_SIZE	4
-# define MAX_FD		167
+# define BUFF_SIZE	128
+# define MAX_FD		60
 
 
 # define BUSY_FD(st, d) (st->fd >= 0 && st->fd != d)
 
-# define TREE_RIGHT 1
-# define TREE_LEFT 2
-# define BRANCH(t, x) (x == TREE_RIGHT) ? t->right : t->left
+typedef struct	s_line t_line;
 
-int		get_next_line(const int fd, char **line);
-
-typedef struct	s_2tree t_btree;
-
-/*
-** >> 8 + 8 + 8 + (4 + 4)
-** >> 32
-*/
-
-struct	s_2tree
+struct	s_line
 {
 	char	*content;
-	t_btree	*left;
-	t_btree	*right;
-	int		content_size;
-	int		length;
+	t_line	*next;
 };
-
 /*
-** >> 8 + (4 + 4) + (4 + 4)
-** 24
+** t_line:
+** >> 8 + 8
+**	= 16
 */
 
 typedef struct	s_gnl
 {
-	t_btree	*lines;
+	char	buf[BUFF_SIZE + 1];
+	t_line	*lines;
 	int		count;
 	int		idx;
-	int		eof;
 	int		fd;
 }				t_gnl;
+/*
+** t_gnl:
+** >> 8 + 8 + (4 + 4) + (4 + ...)
+**	= 32
+*/
+
+int		get_next_line(const int fd, char **line);
 
 #endif
