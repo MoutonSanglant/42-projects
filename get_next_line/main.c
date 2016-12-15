@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/07 14:13:06 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/14 00:55:16 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/15 03:36:21 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,9 @@ void	read_inline(int fd)
 		str = ft_itoa(++idx);
 		print_line(&line, &str, ret);
 	}
+	ret = get_next_line(fd, &line);
+	str = ft_itoa(++idx);
+	print_line(&line, &str, ret);
 }
 
 void	read_index(int fd)
@@ -107,14 +110,18 @@ void	read_index(int fd)
 	ret = get_next_line(fd, &line);
 	print_line(&line, &lineno_str, ret);
 
+	lineno_str = ft_itoa(0);
+	line = lineno_str;
+	ret = get_next_line(fd, &line);
+	print_line(&line, &lineno_str, ret);
+
 	lineno_str = "-1";
 	get_next_line(fd, &lineno_str);
 
-	lineno_str = ft_itoa(4);
+	lineno_str = ft_itoa(2);
 	line = lineno_str;
 	ret = get_next_line(fd, &line);
-	if (ret > 0)
-		print_line(&line, &lineno_str, ret);
+	print_line(&line, &lineno_str, ret);
 }
 
 void	read_file(char *name)
@@ -130,8 +137,8 @@ void	read_file(char *name)
 		write(1, COULD_NOT_READ, strlen(COULD_NOT_READ));
 		return ;
 	}
-	read_inline(fd);
-	//read_index(fd);
+	//read_inline(fd);
+	read_index(fd);
 	close(fd);
 }
 

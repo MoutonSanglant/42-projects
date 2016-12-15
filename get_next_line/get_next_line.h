@@ -16,15 +16,18 @@
 # include <libft.h>
 
 /*
-** 167 is an arbitrary value set because it was my test program
-** limit until the file size grows bigger
+** don't use too many/too big buffers as it will quickly consume stack
 */
 
 # define BUFF_SIZE	128
-# define MAX_FD		60
-
+# define MAX_FD		20
+# define DATA_MAX_SIZE	80000000
 
 # define BUSY_FD(st, d) (st->fd >= 0 && st->fd != d)
+
+# if MAX_FD * (BUFF_SIZE + 24) > DATA_MAX_SIZE
+#  warning "Data segment too big ! Reduce buffer size or number of fd."
+# endif
 
 typedef struct	s_line t_line;
 
