@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/07 13:47:00 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/15 03:35:24 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/15 04:17:17 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,10 @@ static int		get_indexed_line(const int fd, char **line, t_gnl *p_fd,
 	return ((rcount = ft_strlen(*line)) ? rcount : 1);
 }
 
+/*
+** Amélioration: allouer les structures sur le tas (heap) pour
+** éviter de limiter la pile (stack) du programme
+*/
 // 22 lignes
 int				get_next_line(const int fd, char **line)
 {
