@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 13:20:59 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/14 13:21:00 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/06 16:23:15 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	get_system_endian(void)
 	return (0);
 }
 
-static int		close_button(int e, void *p)
+static int	close_button(int e, void *p)
 {
 	(void)e;
 	(void)p;
@@ -36,7 +36,7 @@ static int		close_button(int e, void *p)
 	return (0);
 }
 
-void	destroy_mlx_sess(t_mlx_st *mlx)
+void		destroy_mlx_sess(t_mlx_st *mlx)
 {
 	mlx_destroy_image(mlx->sess, mlx->canvas->img);
 	mlx_destroy_window(mlx->sess, mlx->win);
@@ -60,9 +60,8 @@ void		init_mlx_sess(t_mlx_st *mlx)
 		error("Can't create mlx session");
 }
 
-void			start_mlx_sess(t_mlx_st *mlx)
+void		start_mlx_sess(t_mlx_st *mlx)
 {
-
 	mlx_hook(mlx->win, DESTROYNOTIFY, 0, &close_button, (void *)mlx);
 	mlx_hook(mlx->win, KEYPRESS, KEYPRESSMASK, &keypress, (void *)mlx);
 	mlx_hook(mlx->win, KEYRELEASE, KEYRELEASEMASK, &keyrelease, (void *)mlx);

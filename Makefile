@@ -1,4 +1,4 @@
-PROJECTS = fillit push_swap lem_in ls minishell 42sh fdf fractol
+PROJECTS = fillit push_swap lem_in ls minishell 42sh fdf fractol ft_select
 
 .PHONY: $(PROJECTS)
 

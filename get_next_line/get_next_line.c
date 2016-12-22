@@ -5,156 +5,208 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/13 14:44:53 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/01/26 01:00:02 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/12/07 13:47:00 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/12/15 04:17:17 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int		clear_fd_parser(t_list **parser_list, int fd)
+// 12 lignes
+static int		get_next_datas(const int fd, char *left_over, char *buf)
 {
-	t_list	*fd_list;
-	t_list	*prev;
+	// la valeur de retour (nombre d'octets écrits dans *line)
+	int		rcount;
 
-	prev = NULL;
-	fd_list = *parser_list;
-	while (((t_parser *)fd_list->content)->fd != fd)
-	{
-		prev = fd_list;
-		fd_list = fd_list->next;
-		if (!fd_list)
-			return (-1);
-	}
-	if (prev)
-		prev->next = fd_list->next;
-	if (fd_list == *parser_list)
-		*parser_list = (*parser_list)->next;
-	ft_memdel((void **)&((t_parser *)fd_list->content)->buf);
-	ft_memdel((void **)&fd_list->content);
-	ft_memdel((void **)&fd_list);
-	return (0);
-}
-
-static t_parser	*get_fd_parser(t_list **s_parsers, t_list *parser_list, int fd)
-{
-	t_parser	p;
-
-	p.fd = fd;
-	p.bs = 0;
-	if (!*s_parsers && (!(p.buf = (char *)ft_memalloc(BUFF_SIZE + 1))
-		|| !(*s_parsers = ft_lstnew((void *)&p, sizeof(p)))))
-	{
-		if (p.buf)
-			ft_memdel((void **)&p.buf);
-		return (NULL);
-	}
-	parser_list = *s_parsers;
-	while (((t_parser *)parser_list->content)->fd != fd)
-	{
-		if (!parser_list->next
-				&& (!(p.buf = (char *)ft_memalloc((BUFF_SIZE + 1)))
-				|| !(parser_list->next = ft_lstnew((void *)&p, sizeof(p)))))
-		{
-			if (p.buf)
-				ft_memdel((void **)&p.buf);
-			return (NULL);
-		}
-		parser_list = parser_list->next;
-	}
-	return ((t_parser *)parser_list->content);
-}
-
-static int		read_until_eol(t_list **s, t_parser *p, size_t *total_bcount)
-{
-	size_t	eol;
-
-	if (p->bs == 0 && (!(p->bs = read(p->fd, p->buf, BUFF_SIZE)) || p->bs <= 0))
-		return (1 + (2 * p->bs));
-	*total_bcount += (size_t)p->bs;
-	if (!*s)
-		*s = ft_lstnew(NULL, 0);
+	// pas de reliquat, lecture dans le fichier
+	if (*left_over == '\0')
+		rcount = read(fd, buf, BUFF_SIZE);
+	// sinon...
 	else
-		*s = (*s)->next;
-	(*s)->content = (char *)ft_memalloc(p->bs + 1);
-	if (!(*s)->content)
-		return (-1);
-	(*s)->content_size = (size_t)p->bs;
-	if ((eol = (size_t)ft_memccpy((*s)->content, (void *)p->buf,
-									'\n', (size_t)p->bs)))
 	{
-		eol -= (size_t)(*s)->content;
-		p->bs -= (long)eol;
-		((char *)(*s)->content)[eol - 1] = '\0';
-		p->buf = (char *)ft_memmove((void *)p->buf,
-							(void *)&(p->buf[eol]), (long)p->bs);
-		return (1);
+		// longueur du reliquat
+		rcount = ft_strlen(left_over);
+		// copie du reliquat dans le buffer
+		ft_memcpy(buf, left_over, rcount);
+		// nettoyage du reliquat
+		ft_bzero(left_over, BUFF_SIZE);
 	}
-	p->bs = 0;
-	return (0);
+	// césure de la chaine
+	buf[rcount] = '\0';
+	return (rcount);
+}
+
+// 24 lignes
+static int		read_line(const int fd, char **line, char *left_over,
+															size_t offset)
+{
+	// le left_over de lecture
+	char	buf[BUFF_SIZE + 1];
+	// un pointeur sur le charactère de fin de ligne
+	char	*eol;
+	// la taille de la chaine
+	int		length;
+	// la valeur de retour (nombre d'octets écrits dans *line)
+	int		rcount;
+
+	// lecture des données (fichier ou relicat)
+	if ((rcount = get_next_datas(fd, left_over, buf)) < 0)
+		return (-1);
+	// si rien n'a été lu à la première itération de la récursive: EOF
+	if (rcount == 0 && offset < 1)
+		return (0);
+	// si rien n'a été lu OU '\n' présent
+	if (rcount == 0 || (eol = ft_strchr(buf, '\n')))
+	{
+		// si au moins 1 caractère a été lu (cas du '\n')
+		if (rcount)
+		{
+			// la taille de la chaine correspond au nombre d'octets écrits
+			length = rcount;
+			// on ne comptabilise que les caractères avant le '\n'
+			rcount = eol - buf;
+			// écriture du reliquat
+			ft_memmove(left_over, &buf[rcount + 1], length - rcount);
+		}
+		// on incrémente la taille de la chaine
+		length = offset + rcount;
+		// allocation de l'espace nécessaire pour la ligne entière'
+		*line = (char *)malloc(length + 1);
+		(*line)[length] = '\0';
+	}
+	// sinon, récursion en décalant l'offset du nombre de caractères lus'
+	else if ((length = read_line(fd, line, left_over, offset + rcount)) <= 0)
+		return (length);
+	// copie du buffer dans la nouvelle chaine
+	ft_memcpy(&(*line)[offset], buf, rcount);
+	return ((rcount) ? rcount : 1);
+}
+
+// 23 lignes
+static int		index_lines(const int fd, char **line, t_gnl *p_fd, int idx)
+{
+	// un pointeur sur une ligne dans la liste
+	t_line	*p_line;
+	// un pointeur sur la précédente ligne
+	t_line	*p_prev;
+	// la valeur de retour (nombre d'octets écrits dans *line)
+	int		rcount;
+
+	rcount = 1;
+	// pointeur sur la première ligne
+	p_line = p_fd->lines;
+	// boucle pour pointer sur le dernier élément de la listeé
+	while (p_line && p_line->next)
+		p_line = p_line->next;
+	// boucle tant que l'index est supérieur au nombre de ligne enregistré
+	while (idx > p_fd->count)
+	{
+		// lecture de la ligne
+		if ((rcount = read_line(fd, line, p_fd->buf, 0)) <= 0)
+			return (rcount);
+		// pointeur sur la ligne actuelle
+		p_prev = p_line;
+		// on alloue un nouveau maillon
+		if (!(p_line = (t_line *)ft_memalloc(sizeof(t_line))))
+			return (-1);
+		// la liste est vide, on insert en première position
+		else if (!p_fd->lines)
+			p_fd->lines = p_line;
+		// on insert à la suite
+		else
+			p_prev->next = p_line;
+		// on enregiste la chaine dans le maillon
+		p_line->content = *line;
+		// on incrémente le compteur de lignes
+		p_fd->count++;
+	}
+	return ((rcount) ? rcount : 1);
+}
+
+// 24 lignes
+static int		get_indexed_line(const int fd, char **line, t_gnl *p_fd,
+																	int idx)
+{
+	// un pointeur sur une ligne de la liste
+	t_line	*p_line;
+	// la valeur de retour (nombre d'octets écrits dans *line)
+	int		rcount;
+
+	// mise à null de *line (cas ou un index vient d'être spécifié')
+	*line = NULL;
+	// un index < 0 correspond à un nettoyage de la liste
+	if (idx < 0)
+	{
+		// boucle qui nettoie tous les maillons
+		while ((p_line = p_fd->lines))
+		{
+			// on utilise un second pointeur pour parcourir les maillons
+			p_fd->lines = p_line->next;
+			// libération du maillon courant (chaine puis maillon)
+			ft_strdel(&p_line->content);
+			ft_memdel((void **)p_line);
+		}
+		// on retourne -1 pour nettoyer la structure et libérer le fd
+		return (-1);
+	}
+	// un index == 0 correspond à la récupération de la prochaine ligne
+	else if (idx == 0)
+		idx = (p_fd->idx) ? p_fd->idx : 1;
+	// on enregistre les lignes dans la liste
+	if ((rcount = index_lines(fd, line, p_fd, idx)) <= 0)
+		return (rcount);
+	// on incrémente l'index de lecture (permet de conserver l'état de lecture)
+	p_fd->idx = idx + 1;
+	// pointeur sur la première ligne
+	p_line = p_fd->lines;
+	// boucle pour pointer sur l'élément à l'index spécifié
+	while (--idx)
+		p_line = p_line->next;
+	// on copie la chaine dans le pointeur
+	*line = ft_strdup(p_line->content);
+	return ((rcount = ft_strlen(*line)) ? rcount : 1);
 }
 
 /*
-**	To allow GNL to return characters count, switch
-**	-- r = (total_bcount > 0) ? 1 : 0;
-**	++ r = total_bcount;
-**
+** Amélioration: allouer les structures sur le tas (heap) pour
+** éviter de limiter la pile (stack) du programme
 */
-static int		get_fd_line(char **line, t_list **s_parsers,
-							int fd, t_list **strings)
-{
-	t_list		*first;
-	t_parser	*parser;
-	size_t		total_bcount;
-	int			r;
-
-	r = 0;
-	total_bcount = 0;
-	first = NULL;
-	if (!(parser = get_fd_parser(s_parsers, *s_parsers, fd)))
-		return (-1);
-	while (!r)
-	{
-		if ((r = read_until_eol(strings, parser, &total_bcount)) && r < 0)
-			return (clear_fd_parser(s_parsers, fd) ? -1 : -1);
-		if (!first && *strings)
-			first = *strings;
-		if (r == 0)
-			(*strings)->next = ft_lstnew(NULL, 0);
-	}
-	*strings = first;
-	if (!(*line = (char *)ft_memalloc(total_bcount + 1)))
-		return (-1);
-	*line[0] = '\0';
-	r = total_bcount;
-	return (r);
-}
-
+// 22 lignes
 int				get_next_line(const int fd, char **line)
 {
-	static t_list	*s_parsers = NULL;
-	t_list			*strings;
-	t_list			*prev_str;
-	int				r;
+	// BONUS: un tableau de structures pour chaque fd (fd < 0 <=> fd libre)
+	static t_gnl	fd_table[MAX_FD] = { [0 ... MAX_FD - 1] = { .fd = -1 } };
+	// un pointeur sur une structure du tableau
+	t_gnl			*p_fd;
+	// la valeur de retour (nombre d'octets écrits dans *line)
+	int				rcount;
 
+	// le buffer n'est pas bon, ou line ne pointe pas vers une adresse
 	if (fd < 0 || !line)
 		return (-1);
-	strings = NULL;
-	if ((r = get_fd_line(line, &s_parsers, fd, &strings)))
-	{
-		while (strings)
-		{
-			prev_str = strings;
-			if (strings->content)
-			{
-				ft_strcat(*line, (char *)strings->content);
-				ft_memdel((void **)&prev_str->content);
-			}
-			strings = strings->next;
-			ft_memdel((void **)&prev_str);
-		}
-	}
+	// pointeur sur le début du tableau
+	p_fd = fd_table;
+	// on cherche la structure qui correspond (si il y a) au fd dans le tableau
+	while (BUSY_FD(p_fd, fd) && p_fd < fd_table + MAX_FD - 1)
+		p_fd++;
+	// si le dernier élément est occupé, le tableau est plein
+	if (BUSY_FD(p_fd, fd))
+		return (-1);
+	// structure récupérée, on enregistre le fd dedans
+	p_fd->fd = fd;
+	// BONUS: parsing de l'index dans *line
+	// BONUS: on récupère la ligne correspondante
+	if (*line || p_fd->idx)
+		rcount = get_indexed_line(fd, line, p_fd, ft_atoi(*line));
+	// sinon, on lit la prochaine ligne
 	else
-		r = clear_fd_parser(&s_parsers, fd);
-	return (r);
+		rcount = read_line(fd, line, p_fd->buf, 0);
+	// si fin du fichier atteinte, on nettoie la structure
+	if (rcount <= 0)
+	{
+		ft_bzero(p_fd, sizeof(t_gnl));
+		// libère le fd
+		p_fd->fd = -1;
+	}
+	return (rcount);
 }

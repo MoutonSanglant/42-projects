@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/28 04:37:47 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/08 03:21:54 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/07 02:02:38 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@ static int	out_of_canvas(t_image *c, int x, int y)
 {
 	return (x < 0 || y < 0 || x > (int)c->width || y > (int)c->height);
 }
+
+/*
+**	else if (button == MOUSE_CLICK_RIGHT)
+**		ft_printf("right click\n");
+*/
 
 int			mouse_click_event(int button, int x, int y, void *p)
 {
@@ -29,12 +34,16 @@ int			mouse_click_event(int button, int x, int y, void *p)
 	if (button == MOUSE_CLICK_LEFT
 			&& ((t_fractol_st *)mlx->datas)->fractal->interactive)
 		mouse_capture = (mouse_capture) ? 0 : 1;
-	else if (button == MOUSE_CLICK_RIGHT)
-		ft_printf("right click\n");
 	else if (button == MOUSE_SCROLL_UP)
-		zoom_in(mlx, x, y);
+	{
+		zoom_out(mlx, (double)x, (double)y);
+		move_viewport(&mlx->viewport, mlx->canvas);
+	}
 	else if (button == MOUSE_SCROLL_DOWN)
-		zoom_out(mlx, x, y);
+	{
+		zoom_in(mlx, (double)x, (double)y);
+		move_viewport(&mlx->viewport, mlx->canvas);
+	}
 	mlx->settings.mouse_capture = mouse_capture;
 	mlx->need_update = 1;
 	return (0);

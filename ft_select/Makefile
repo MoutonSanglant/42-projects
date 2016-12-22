@@ -3,8 +3,9 @@ CFLAGS	= -Wall -Werror -Wextra -I./includes
 LDFLAGS	= -L./libft -L./libftprintf
 LDLIBS	= -lft -lftprintf -ltermcap
 
-SRC	=	ft_select signals termios inputs cursor move list \
-		get_next_line errors
+SRC	=	ft_select signals termios inputs display clear refresh \
+		cursor move list arguments \
+		selection errors
 
 CORR_FILES = ./Makefile ./src ./includes
 
@@ -22,9 +23,6 @@ ifeq ($(BUILD), Debug)
 else
 	SUFFIX	= .o
 	NAME	= ft_select
-endif
-
-ifeq ($(BUILD), Debug)
 endif
 
 # OS flags

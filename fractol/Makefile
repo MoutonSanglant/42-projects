@@ -8,7 +8,8 @@ SRC		= main error help \
 		keypress keyrelease keyevents keyevents_ctrl keyevents_shift \
 		window viewport canvas draw_loop expose \
 		fractol draw draw_gui \
-		julia mandelbrot burning \
+		julia julia_wave julia_sun mandelbrot burning glynn shell multibrot6 \
+		mandel_spider \
 		colorscheme colorsets colorsets_extra hsl_to_rgb
 
 CORR_FILES = ./Makefile ./lib ./src ./includes

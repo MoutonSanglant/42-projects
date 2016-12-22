@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/19 06:33:28 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/29 23:20:38 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/10 17:58:38 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int		node_exist(t_node *graph, t_room *room)
 }
 
 static t_node	*insert_node(t_graph *graph, t_node *link, t_key *key,
-															t_parser *parser)
+															t_lemin_parser *parser)
 {
 	link = new_node(((t_room *)key->value), parser->connections);
 	if (key->type & TYPE_START)
@@ -41,7 +41,7 @@ static t_node	*insert_node(t_graph *graph, t_node *link, t_key *key,
 	return (link);
 }
 
-static void		build_graph(t_graph *g, t_node *root, t_parser *parser)
+static void		build_graph(t_graph *g, t_node *root, t_lemin_parser *parser)
 {
 	t_queue	*queue;
 	t_key	*key;
@@ -61,6 +61,8 @@ static void		build_graph(t_graph *g, t_node *root, t_parser *parser)
 		if (!node_exist(root, (t_room *)key->value))
 			root->links[idx] = insert_node(g, root->links[idx], key, parser);
 		queue = queue->next;
+		if (!queue)
+			break ;
 		key = (t_key *)queue->content;
 		idx++;
 	}
@@ -95,7 +97,7 @@ void			clear_graph(t_graph *graph)
 ** ========================
 */
 
-void			new_graph(t_graph *graph, t_parser *parser)
+void			new_graph(t_graph *graph, t_lemin_parser *parser)
 {
 	t_node	root;
 	int		i;

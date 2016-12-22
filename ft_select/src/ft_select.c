@@ -6,11 +6,9 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/12 13:05:18 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/30 07:17:46 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/06 13:40:42 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include <libft.h>
 
 /*
 ** programme: ft_select
@@ -64,67 +62,9 @@
 ** signal*
 */
 
-/*
-void	select_item()
-{
-	//move_cursor_next();
-}
-*/
-
-#include <sys/ioctl.h>
-#include <fcntl.h>
-#include <ttyent.h>
-
-#include "get_next_line.h"
 #include "ft_select.h"
 
-
-/*
-** termtype: terminal type
-** tgetent: terminal description (list of capabilities)
-*/
-
-int		init_terminal()
-{
-	char	*termtype;
-	int		success;
-	char	term_buffer[2048];
-
-	termtype = getenv("TERM");
-	if (termtype == 0)
-		fatal("Specify a terminal type with `setenv TERM ...`.\n");
-	success = tgetent(term_buffer, termtype);
-	if (success < 0)
-		fatal("Could not access the termcap data base.\n");
-	if (success == 0)
-		fatal("Terminal type %s is not defined.\n", termtype);
-	return (1);
-}
-
-int		ft_put(int c)
-{
-	write(((t_termios *)termios_if(&termios_get))->fd, &c, 1);
-	return (1);
-}
-
-void	list_termcaps()
-{
-	int		pb_num;
-	char	str[100];
-	char	*cl_string;
-	char	*cm_string;
-
-	cl_string = tgetstr("cl", 0);
-	cm_string = tgetstr("cm", 0);
-	tputs(cl_string, 1, &ft_put);
-	tputs(cm_string, 1, &ft_put);
-
-	pb_num = tgetnum("pb");
-	ft_snprintf(str, 100, "\npb: %i\n", pb_num);
-	tputs(str, 1, &ft_put);
-}
-
-int		compute_col_width(char **list, int count)
+static int	compute_col_width(char **list, int count)
 {
 	int		max;
 	int		l;
@@ -137,32 +77,80 @@ int		compute_col_width(char **list, int count)
 		if (l > max)
 			max = l;
 	}
-	return (max);
+	return (max + 2);
 }
 
-int		main(int argc, char **argv)
+/*
+** termtype: terminal type
+** tgetent: terminal description (list of capabilities)
+*/
+
+static void	init_terminal(void)
+{
+	char	*termtype;
+	int		success;
+	char	term_buffer[2048];
+
+	termtype = getenv("TERM");
+	if (termtype == 0)
+		fatal(ERR_TERM_NOT_DEFINED);
+	success = tgetent(term_buffer, termtype);
+	if (success < 0)
+		fatal(ERR_NO_TERM_DB);
+	if (success == 0)
+		fatal(ERR_TERM_TYPE_UNDEFINED, termtype);
+}
+
+int			ft_put(int c)
+{
+	write(((t_termios *)termios_if(&termios_get))->fd, &c, 1);
+	return (1);
+}
+
+/*
+** Output to stout
+*/
+
+static void	print_output(t_select *select)
+{
+	t_list	*next;
+	t_list	*l;
+	int		fd;
+
+	fd = 1;
+	l = select->selected;
+	while (l)
+	{
+		ft_dprintf(fd, "%s", (char *)l->content);
+		next = l->next;
+		if (next)
+			write(fd, " ", 1);
+		ft_memdel((void *)&l->content);
+		ft_memdel((void *)&l);
+		l = next;
+	}
+	select->selected = NULL;
+}
+
+int			main(int argc, char **argv)
 {
 	t_select	select;
+	int			args_count;
 
 	if (argc < 2)
 		return (0);
-
+	ft_bzero(&select, sizeof(t_select));
+	args_count = parse_arguments(argc, argv, &select);
+	init_terminal();
 	init_signals();
-	// select.tty is no more used
-	ft_bzero(&select.tty, sizeof(t_tty));
-	//set_tty(&select.tty);
-	if (!init_terminal())
-		return (1);
 	termios_if(&termios_raw);
-	//init_termcaps(select.tty.fd);
-	//list_termcaps();
-	//get_cursor_position(&select.cursor_x, &select.cursor_y);
-	select.nb_elem = argc - 2;
-	select.list = &argv[1];
+	select.nb_elem = argc - args_count;
+	select.list = &argv[args_count];
 	select.col_width = compute_col_width(select.list, select.nb_elem);
 	refresh(&select);
 	listen_input(&select);
+	clear(&select);
 	termios_if(&termios_release);
-	print_list(&select);
+	print_output(&select);
 	return (0);
 }

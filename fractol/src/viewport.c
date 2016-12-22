@@ -6,26 +6,51 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/07 17:59:54 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/08 01:21:16 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/07 07:11:50 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void		zoom_in(t_mlx_st *mlx, int x, int y)
+/*
+**	Step 1:
+**	mouse to viewport
+**	Step 2:
+**	center viewport to mouse position
+**	Step 3:
+**	zoom viewport
+**	Step 4:
+**	move back from offset (mouse pos after zoom)
+*/
+
+void		zoom_in(t_mlx_st *mlx, double x, double y)
 {
-	mlx->viewport.pos.x += x;
-	mlx->viewport.pos.y += y;
-	mlx->viewport.zoom_level *= 1.1;
+	t_viewport	*viewport;
+
+	viewport = &mlx->viewport;
+	x = (x / mlx->canvas->width) * 2;
+	y = (y / mlx->canvas->height) * 2;
+	viewport->pos.x += x / viewport->zoom_level;
+	viewport->pos.y += y / viewport->zoom_level;
+	viewport->zoom_level *= 1.1;
 	zoom_viewport(&mlx->viewport);
+	viewport->pos.x -= x / viewport->zoom_level;
+	viewport->pos.y -= y / viewport->zoom_level;
 }
 
-void		zoom_out(t_mlx_st *mlx, int x, int y)
+void		zoom_out(t_mlx_st *mlx, double x, double y)
 {
-	mlx->viewport.pos.x += x;
-	mlx->viewport.pos.y += y;
-	mlx->viewport.zoom_level *= .9;
+	t_viewport	*viewport;
+
+	viewport = &mlx->viewport;
+	x = (x / mlx->canvas->width) * 2;
+	y = (y / mlx->canvas->height) * 2;
+	viewport->pos.x += x / viewport->zoom_level;
+	viewport->pos.y += y / viewport->zoom_level;
+	viewport->zoom_level *= .9;
 	zoom_viewport(&mlx->viewport);
+	viewport->pos.x -= x / viewport->zoom_level;
+	viewport->pos.y -= y / viewport->zoom_level;
 }
 
 void		zoom_viewport(t_viewport *viewport)

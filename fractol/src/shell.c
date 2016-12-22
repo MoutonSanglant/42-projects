@@ -1,27 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_selected.c                                      :+:      :+:    :+:   */
+/*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/17 19:08:18 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/17 19:08:30 by tdefresn         ###   ########.fr       */
+/*   Created: 2016/12/07 09:01:01 by tdefresn          #+#    #+#             */
+/*   Updated: 2016/12/07 09:16:53 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_select.h"
+#include <complex.h>
 
-int		is_selected(t_select *select, char *el)
+#include "fractol.h"
+
+/*
+**	z1 = z1 * z1 + c1;
+*/
+
+int		shell(t_vec2d *z, t_vec2d *c, int depth, int max_depth)
 {
-	t_list	*l;
+	double _Complex	z1;
+	double _Complex	c1;
 
-	l = select->selected;
-	while (l)
+	c1 = z->x + z->y * _Complex_I;
+	z1 = c->x + c->y * _Complex_I;
+	depth = max_depth;
+	while (depth--)
 	{
-		if (ft_strequ(el, (char *)l->content))
-			return (1);
-		l = l->next;
+		z1 = cpow(z1, 1.5) + 0.2;
+		if (cabs(z1) > ESCAPE_RADIUS)
+			break ;
 	}
-	return (0);
+	return (max_depth - depth);
 }

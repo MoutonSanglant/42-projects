@@ -134,14 +134,14 @@ typedef struct	s_graph
 ** 8 + 8 + (4 + 4) + (4)
 ** = 32 {4}
 */
-typedef struct	s_parser
+typedef struct	s_lemin_parser
 {
 	t_queue	*queue;
 	t_queue	*connections;
 	t_type	command;
 	int		ants_count;
 	int		rooms_count;
-}				t_parser;
+}				t_lemin_parser;
 
 /*
 ** =============================== arguments.c ==============================
@@ -176,7 +176,7 @@ void			queue_add_key(t_queue **queue, t_key *key);
 /*
 ** ================================= graph.c =================================
 */
-void			new_graph(t_graph *graph, t_parser *parser);
+void			new_graph(t_graph *graph, t_lemin_parser *parser);
 void			clear_graph(t_graph *graph);
 
 /*

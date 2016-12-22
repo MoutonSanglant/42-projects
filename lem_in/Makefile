@@ -3,16 +3,27 @@ CFLAGS	= -Wall -Werror -Wextra -I./includes
 LDFLAGS	= -L./libft -L./libftprintf
 LDLIBS	= -lft -lftprintf
 
-SUFFIX	= .o
-NAME	= lem-in
+SRC	=	main arguments errors \
+		get_next_line read_stdin \
+		queue_tools \
+		parser resolve ways connections graph link node path rooms
 
 CORR_FILES = ./Makefile ./src ./includes
+
+ifeq ($(BUILD), Bonus)
+	CFLAGS	+= -D BONUS
+	SRC		+=
+endif
 
 # DEBUG routine
 ifeq ($(BUILD), Debug)
 	CFLAGS	+= -fsanitize=address -g -O0 -D DEBUG
 	SUFFIX	= .debug.o
 	NAME	= lem-in.debug
+	SRC		+=
+else
+	SUFFIX	= .o
+	NAME	= lem-in
 endif
 
 # OS flags
@@ -34,11 +45,7 @@ endif
 SRC_PREFIX = ./src/
 OBJ_PREFIX = ./obj/
 
-SRC	=	$(shell ls $(SRC_PREFIX)*.c)
-
-ifeq ($(BUILD), Debug)
-	SRC +=
-endif
+SRC := $(addsuffix .c, $(SRC))
 
 OBJ = $(subst $(SRC_PREFIX), , $(SRC:.c=$(SUFFIX)))
 OBJ := $(addprefix $(OBJ_PREFIX), $(OBJ))
@@ -53,18 +60,6 @@ debug:
 $(NAME): $(OBJ) libft/libft.a libftprintf/libftprintf.a
 	@echo "making $@"
 	$(CC) -o $(NAME) $(OBJ) $(CFLAGS) $(LDFLAGS) $(LDLIBS)
-
-libft/libft.a: libft
-
-libftprintf/libftprintf.a: libftprintf
-
-libft:
-	@echo "making $@"
-	@$(MAKE) -C libft BUILD=$(BUILD)
-
-libftprintf:
-	@echo "making $@"
-	@$(MAKE) -C libftprintf BUILD=$(BUILD)
 
 $(OBJ_PREFIX)%$(SUFFIX): $(SRC_PREFIX)%.c
 	@echo "making $<"
@@ -88,6 +83,19 @@ cclean:
 re: fclean all
 
 rre: cclean all
+
+
+libft/libft.a: libft
+
+libftprintf/libftprintf.a: libftprintf
+
+libft:
+	@echo "making $@"
+	@$(MAKE) -C libft BUILD=$(BUILD)
+
+libftprintf:
+	@echo "making $@"
+	@$(MAKE) -C libftprintf BUILD=$(BUILD)
 
 correction_%:
 	@echo "\033[32mCopying $* into \033[33m/tmp/\033[0m"

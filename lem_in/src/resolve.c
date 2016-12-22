@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/21 13:59:13 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/30 01:21:41 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/04 19:38:09 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ static int		ant_move(t_ant *ant, t_graph *graph)
 static int		resolve_turn(t_graph *graph, int count)
 {
 	t_ant	*ant;
-	t_node	*room;
 	int		update;
 
 	update = 0;
@@ -68,15 +67,16 @@ static int		resolve_turn(t_graph *graph, int count)
 		ant = graph->ants[count];
 		if (ant && ant_move(ant, graph))
 		{
-			room = ant->room;
 			if (update)
 				write(1, " ", 1);
-			ft_printf("\033[%smL%s-%s\033[0m", ant->color, ant->name, room->name, room->weight);
+			ft_printf("\033[%smL%s-%s\033[0m", ant->color, ant->name,
+											ant->room->name, ant->room->weight);
 			update = 1;
-			if (room->state & STATE_END)
+			if (ant->room->state & STATE_END)
 			{
-				room->state = STATE_END;
+				ant->room->state = STATE_END;
 				ft_memdel((void *)&graph->ants[count]->name);
+				ft_memdel((void *)&graph->ants[count]->color);
 				ft_memdel((void *)&graph->ants[count]);
 			}
 		}
@@ -84,10 +84,12 @@ static int		resolve_turn(t_graph *graph, int count)
 	return (update);
 }
 
-static int		get_ant_color()
+static int		get_ant_color(t_graph *graph)
 {
 	static int	color = 31;
 
+	if (!(graph->flags & FLAG_COLORS))
+		return (0);
 	if (color > 96)
 		color = 31;
 	if (color > 37 && color < 90)
@@ -108,7 +110,7 @@ void			resolve(t_graph *graph)
 	{
 		ant = (t_ant *)malloc(sizeof(t_ant));
 		ant->name = ft_itoa(graph->ants_count - i);
-		ant->color = ft_itoa(get_ant_color());
+		ant->color = ft_itoa(get_ant_color(graph));
 		ant->room = graph->start;
 		graph->ants[i] = ant;
 	}

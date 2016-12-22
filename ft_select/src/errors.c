@@ -6,19 +6,16 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/13 19:55:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/17 19:04:21 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/06 12:10:51 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include <unistd.h>
-#include <stdlib.h>
 
 #include "ft_select.h"
 
 void	quit(void)
 {
 	termios_if(&termios_release);
-	exit (1);
+	exit(1);
 }
 
 void	fatal(char *format, ...)

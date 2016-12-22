@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/18 04:19:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/29 23:52:13 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/10 17:58:18 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static void	print_connection(t_connection *connection, t_graph *graph)
 	ft_memdel((void *)&connection->to);
 }
 
-static void	print_anthill(t_parser *parser, t_graph *graph)
+static void	print_anthill(t_lemin_parser *parser, t_graph *graph)
 {
 	t_queue		*queue;
 	t_key		*key;
@@ -121,11 +121,11 @@ static void	print_anthill(t_parser *parser, t_graph *graph)
 
 int			main(int argc, char **argv)
 {
-	t_parser	parser;
+	t_lemin_parser	parser;
 	t_graph		graph;
 
 	ft_bzero(&graph, sizeof(t_graph));
-	ft_bzero(&parser, sizeof(t_parser));
+	ft_bzero(&parser, sizeof(t_lemin_parser));
 	if (argc > 1)
 		parse_arguments(argc, argv, &graph);
 	parser.ants_count = -1;

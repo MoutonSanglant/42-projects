@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/05 23:35:47 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/02/05 23:44:10 by tdefresn         ###   ########.fr       */
+/*   Updated: 2016/12/04 21:56:51 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@
 
 void	format_error(void)
 {
-	ft_putendl("Error: File is badly formated !'");
+	ft_putendl("Error: File is badly formated !");
 	exit(16);
 }
