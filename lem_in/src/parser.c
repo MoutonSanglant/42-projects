@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/19 00:09:45 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/10 17:58:33 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/01/19 16:43:35 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static int	parse_connection(t_lemin_parser *parser, char *line)
 {
 	static t_queue	*queue = NULL;
 
+	if (parser->rooms_mask != (TYPE_ROOM | TYPE_START | TYPE_END))
+		error(ERR_MISSING_ROOM);
 	if (!queue)
 	{
 		queue = parser->queue;
@@ -59,23 +61,18 @@ static int	parse_connection(t_lemin_parser *parser, char *line)
 
 static int	parse_room(t_lemin_parser *parser, char *line)
 {
-	static t_type	mask = 0;
 	t_type			type;
 
 	type = TYPE_ROOM | parser->command;
-	mask |= type;
 	parser->command = 0;
 	if (new_room(&parser->queue, line, type))
 	{
+		parser->rooms_mask |= type;
 		parser->rooms_count++;
 		return (0);
 	}
 	else
-	{
-		if (mask != (TYPE_ROOM | TYPE_START | TYPE_END))
-			error(ERR_MISSING_ROOM);
 		parse_connection(parser, line);
-	}
 	return (1);
 }
 
@@ -84,6 +81,11 @@ static int	parse_ants(t_lemin_parser *parser, char *line)
 	char	**split;
 
 	split = ft_strsplit(line, ' ');
+	if (!split[0])
+	{
+		parse_room(parser, line);
+		return (1);
+	}
 	if (split[0] && split[1])
 		error(ERR_INVALID_ANT_LINE);
 	if ((parser->ants_count = ft_atoi(split[0])) < 1)

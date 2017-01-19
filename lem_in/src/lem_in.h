@@ -141,6 +141,7 @@ typedef struct	s_lemin_parser
 	t_type	command;
 	int		ants_count;
 	int		rooms_count;
+	int		rooms_mask;
 }				t_lemin_parser;
 
 /*

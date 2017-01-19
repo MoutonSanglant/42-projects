@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/19 06:33:28 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/10 17:58:38 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/01/19 16:49:58 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int		node_exist(t_node *graph, t_room *room)
 }
 
 static t_node	*insert_node(t_graph *graph, t_node *link, t_key *key,
-															t_lemin_parser *parser)
+														t_lemin_parser *parser)
 {
 	link = new_node(((t_room *)key->value), parser->connections);
 	if (key->type & TYPE_START)

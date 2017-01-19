@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/18 04:19:43 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/10 17:58:18 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/01/19 16:50:09 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ static void	print_anthill(t_lemin_parser *parser, t_graph *graph)
 int			main(int argc, char **argv)
 {
 	t_lemin_parser	parser;
-	t_graph		graph;
+	t_graph			graph;
 
 	ft_bzero(&graph, sizeof(t_graph));
 	ft_bzero(&parser, sizeof(t_lemin_parser));
