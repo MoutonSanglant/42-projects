@@ -23,15 +23,15 @@
 # define MAX_FD		20
 # define DATA_MAX_SIZE	80000000
 
-# define BUSY_FD(st, d) (st->fd >= 0 && st->fd != d)
+# define BUSY_FD(st, d) (st->busy != 0 && st->fd != d)
 
 # if MAX_FD * (BUFF_SIZE + 24) > DATA_MAX_SIZE
 #  warning "Data segment too big ! Reduce buffer size or number of fd."
 # endif
 
-typedef struct	s_line t_line;
+typedef struct s_line	t_line;
 
-struct	s_line
+struct			s_line
 {
 	char	*content;
 	t_line	*next;
@@ -49,13 +49,14 @@ typedef struct	s_gnl
 	int		count;
 	int		idx;
 	int		fd;
+	int		busy;
 }				t_gnl;
 /*
 ** t_gnl:
-** >> 8 + 8 + (4 + 4) + (4 + ...)
+** >> 8 + 8 + (4 + 4) + (4 + 4)
 **	= 32
 */
 
-int		get_next_line(const int fd, char **line);
+int				get_next_line(const int fd, char **line);
 
 #endif
