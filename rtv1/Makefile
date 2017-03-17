@@ -1,8 +1,6 @@
 CC		= gcc
-#CFLAGS	= -Wall -Werror -Wextra -I./includes `pkg-config --ccflags glfw3`
 CFLAGS	= -Wall -Werror -Wextra -I./includes
-LDFLAGS	= -L./libft -L./libftprintf -L./glfw-3.2.1
-#LDLIBS	= -lft -lftprintf `pkg-config --static --libs glfw3`
+LDFLAGS	= -L./libft -L./libftprintf -L./glfw3
 LDLIBS	= -lft -lftprintf -lglfw3 -framework Cocoa -framework OpenGL \
 			-framework IOKit -framework CoreVideo
 
@@ -50,14 +48,14 @@ SRC := $(addsuffix .c, $(SRC))
 OBJ = $(subst $(SRC_PREFIX), , $(SRC:.c=$(SUFFIX)))
 OBJ := $(addprefix $(OBJ_PREFIX), $(OBJ))
 
-.PHONY: all clean fclean re libft libftprintf debug correction
+.PHONY: all clean fclean re libft libftprintf glfw3 debug correction
 
 all: $(NAME)
 
 debug:
 	@$(MAKE) BUILD=Debug all
 
-$(NAME): $(OBJ) libft/libft.a libftprintf/libftprintf.a glfw-3.2.1/glfw3.a
+$(NAME): $(OBJ) libft/libft.a libftprintf/libftprintf.a glfw3/glfw3.a
 	@echo "making $@"
 	$(CC) -o $(NAME) $(OBJ) $(CFLAGS) $(LDFLAGS) $(LDLIBS)
 
@@ -68,11 +66,13 @@ $(OBJ_PREFIX)%$(SUFFIX): $(SRC_PREFIX)%.c
 
 clean:
 	/bin/rm -rf $(OBJ_PREFIX)
+	$(MAKE) -C glfw3 clean
 	$(MAKE) -C libft clean
 	$(MAKE) -C libftprintf clean
 
 fclean: clean
 	/bin/rm -f $(NAME)
+	$(MAKE) -C glfw3 fclean
 	$(MAKE) -C libft fclean
 	$(MAKE) -C libftprintf fclean
 
@@ -84,11 +84,11 @@ re: fclean all
 
 rre: cclean all
 
-glfw-3.2.1/glfw3.a: glfw3
+glfw3/glfw3.a: glfw3
 
 glfw3:
 	@echo "making $@"
-	@$(MAKE) -C glfw-3.2.1 BUILD=$(BUILD) -j 8
+	@$(MAKE) -C glfw3 BUILD=$(BUILD) -j 8
 
 
 libft/libft.a: libft
