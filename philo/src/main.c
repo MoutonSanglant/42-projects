@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 18:38:45 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/15 19:55:38 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/01/18 16:21:02 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,10 @@ int		main(int argc, char **argv)
 	int			err;
 	int			i;
 
+	flags = 0;
 	parse_arguments(argc, argv, &flags);
 	ft_putendl("== arguments:");
+	ft_printf("flags: %x\n", flags);
 	if (flags & FLAG_COLOR)
 		ft_putendl("colors");
 	if (flags & FLAG_TEST)

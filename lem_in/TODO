@@ -1,2 +1,4 @@
-segfault on 'sefault file'
-sefault on no input (stdin)
+segfault on 'bad_link.map'
+segfault on 'only_ants.map'
+
+'gap.map' should be invalid
