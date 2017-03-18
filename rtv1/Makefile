@@ -1,10 +1,11 @@
 CC		= gcc
 CFLAGS	= -Wall -Werror -Wextra -I./includes
-LDFLAGS	= -L./libft -L./libftprintf -L./glfw3
-LDLIBS	= -lft -lftprintf -lglfw3 -framework Cocoa -framework OpenGL \
-			-framework IOKit -framework CoreVideo
+LDFLAGS	= -L./libft -L./libftprintf
+LDLIBS	= -lft -lftprintf
 
-SRC	=	main
+SRC		= main
+LIBS	= libft libftprintf
+LIBS_A	= libft/libft.a libftprintf/libftprintf.a
 
 CORR_FILES = ./Makefile ./src ./includes
 
@@ -29,15 +30,21 @@ ARCH	= $(shell uname -m)
 OS		= $(shell uname -s)
 
 ifeq ($(OS), Darwin)
-	LDLIBS +=
+	LDFLAGS	+= -L./glfw3
+	LDLIBS	+= -lglfw3 -framework Cocoa -framework OpenGL \
+			-framework IOKit -framework CoreVideo
+	LIBS	+= glfw3
+	LIBS_A	+= glfw3/glfw3.a
 endif
 
 ifeq ($(OS)_$(ARCH), Linux_x86_64)
-	CFLAGS += -D LINUX
-	LDLIBS +=
+	CFLAGS	+= `pkg-config --cflags glfw3` -D LINUX
+	LDFLAGS	+=
+	LDLIBS	+= `pkg-config --static --libs glfw3` -lGL
 else ifeq ($(OS), Linux)
-	CFLAGS += -D LINUX
-	LDLIBS +=
+	CFLAGS	+= `pkg-config --cflags glfw3` -D LINUX
+	LDFLAGS	+=
+	LDLIBS	+= `pkg-config --static --libs glfw3`
 endif
 
 SRC_PREFIX = ./src/
@@ -55,7 +62,7 @@ all: $(NAME)
 debug:
 	@$(MAKE) BUILD=Debug all
 
-$(NAME): $(OBJ) libft/libft.a libftprintf/libftprintf.a glfw3/glfw3.a
+$(NAME): $(OBJ) $(LIBS_A)
 	@echo "making $@"
 	$(CC) -o $(NAME) $(OBJ) $(CFLAGS) $(LDFLAGS) $(LDLIBS)
 
@@ -66,15 +73,11 @@ $(OBJ_PREFIX)%$(SUFFIX): $(SRC_PREFIX)%.c
 
 clean:
 	/bin/rm -rf $(OBJ_PREFIX)
-	$(MAKE) -C glfw3 clean
-	$(MAKE) -C libft clean
-	$(MAKE) -C libftprintf clean
+	$(foreach lib, $(LIBS), $(MAKE) -C $(lib) clean;)
 
 fclean: clean
 	/bin/rm -f $(NAME)
-	$(MAKE) -C glfw3 fclean
-	$(MAKE) -C libft fclean
-	$(MAKE) -C libftprintf fclean
+	$(foreach lib, $(LIBS), $(MAKE) -C $(lib) fclean;)
 
 cclean:
 	/bin/rm -rf $(OBJ_PREFIX)

@@ -21,9 +21,8 @@
 int		glynn(t_vec2d *z, t_vec2d *c, int depth, int max_depth)
 {
 	double _Complex	z1;
-	double _Complex	c1;
 
-	c1 = z->x + z->y * _Complex_I;
+	(void)z;
 	z1 = c->x + c->y * _Complex_I;
 	depth = max_depth;
 	while (depth--)

@@ -72,11 +72,11 @@ libftprintf/libftprintf.a: libftprintf
 
 libft:
 	@echo "making $@"
-	@$(MAKE) -C libft BUILD=$(BUILD)
+	@$(MAKE) -C libft BUILD=$(BUILD) -j 8
 
 libftprintf:
 	@echo "making $@"
-	@$(MAKE) -C libftprintf BUILD=$(BUILD)
+	@$(MAKE) -C libftprintf BUILD=$(BUILD) -j 8
 
 $(OBJ_PREFIX)%$(SUFFIX): $(SRC_PREFIX)%.c
 	@echo "making $<"

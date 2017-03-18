@@ -33,10 +33,10 @@ endif
 
 ifeq ($(OS)_$(ARCH), Linux_x86_64)
 	CFLAGS += -D LINUX
-	LDLIBS +=
+	LDLIBS += -pthread
 else ifeq ($(OS), Linux)
 	CFLAGS += -D LINUX
-	LDLIBS +=
+	LDLIBS += -pthread
 endif
 
 SRC_PREFIX = ./src/
