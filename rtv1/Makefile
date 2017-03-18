@@ -3,7 +3,8 @@ CFLAGS	= -Wall -Werror -Wextra -I./includes
 LDFLAGS	= -L./libft -L./libftprintf
 LDLIBS	= -lft -lftprintf
 
-SRC		= main
+SRC		= main errors options \
+			arguments input
 LIBS	= libft libftprintf
 LIBS_A	= libft/libft.a libftprintf/libftprintf.a
 
