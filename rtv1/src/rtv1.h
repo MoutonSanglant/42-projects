@@ -18,6 +18,9 @@
 
 # include <GLFW/glfw3.h>
 
+# include "vector.h"
+# include "matrix.h"
+
 # define OPTIONS_COUNT 2
 
 # define WIN_WIDTH 640

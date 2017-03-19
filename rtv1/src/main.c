@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 18:18:01 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/03/18 16:34:41 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/03/19 19:04:47 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,27 @@ static const struct
 };
 
 static const char * vertex_shader_text =
-"uniform mat4 MVP;\n"
-"attribute vec3 vCol;\n"
-"atribute vec2 vPos;\n"
-"varying vec3 color;\n"
 "void main()\n"
 "{\n"
-"    gl_Position = MVP * vec4(vPos, 0.0, 1.0);\n"
-"    color = vCol;\n"
+//"    gl_Position = vec4(positions[gl_VertexIndex], 0.0, 1.0);\n"
+"    gl_Position = vec4(1.0, 0.0, 0.0, 1.0);\n"
 "}\n";
+//"uniform vec2 positions[3] = vec2[](vec2(0.0, -0.5), vec2(0.5, 0.5), vec2(-0.5, 0.5));\n"
+//"uniform mat4 MVP;\n"
+//"attribute vec3 vCol;\n"
+//"attribute vec2 vPos;\n"
+//"varying vec3 color;\n"
+//"    color = vCol;\n"
+//"    gl_Position = vec4(positions[gl_VertexIndex], 0.0, 1.0);\n"
+//"    gl_Position = MVP * vec4(vPos, 0.0, 1.0);\n"
 
 static const char* fragment_shader_text =
 "varying vec3 color;\n"
 "void main()\n"
 "{\n"
-"    gl_FragColor = vec4(color, 1.0);\n"
+"    gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);\n"
 "}\n";
+//"    gl_FragColor = vec4(color, 1.0);\n"
 
 int		main(int argc, char **argv)
 {
@@ -83,9 +88,26 @@ int		main(int argc, char **argv)
 	glShaderSource(vertex_shader, 1, &vertex_shader_text, NULL);
 	glCompileShader(vertex_shader);
 
+	GLint success = 0;
+	glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
+	if (success == GL_TRUE)
+		ft_printf("vertex compile successful.\n");
+	else
+	{
+		ft_printf("vertex compile failed.\n");
+		exit (1);
+	}
+
 	fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragment_shader, 1, &fragment_shader_text, NULL);
 	glCompileShader(fragment_shader);
+
+	success = 0;
+	glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
+	if (success == GL_TRUE)
+		ft_printf("fragment compile successful.\n");
+	else
+		ft_printf("fragment compile failed.\n");
 
 	program = glCreateProgram();
 	glAttachShader(program, vertex_shader);
@@ -103,11 +125,21 @@ int		main(int argc, char **argv)
 	while (!glfwWindowShouldClose(win))
 	{
 		float	ratio;
-		/*
-		mat4x4	m;
-		mat4x4	p;
-		mat4x4	mvp;
-		*/
+
+		t_mat4x4	m;
+		t_mat4x4	p;
+		t_mat4x4	mvp;
+		t_camera	camera;
+
+		//camera.angle_of_view = 90.f;
+		//camera.aspect = 1.f;
+		//camera.far = 100.f;
+		//camera.near = 1.f;
+		//camera.top = 1.f;
+		//camera.bottom = -1.f;
+		//camera.left = -1.f;
+		//camera.right = 1.f;
+
 
 		int	width;
 		int	height;
@@ -115,18 +147,31 @@ int		main(int argc, char **argv)
 		glfwGetFramebufferSize(win, &width, &height);
 		ratio = width / (float)height;
 
+		camera.top = 1.f;
+		camera.bottom = -1.f;
+		camera.left = -ratio;
+		camera.right = ratio;
+		camera.near = 1.f;
+		camera.far = -1.f;
+
+
+		(void)m;
+		(void)p;
+		(void)mvp;
+		mat4x4_identity(&m);
+		mat4x4_identity(&p);
+		mat4x4_identity(&mvp);
+		//mat4x4_rotate_Z(m, m, (float) glfwGetTime());
+		mat4x4_rotate_Z(&m, (float) glfwGetTime());
+		//mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+		mat4x4_ortho(&p, &camera);
+		mat4x4_mul(&mvp, &p, &m);
+
 		glViewport(0, 0, width, height);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		/*
-		mat4x4_identity(m);
-		mat4x4_rotate_Z(m, m, (float) glfwGetTime());
-		mat_4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-		mat4x4_mul(mvp, p, m);
-		*/
-
 		glUseProgram(program);
-		//glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat *)mvp);
+		glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat *)mvp);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		glfwSwapBuffers(win);

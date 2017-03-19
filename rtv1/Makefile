@@ -4,7 +4,8 @@ LDFLAGS	= -L./libft -L./libftprintf
 LDLIBS	= -lft -lftprintf
 
 SRC		= main errors options \
-			arguments input
+			arguments input \
+			matrix matrix_math identity_matrix inverse_matrix projection_matrix
 LIBS	= libft libftprintf
 LIBS_A	= libft/libft.a libftprintf/libftprintf.a
 
