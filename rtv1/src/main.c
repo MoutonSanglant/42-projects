@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 18:18:01 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/03/20 04:37:39 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/03/20 14:40:33 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,31 @@ static const struct
 };
 
 static const char * vertex_shader_text =
-"#version 130\n"
-"in vec3 VertexPosition;\n"
-"vec2 positions[3];\n"
+/*
+"#version 410\n"
+"out gl_PerVertex {\n"
+"	vec4 gl_Position;\n"
+"};\n"
+"layout(location = 0) out vec3 fragColor;\n"
+"vec2 positions[3] = vec2[](vec2(0.0, -0.5), vec2(0.5, 0.5), vec2(-0.5, 0.5));\n"
+"vec3 colors[3] = vec3[](vec3(1.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0), vec3(0.0, 0.0, 1.0));\n"
+
 "void main()\n"
 "{\n"
-	"positions[0] = vec2(0.0, -0.5);\n"
-	"positions[1] = vec2(0.5, 0.5);\n"
-	"positions[2] = vec2(-0.5, -0.5);\n"
 "    gl_Position = vec4(positions[gl_VertexID], 0.0, 1.0);\n"
+"    fragColor = colors[gl_VertexID];\n"
 "}\n";
+*/
+"#version 330\n"
+"layout(location = 0) in vec2 point;\n"
+"uniform float angle;\n"
+"void main() {\n"
+"    mat2 rotate = mat2(cos(angle), -sin(angle),\n"
+"                      sin(angle), cos(angle));\n"
+"    gl_Position = vec4(0.75 * rotate * point, 0.0, 1.0);\n"
+"}\n";
+//)
+//"#version 130\n"
 //"    gl_Position = vec4(VertexPosition, 1.0);\n"
 //"positions[0] = vec2(0.0, -0.5);\n"
 //"positions[1] = vec2(0.5, 0.5);\n"
@@ -52,14 +67,35 @@ static const char * vertex_shader_text =
 //"    gl_Position = MVP * vec4(vPos, 0.0, 1.0);\n"
 
 static const char* fragment_shader_text =
-"#version 130\n"
-"varying vec3 color;\n"
+"#version 330\n"
+"out vec4 color;\n"
+"void main() {\n"
+"    color = vec4(1, 0.15, 0.15, 0);\n"
+"}\n";
+/*
+"#version 410\n"
+"layout (location = 0) in vec3 fragColor;\n"
+"layout (location = 0) out vec4 outColor;\n"
 "void main()\n"
 "{\n"
-//"    gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);\n"
-"    gl_FragColor = vec4(color, 1.0);\n"
+"    outColor = vec4(fragColor, 1.0);\n"
 "}\n";
+*/
 //"    gl_FragColor = vec4(color, 1.0);\n"
+
+void	init_glew()
+{
+#ifdef LINUX
+	GLenum err = glewInit();
+
+	if (err != GLEW_OK)
+	{
+		ft_eprintf("Error: %s\n", glewGetErrorString(err));
+		exit (1);
+	}
+	ft_printf("Using GLEW: %s\n", glewGetString(GLEW_VERSION));
+#endif
+}
 
 int		main(int argc, char **argv)
 {
@@ -83,6 +119,10 @@ int		main(int argc, char **argv)
 	if (!glfwInit())
 		ft_printf("Cannot initialize GLFW\n");
 	glfwSetErrorCallback((GLFWerrorfun)error_glfw);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	win = glfwCreateWindow(rt.width, rt.height, "RTv1", NULL, NULL);
 	if (!win)
 	{
@@ -92,14 +132,7 @@ int		main(int argc, char **argv)
 	glfwSetKeyCallback(win, key_callback);
 	glfwMakeContextCurrent(win);
 
-	GLenum err = glewInit();
-
-	if (err != GLEW_OK)
-	{
-		ft_eprintf("Error: %s\n", glewGetErrorString(err));
-		exit (1);
-	}
-	ft_printf("Using GLEW: %s\n", glewGetString(GLEW_VERSION));
+	init_glew();
 	ft_printf("OpenGL %s\n", (char *)glGetString(GL_VERSION));
 
 	glfwSwapInterval(1);
@@ -140,6 +173,13 @@ int		main(int argc, char **argv)
 	else
 	{
 		ft_printf("fragment compile failed.\n");
+		GLint logsize;
+		glGetShaderiv(fragment_shader, GL_INFO_LOG_LENGTH, &logsize);
+
+		GLchar *errorlog;
+		errorlog = malloc(sizeof(GLchar) * logsize);
+		glGetShaderInfoLog(fragment_shader, logsize, &logsize, errorlog);
+		ft_printf("%s\n", errorlog);
 		exit (1);
 	}
 
@@ -156,6 +196,23 @@ int		main(int argc, char **argv)
 	glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void *)0);
 	glEnableVertexAttribArray(vcol_location);
 	glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void *)(sizeof(float) * 2));
+
+
+
+		const float SQUARE[] = {
+			-1.0f, 1.0f,
+			-1.0f, -1.0f,
+			1.0f, 1.0f,
+			1.0f, -1.0f,
+		};
+
+	GLuint vbo_pts;
+
+	glGenBuffers(1, &vbo_pts);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_pts);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(SQUARE), SQUARE, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 	while (!glfwWindowShouldClose(win))
 	{
 		float	ratio;
@@ -188,7 +245,6 @@ int		main(int argc, char **argv)
 		camera.near = 1.f;
 		camera.far = -1.f;
 
-
 		(void)m;
 		(void)p;
 		(void)mvp;
@@ -204,9 +260,21 @@ int		main(int argc, char **argv)
 		glViewport(0, 0, width, height);
 		glClear(GL_COLOR_BUFFER_BIT);
 
+
 		glUseProgram(program);
-		glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat *)mvp);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		//glBindVertexArray(0);
+		glUseProgram(0);
+
+
+
+
+
+
+
+		//glUseProgram(program);
+		//glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat *)mvp);
+		//glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		glfwSwapBuffers(win);
 		glfwPollEvents();

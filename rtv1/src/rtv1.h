@@ -16,7 +16,10 @@
 # include <libft.h>
 # include <libftprintf.h>
 
-# include <GL/glew.h>
+# ifdef LINUX
+#  include <GL/glew.h>
+# endif
+
 # include <GLFW/glfw3.h>
 
 # include "vector.h"
