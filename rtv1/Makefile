@@ -42,11 +42,11 @@ endif
 ifeq ($(OS)_$(ARCH), Linux_x86_64)
 	CFLAGS	+= `pkg-config --cflags glfw3` -D LINUX
 	LDFLAGS	+=
-	LDLIBS	+= `pkg-config --static --libs glfw3` -lGL
+	LDLIBS	+= -lGLEW -lGL `pkg-config --static --libs glfw3`
 else ifeq ($(OS), Linux)
 	CFLAGS	+= `pkg-config --cflags glfw3` -D LINUX
 	LDFLAGS	+=
-	LDLIBS	+= `pkg-config --static --libs glfw3`
+	LDLIBS	+= `pkg-config --static --libs glfw3` -lGL
 endif
 
 SRC_PREFIX = ./src/

@@ -16,12 +16,13 @@
 # include <libft.h>
 # include <libftprintf.h>
 
+# include <GL/glew.h>
 # include <GLFW/glfw3.h>
 
 # include "vector.h"
 # include "matrix.h"
 
-# define OPTIONS_COUNT 2
+# define OPTIONS_COUNT 3
 
 # define WIN_WIDTH 640
 # define WIN_HEIGHT 480

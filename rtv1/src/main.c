@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 18:18:01 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/03/19 19:04:47 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/03/20 04:37:39 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,21 @@ static const struct
 };
 
 static const char * vertex_shader_text =
+"#version 130\n"
+"in vec3 VertexPosition;\n"
+"vec2 positions[3];\n"
 "void main()\n"
 "{\n"
-//"    gl_Position = vec4(positions[gl_VertexIndex], 0.0, 1.0);\n"
-"    gl_Position = vec4(1.0, 0.0, 0.0, 1.0);\n"
+	"positions[0] = vec2(0.0, -0.5);\n"
+	"positions[1] = vec2(0.5, 0.5);\n"
+	"positions[2] = vec2(-0.5, -0.5);\n"
+"    gl_Position = vec4(positions[gl_VertexID], 0.0, 1.0);\n"
 "}\n";
+//"    gl_Position = vec4(VertexPosition, 1.0);\n"
+//"positions[0] = vec2(0.0, -0.5);\n"
+//"positions[1] = vec2(0.5, 0.5);\n"
+//"positions[2] = vec2(-0.5, -0.5);\n"
+//"    gl_Position = vec4(positions[gl_Vertex], 0.0, 1.0);\n"
 //"uniform vec2 positions[3] = vec2[](vec2(0.0, -0.5), vec2(0.5, 0.5), vec2(-0.5, 0.5));\n"
 //"uniform mat4 MVP;\n"
 //"attribute vec3 vCol;\n"
@@ -42,10 +52,12 @@ static const char * vertex_shader_text =
 //"    gl_Position = MVP * vec4(vPos, 0.0, 1.0);\n"
 
 static const char* fragment_shader_text =
+"#version 130\n"
 "varying vec3 color;\n"
 "void main()\n"
 "{\n"
-"    gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);\n"
+//"    gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);\n"
+"    gl_FragColor = vec4(color, 1.0);\n"
 "}\n";
 //"    gl_FragColor = vec4(color, 1.0);\n"
 
@@ -67,6 +79,7 @@ int		main(int argc, char **argv)
 	rt.width = WIN_WIDTH;
 	rt.height = WIN_HEIGHT;
 	parse_arguments(argc - 1, &argv[1], &rt);
+
 	if (!glfwInit())
 		ft_printf("Cannot initialize GLFW\n");
 	glfwSetErrorCallback((GLFWerrorfun)error_glfw);
@@ -78,6 +91,17 @@ int		main(int argc, char **argv)
 	}
 	glfwSetKeyCallback(win, key_callback);
 	glfwMakeContextCurrent(win);
+
+	GLenum err = glewInit();
+
+	if (err != GLEW_OK)
+	{
+		ft_eprintf("Error: %s\n", glewGetErrorString(err));
+		exit (1);
+	}
+	ft_printf("Using GLEW: %s\n", glewGetString(GLEW_VERSION));
+	ft_printf("OpenGL %s\n", (char *)glGetString(GL_VERSION));
+
 	glfwSwapInterval(1);
 	glGenBuffers(1, &vertex_buffer);
 
@@ -95,6 +119,13 @@ int		main(int argc, char **argv)
 	else
 	{
 		ft_printf("vertex compile failed.\n");
+		GLint logsize;
+		glGetShaderiv(vertex_shader, GL_INFO_LOG_LENGTH, &logsize);
+
+		GLchar *errorlog;
+		errorlog = malloc(sizeof(GLchar) * logsize);
+		glGetShaderInfoLog(vertex_shader, logsize, &logsize, errorlog);
+		ft_printf("%s\n", errorlog);
 		exit (1);
 	}
 
@@ -107,7 +138,10 @@ int		main(int argc, char **argv)
 	if (success == GL_TRUE)
 		ft_printf("fragment compile successful.\n");
 	else
+	{
 		ft_printf("fragment compile failed.\n");
+		exit (1);
+	}
 
 	program = glCreateProgram();
 	glAttachShader(program, vertex_shader);
