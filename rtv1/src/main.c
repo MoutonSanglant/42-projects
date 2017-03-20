@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 18:18:01 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/03/20 14:40:33 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/03/20 22:16:32 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,20 +198,28 @@ int		main(int argc, char **argv)
 	glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void *)(sizeof(float) * 2));
 
 
+	const float SQUARE[] = {
+		-1.0f, 1.0f,
+		-1.0f, -1.0f,
+		1.0f, 1.0f,
+		1.0f, -1.0f,
+	};
 
-		const float SQUARE[] = {
-			-1.0f, 1.0f,
-			-1.0f, -1.0f,
-			1.0f, 1.0f,
-			1.0f, -1.0f,
-		};
-
+	GLuint vao_pts;
 	GLuint vbo_pts;
 
 	glGenBuffers(1, &vbo_pts);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_pts);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(SQUARE), SQUARE, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glGenVertexArrays(1, &vao_pts);
+	glBindVertexArray(vao_pts);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_pts);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
 
 	while (!glfwWindowShouldClose(win))
 	{
@@ -265,11 +273,6 @@ int		main(int argc, char **argv)
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		//glBindVertexArray(0);
 		glUseProgram(0);
-
-
-
-
-
 
 
 		//glUseProgram(program);
