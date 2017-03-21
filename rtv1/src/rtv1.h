@@ -16,15 +16,15 @@
 # include <libft.h>
 # include <libftprintf.h>
 
-# ifdef LINUX
+//# ifndef __APPLE__
 #  include <GL/glew.h>
-# endif
+//# endif
 
 # include <GLFW/glfw3.h>
 
 # include "vector.h"
-//# include "matrix.h"
-# include "linmath.h"
+# include "matrix.h"
+//# include "linmath.h"
 
 # define OPTIONS_COUNT 3
 

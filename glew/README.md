@@ -8,31 +8,33 @@ https://github.com/nigels-com/glew
 
 [![Build Status](https://travis-ci.org/nigels-com/glew.svg?branch=master)](https://travis-ci.org/nigels-com/glew)
 [![Gitter](https://badges.gitter.im/nigels-com/glew.svg)](https://gitter.im/nigels-com/glew?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-[![Download](https://img.shields.io/sourceforge/dm/glew.svg)](https://sourceforge.net/projects/glew/files/latest/download)
 
 ## Downloads
 
-Current release is [2.0.0](https://sourceforge.net/projects/glew/files/glew/2.0.0/).
+Current release is [1.13.0](https://sourceforge.net/projects/glew/files/glew/1.13.0/).
 [(Change Log)](http://glew.sourceforge.net/log.html)
 
 Sources available as 
-[ZIP](https://sourceforge.net/projects/glew/files/glew/2.0.0/glew-2.0.0.zip/download) or
-[TGZ](https://sourceforge.net/projects/glew/files/glew/2.0.0/glew-2.0.0.tgz/download).
+[ZIP](https://sourceforge.net/projects/glew/files/glew/1.13.0/glew-1.13.0.zip/download) or
+[TGZ](https://sourceforge.net/projects/glew/files/glew/1.13.0/glew-1.13.0.tgz/download).
 
-Windows binaries for [32-bit and 64-bit](https://sourceforge.net/projects/glew/files/glew/2.0.0/glew-2.0.0-win32.zip/download).
+Windows binaries for [32-bit and 64-bit](https://sourceforge.net/projects/glew/files/glew/1.13.0/glew-1.13.0-win32.zip/download).
 
 ### Recent snapshots
 
 Snapshots may contain new features, bug-fixes or new OpenGL extensions ahead of tested, official releases.
 
-[glew-20160708.tgz](http://sourceforge.net/projects/glew/files/glew/snapshots/glew-20160708.tgz/download)
-*GLEW 2.0.0 RC: Core context, EGL support, no MX*
+[glew-20160402.tgz](http://sourceforge.net/projects/glew/files/glew/snapshots/glew-20160402.tgz/download)
+*GLEW 2.0.0 release candidate, Core context, EGL support, no MX*
+
+[glew-20160131.tgz](http://sourceforge.net/projects/glew/files/glew/snapshots/glew-20160131.tgz/download) 
+*GLEW 2.0.0 release candidate: Core context support, no MX*
+
+[glew-20151117.tgz](http://sourceforge.net/projects/glew/files/glew/snapshots/glew-20151117.tgz/download)
 
 ## Build
 
-It is highly recommended to build from a tgz or zip release snapshot.
-The code generation workflow is a complex brew of gnu make, perl and python, that works best on Linux or Mac.
-For most end-users of GLEW the official releases are the best choice, with first class support.
+From a downloaded tarball or zip archive:
 
 ### Linux and Mac
 
@@ -40,9 +42,9 @@ For most end-users of GLEW the official releases are the best choice, with first
 
 ##### Install build tools
 
-Debian/Ubuntu/Mint:    `$ sudo apt-get install build-essential libxmu-dev libxi-dev libgl-dev libosmesa-dev`
+Debian/Ubuntu/Mint:    `$ sudo apt-get install build-essential libxmu-dev libxi-dev libgl-dev libosmesa-dev git`
 
-RedHat/CentOS/Fedora:  `$ sudo yum install libXmu-devel libXi-devel libGL-devel`
+RedHat/CentOS/Fedora:  `$ sudo yum install libXmu-devel libXi-devel libGL-devel git`
 
 ##### Build
 
@@ -50,11 +52,9 @@ RedHat/CentOS/Fedora:  `$ sudo yum install libXmu-devel libXi-devel libGL-devel`
 	$ sudo make install
 	$ make clean
 
-Targets:    `all, glew.lib (sub-targets: glew.lib.shared, glew.lib.static), glew.bin, clean, install, uninstall`
+Targets:    `all, glew.lib, glew.bin, clean, install, uninstall`
 
 Variables:  `SYSTEM=linux-clang, GLEW_DEST=/usr/local, STRIP=`
-
-_Note: may need to make **auto** folder_
 
 #### Using cmake
 
@@ -62,9 +62,9 @@ _Note: may need to make **auto** folder_
 
 ##### Install build tools
 
-Debian/Ubuntu/Mint:   `$ sudo apt-get install build-essential libXmu-dev libXi-dev libgl-dev cmake`
+Debian/Ubuntu/Mint:   `$ sudo apt-get install build-essential libXmu-dev libXi-dev libgl-dev git cmake`
 
-RedHat/CentOS/Fedora: `$ sudo yum install libXmu-devel libXi-devel libGL-devel cmake`
+RedHat/CentOS/Fedora: `$ sudo yum install libXmu-devel libXi-devel libGL-devel git cmake`
 
 ##### Build
 
@@ -151,7 +151,7 @@ OpenGL implementation and GLEW support for that.  Please include the output of
 
 ## Code Generation
 
-A Unix or Mac environment is needed for building GLEW from scratch to
+A Unix or Mac environment is neded for building GLEW from scratch to
 include new extensions, or customize the code generation. The extension
 data is regenerated from the top level source directory with:
 

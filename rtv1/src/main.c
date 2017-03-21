@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 18:18:01 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/03/21 05:23:55 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/03/21 11:05:14 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,10 @@ static const struct
 
 static const char * vertex_shader_text =
 "#version 330\n"
-"layout(location = 0) in vec2 point;\n"
+"layout (location = 0) in vec2 point;\n"
+"out vec3 color;\n"
 "uniform mat4 MVP;\n"
 "uniform vec3 vCol;\n"
-"attribute vec2 vPos;\n"
-"varying vec3 color;\n"
 
 "void main()\n"
 "{\n"
@@ -52,8 +51,8 @@ static const char * vertex_shader_text =
 
 static const char* fragment_shader_text =
 "#version 330 core\n"
-"varying vec3 color;\n"
-"layout (location = 0) out vec4 outColor;\n"
+"out vec4 outColor;\n"
+"in vec3 color;\n"
 "void main()\n"
 "{\n"
 "    outColor = vec4(color.r, 0.4f + color.g, color.b, 1.0);\n"
@@ -213,10 +212,10 @@ int		main(int argc, char **argv)
 		float	ratio;
 		int	width;
 		int	height;
-		mat4x4	m;
-		mat4x4	p;
-		mat4x4	mvp;
-		//t_camera	camera;
+		t_mat4x4	m;
+		t_mat4x4	p;
+		t_mat4x4	mvp;
+		t_camera	camera;
 
 		glfwGetFramebufferSize(win, &width, &height);
 		ratio = width / (float)height;
@@ -224,20 +223,20 @@ int		main(int argc, char **argv)
 		glViewport(0, 0, width, height);
 
 
-		//camera.top = 1.f;
-		//camera.bottom = -1.f;
-		//camera.left = -ratio;
-		//camera.right = ratio;
-		//camera.near = 1.f;
-		//camera.far = -1.f;
+		camera.top = 1.f;
+		camera.bottom = -1.f;
+		camera.left = -ratio;
+		camera.right = ratio;
+		camera.near = 1.f;
+		camera.far = -1.f;
 
 		mat4x4_identity(m);
 		//mat4x4_identity(p);
 		//mat4x4_identity(mvp);
-		mat4x4_rotate_Z(m, m, (float) glfwGetTime());
-		//mat4x4_rotate_Z(m, (float) glfwGetTime());
-		mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-		//mat4x4_ortho(p, camera);
+		//mat4x4_rotate_Z(m, m, (float) glfwGetTime());
+		mat4x4_rotate_Z(m, (float) glfwGetTime());
+		//mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+		mat4x4_ortho(p, &camera);
 		mat4x4_mul(mvp, p, m);
 		//camera.angle_of_view = 90.f;
 		//camera.aspect = 1.f;
@@ -250,7 +249,6 @@ int		main(int argc, char **argv)
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glUseProgram(program);
-
 
 
 		glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat *)mvp);

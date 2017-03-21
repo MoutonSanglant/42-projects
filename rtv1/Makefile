@@ -1,13 +1,11 @@
 CC		= gcc
-#CFLAGS	= -Wall -Werror -Wextra -I./includes
-CFLAGS	= -Wall -Wextra -I./includes
+CFLAGS	= -Wall -Werror -Wextra -I./includes
 LDFLAGS	= -L./libft -L./libftprintf
 LDLIBS	= -lft -lftprintf
 
 SRC		= main errors options \
 			arguments input \
-			matrix matrix_math identity_matrix inverse_matrix projection_matrix \
-			glad
+			matrix matrix_math identity_matrix inverse_matrix projection_matrix
 LIBS	= libft libftprintf
 LIBS_A	= libft/libft.a libftprintf/libftprintf.a
 
@@ -34,11 +32,11 @@ ARCH	= $(shell uname -m)
 OS		= $(shell uname -s)
 
 ifeq ($(OS), Darwin)
-	LDFLAGS	+= -L./glfw3
-	LDLIBS	+= -lglfw3 -framework Cocoa -framework OpenGL \
+	LDFLAGS	+= -L./glew/lib -L./glfw3
+	LDLIBS	+= -lGLEW -lglfw3 -framework Cocoa -framework OpenGL \
 			-framework IOKit -framework CoreVideo
 	LIBS	+= glfw3
-	LIBS_A	+= glfw3/glfw3.a
+	LIBS_A	+= glew/lib/libGLEW.a glfw3/libglfw3.a
 endif
 
 ifeq ($(OS)_$(ARCH), Linux_x86_64)
@@ -59,7 +57,7 @@ SRC := $(addsuffix .c, $(SRC))
 OBJ = $(subst $(SRC_PREFIX), , $(SRC:.c=$(SUFFIX)))
 OBJ := $(addprefix $(OBJ_PREFIX), $(OBJ))
 
-.PHONY: all clean fclean re libft libftprintf glfw3 debug correction
+.PHONY: all clean fclean re libft libftprintf glew glfw3 debug correction
 
 all: $(NAME)
 
@@ -91,7 +89,13 @@ re: fclean all
 
 rre: cclean all
 
-glfw3/glfw3.a: glfw3
+glew/lib/libGLEW.a: glew
+
+glew:
+	@echo "making $@"
+	@$(MAKE) -C glew BUILD=$(BUILD) -j 8
+
+glfw3/libglfw3.a: glfw3
 
 glfw3:
 	@echo "making $@"

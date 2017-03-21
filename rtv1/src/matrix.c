@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 21:09:30 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/03/19 18:10:48 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/03/21 11:02:32 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@
 **		0 0 0 1
 */
 
-void	translation_matrix4(t_mat4x4 *m, t_vec3f v)
+void	translation_matrix4(t_mat4x4 m, t_vec3f v)
 {
 	mat4x4_identity(m);
-	(*m)[3] = v.x;
-	(*m)[7] = v.y;
-	(*m)[11] = v.z;
+	m[3] = v.x;
+	m[7] = v.y;
+	m[11] = v.z;
 }
 
 /*
@@ -38,12 +38,12 @@ void	translation_matrix4(t_mat4x4 *m, t_vec3f v)
 **		0 0 0 1
 */
 
-void	scaling_matrix4(t_mat4x4 *m, t_vec3f v)
+void	scaling_matrix4(t_mat4x4 m, t_vec3f v)
 {
 	mat4x4_identity(m);
-	(*m)[0] = v.x;
-	(*m)[5] = v.y;
-	(*m)[10] = v.z;
+	m[0] = v.x;
+	m[5] = v.y;
+	m[10] = v.z;
 }
 
 /*
@@ -59,13 +59,13 @@ void	scaling_matrix4(t_mat4x4 *m, t_vec3f v)
 **	@ is the angle of the rotation
 */
 
-void	mat4x4_rotate_X(t_mat4x4 *m, float alpha)
+void	mat4x4_rotate_X(t_mat4x4 m, float alpha)
 {
 	mat4x4_identity(m);
-	(*m)[5] = cosf(alpha);
-	(*m)[6] = sinf(alpha);
-	(*m)[9] = -sinf(alpha);
-	(*m)[10] = cosf(alpha);
+	m[5] = cosf(alpha);
+	m[6] = sinf(alpha);
+	m[9] = -sinf(alpha);
+	m[10] = cosf(alpha);
 }
 
 /*
@@ -79,13 +79,13 @@ void	mat4x4_rotate_X(t_mat4x4 *m, float alpha)
 ** @ is the angle of the rotation
 */
 
-void	mat4x4_rotate_Y(t_mat4x4 *m, float alpha)
+void	mat4x4_rotate_Y(t_mat4x4 m, float alpha)
 {
 	mat4x4_identity(m);
-	(*m)[0] = cosf(alpha);
-	(*m)[2] = -sinf(alpha);
-	(*m)[8] = sinf(alpha);
-	(*m)[10] = cosf(alpha);
+	m[0] = cosf(alpha);
+	m[2] = -sinf(alpha);
+	m[8] = sinf(alpha);
+	m[10] = cosf(alpha);
 }
 
 /*
@@ -99,11 +99,11 @@ void	mat4x4_rotate_Y(t_mat4x4 *m, float alpha)
 **	@ is the angle of the rotation
 */
 
-void	mat4x4_rotate_Z(t_mat4x4 *m, float alpha)
+void	mat4x4_rotate_Z(t_mat4x4 m, float alpha)
 {
 	mat4x4_identity(m);
-	(*m)[0] = cosf(alpha);
-	(*m)[1] = sinf(alpha);
-	(*m)[4] = -sinf(alpha);
-	(*m)[5] = cosf(alpha);
+	m[0] = cosf(alpha);
+	m[1] = sinf(alpha);
+	m[4] = -sinf(alpha);
+	m[5] = cosf(alpha);
 }
