@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/13 14:30:12 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/03/18 14:17:42 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/03/21 20:17:24 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void		error_glfw(int error, const char *description)
 	ft_eprintf("Error: %s\n", description);
 }
 
-void		error(int error, char *description)
+void		error(int error, const char *description)
 {
 	if (error == ERRNO_USAGE)
 		usage();

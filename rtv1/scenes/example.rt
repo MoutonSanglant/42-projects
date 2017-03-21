@@ -1,0 +1,29 @@
+# Physical Device Size (output size in pixels)
+200 200
+
+# Window (-X X -Y Y)
+-10.0 10.0 -10.0 10.0
+
+# Camera
+0.0 0.0 -10.0
+
+# Ambient Light Intensity
+0.2 0.2 0.2
+
+# Light Sources (X, Y, Z position, Ip, R, G, B)
+0.0 30.0 0.0 1.0 1.0 1.0
+
+# Sphere (Xc, Yc, Zc, R)
+15.0 15.0 20.0 8.0
+# (Kd R, G, B)
+1.0 0.0 0.0
+# (Ks R, G, B)
+1.0 1.0 1.0
+# (Phong N)
+50
+
+# Plane
+0.0 0.0 -1.0 40.0
+0.0 1.0 1.0
+0.2 0.2 0.2
+1

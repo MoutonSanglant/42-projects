@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 18:18:01 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/03/21 18:21:52 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/03/21 20:16:22 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,18 +244,40 @@ void	gl_render(GLFWwindow *win)
 // - determine if ray intersect objects
 // Ri
 // Reflected rays
-// - if surface
+// - if surface is reflective, ray is projected as reflected ray
 // Ti
 // Transmitted rays
-/*
+//
+// ray live until scene end or max recursion level reached
+//
+// ray:
+// R0: origin
+// Rd: direction
 typedef struct	s_ray
 {
+	t_vec3f	origin;
+	t_vec3f	direction;
 
 }				t_ray;
-*/
+
+// solution of Quadratic equation:
+// normal way:
+// x = [-b (+/-)(b2 - 4ac).5]/2a
+// may give numerical error if a or c is small
+// better way:
+// q = -0.5 [b + sgn(b) (b2 - 4ac).5]
+// then x1 = q/a; x2 =c/q;
+
+// * ray generated for each pixel
+//
+
 
 void	rt_render(GLFWwindow *win)
 {
+	// We are loading the scene after the graphic libary is loaded
+	// since we will load scene dynamicaly
+	// Load the scene
+	load_scene("scenes/example.rt");
 	// Set the scene
 
 	while (!glfwWindowShouldClose(win))
