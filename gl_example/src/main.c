@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 18:18:01 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/03/21 18:21:52 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/03/21 17:40:52 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,145 +139,16 @@ void	init_glew()
 	ft_printf("GLEW %s\n", glewGetString(GLEW_VERSION));
 }
 
-void	gl_render(GLFWwindow *win)
-{
-	GLuint		vertex_shader;
-	GLuint		fragment_shader;
-	GLuint		program;
-	GLint		mvp_location;
-	GLint		vcol_location;
-	GLuint		vao_pts;
-	GLuint		vbo_pts;
-
-	return ;
-
-	vertex_shader = compile_shader(GL_VERTEX_SHADER, vertex_shader_text);
-	fragment_shader = compile_shader(GL_FRAGMENT_SHADER, fragment_shader_text);
-
-	// Load shaders into program
-	program = link_program(vertex_shader, fragment_shader);
-
-	// Vertex buffer object
-	glGenBuffers(1, &vbo_pts);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo_pts);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	// Vertex array object
-	glGenVertexArrays(1, &vao_pts);
-	glBindVertexArray(vao_pts);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo_pts);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
-
-	mvp_location = glGetUniformLocation(program, "MVP");
-	vcol_location = glGetUniformLocation(program, "vCol");
-
-	while (!glfwWindowShouldClose(win))
-	{
-		float		ratio;
-		int			width;
-		int			height;
-		t_mat4x4	c;
-		t_mat4x4	m;
-		t_mat4x4	p;
-		t_mat4x4	mvp;
-		t_camera	camera;
-
-		glfwGetFramebufferSize(win, &width, &height);
-		ratio = width / (float)height;
-
-		glViewport(0, 0, width, height);
-
-		camera.top = 1.f;
-		camera.bottom = -1.f;
-		camera.left = -ratio;
-		camera.right = ratio;
-		camera.near = 1.f;
-		camera.far = -1.f;
-
-		mat4x4_identity(m);
-		//mat4x4_identity(p);
-		//mat4x4_identity(mvp);
-		//mat4x4_rotate_Z(m, m, (float) glfwGetTime());
-		mat4x4_rotate_Z(m, (float)cos((float) glfwGetTime()) * 4);
-		copy_matrix4(c, m);
-		mat4x4_mul(m, c, m);
-		copy_matrix4(c, m);
-		mat4x4_rotate_X(m, (float)sin((float)glfwGetTime()) * 3);
-		mat4x4_mul(m, c, m);
-		//mat4x4_rotate_X(m, (float)sin((float) glfwGetTime()) * 3);
-		//mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-		mat4x4_ortho(p, &camera);
-		mat4x4_mul(mvp, p, m);
-		//camera.angle_of_view = 90.f;
-		//camera.aspect = 1.f;
-		//camera.far = 100.f;
-		//camera.near = 1.f;
-		//camera.top = 1.f;
-		//camera.bottom = -1.f;
-		//camera.left = -1.f;
-		//camera.right = 1.f;
-
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glUseProgram(program);
-
-		glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat *)mvp);
-		glUniform3fv(vcol_location, 1, (const GLfloat *)col);
-		glBindVertexArray(vao_pts);
-		//glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-		glBindVertexArray(0);
-		glUseProgram(0);
-
-		glfwSwapBuffers(win);
-		glfwPollEvents();
-		//glfwWaitEvents();
-	}
-}
-
-// Si
-// Shadow rays
-// - sent toward light sources
-// - determine if ray intersect objects
-// Ri
-// Reflected rays
-// - if surface
-// Ti
-// Transmitted rays
-/*
-typedef struct	s_ray
-{
-
-}				t_ray;
-*/
-
-void	rt_render(GLFWwindow *win)
-{
-	// Set the scene
-
-	while (!glfwWindowShouldClose(win))
-	{
-		int			width;
-		int			height;
-
-		glfwGetFramebufferSize(win, &width, &height);
-
-		// Trace rays
-		// t_ray
-
-		glfwSwapBuffers(win);
-		glfwWaitEvents();
-	}
-}
-
 int		main(int argc, char **argv)
 {
 	GLFWwindow	*win;
 	const char	*version;
 	t_rt		rt;
+	GLuint		vertex_shader;
+	GLuint		fragment_shader;
+	GLuint		program;
+	GLint		mvp_location;
+	GLint		vcol_location;
 
 	if (argc < 1)
 		return (1);
@@ -312,10 +183,96 @@ int		main(int argc, char **argv)
 	ft_printf("OpenGL %s\n", (char *)glGetString(GL_VERSION));
 	glfwSwapInterval(1);
 
-	glfwSetKeyCallback(win, key_callback);
-	gl_render(win);
-	rt_render(win);
+	vertex_shader = compile_shader(GL_VERTEX_SHADER, vertex_shader_text);
+	fragment_shader = compile_shader(GL_FRAGMENT_SHADER, fragment_shader_text);
 
+	// Load shaders into program
+	program = link_program(vertex_shader, fragment_shader);
+
+	GLuint vao_pts;
+	GLuint vbo_pts;
+
+	// Vertex buffer object
+	glGenBuffers(1, &vbo_pts);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_pts);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	// Vertex array object
+	glGenVertexArrays(1, &vao_pts);
+	glBindVertexArray(vao_pts);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_pts);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
+	mvp_location = glGetUniformLocation(program, "MVP");
+	vcol_location = glGetUniformLocation(program, "vCol");
+
+	glfwSetKeyCallback(win, key_callback);
+
+	while (!glfwWindowShouldClose(win))
+	{
+		float		ratio;
+		int			width;
+		int			height;
+		t_mat4x4	m;
+		t_mat4x4	p;
+		t_mat4x4	mvp;
+		t_camera	camera;
+
+		glfwGetFramebufferSize(win, &width, &height);
+		ratio = width / (float)height;
+
+		glViewport(0, 0, width, height);
+
+		camera.top = 1.f;
+		camera.bottom = -1.f;
+		camera.left = -ratio;
+		camera.right = ratio;
+		camera.near = 1.f;
+		camera.far = -1.f;
+
+		mat4x4_identity(m);
+		//mat4x4_identity(p);
+		//mat4x4_identity(mvp);
+		//mat4x4_rotate_Z(m, m, (float) glfwGetTime());
+		t_mat4x4 c;
+		mat4x4_rotate_Z(m, (float)cos((float) glfwGetTime()) * 4);
+		copy_matrix4(c, m);
+		mat4x4_mul(m, c, m);
+		copy_matrix4(c, m);
+		mat4x4_rotate_X(m, (float)sin((float)glfwGetTime()) * 3);
+		mat4x4_mul(m, c, m);
+		//mat4x4_rotate_X(m, (float)sin((float) glfwGetTime()) * 3);
+		//mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+		mat4x4_ortho(p, &camera);
+		mat4x4_mul(mvp, p, m);
+		//camera.angle_of_view = 90.f;
+		//camera.aspect = 1.f;
+		//camera.far = 100.f;
+		//camera.near = 1.f;
+		//camera.top = 1.f;
+		//camera.bottom = -1.f;
+		//camera.left = -1.f;
+		//camera.right = 1.f;
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glUseProgram(program);
+
+		glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat *)mvp);
+		glUniform3fv(vcol_location, 1, (const GLfloat *)col);
+		glBindVertexArray(vao_pts);
+		//glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glBindVertexArray(0);
+		glUseProgram(0);
+
+		glfwSwapBuffers(win);
+		glfwPollEvents();
+		//glfwWaitEvents();
+	}
 	glfwTerminate();
 	return (0);
 }
