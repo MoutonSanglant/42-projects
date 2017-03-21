@@ -1,11 +1,13 @@
 CC		= gcc
-CFLAGS	= -Wall -Werror -Wextra -I./includes
+#CFLAGS	= -Wall -Werror -Wextra -I./includes
+CFLAGS	= -Wall -Wextra -I./includes
 LDFLAGS	= -L./libft -L./libftprintf
 LDLIBS	= -lft -lftprintf
 
 SRC		= main errors options \
 			arguments input \
-			matrix matrix_math identity_matrix inverse_matrix projection_matrix
+			matrix matrix_math identity_matrix inverse_matrix projection_matrix \
+			glad
 LIBS	= libft libftprintf
 LIBS_A	= libft/libft.a libftprintf/libftprintf.a
 

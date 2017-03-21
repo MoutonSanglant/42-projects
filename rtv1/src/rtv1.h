@@ -23,7 +23,8 @@
 # include <GLFW/glfw3.h>
 
 # include "vector.h"
-# include "matrix.h"
+//# include "matrix.h"
+# include "linmath.h"
 
 # define OPTIONS_COUNT 3
 
