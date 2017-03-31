@@ -6,56 +6,66 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/29 23:20:52 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/11 12:59:18 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/03/22 14:41:42 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
+#include <libftprintf.h>
 
 #include "philo.h"
 
-static int	parse_arg(char *arg, const t_args *arg_list, t_flags *flags)
+static int	match_flags(char **arguments, t_data *data)
 {
-	int		i;
+	int		ignored_arguments;
 
-	i = 0;
-	if (arg[0] != '-')
-		return (1);
-	while (i < 2)
+	ignored_arguments = 0;
+	(void)arguments;
+	ft_putendl("== arguments:");
+	ft_printf("flags: %x\n", data->flags);
+	if (data->flags & FLAG_COLOR)
+		ft_putendl("colors");
+	if (data->flags & FLAG_TEST)
+		ft_putendl("test");
+	/*
+	if (rt->flags & FLAG_WIDTH)
 	{
-		if (arg[1] != '-' && ft_strchr(arg, arg_list[i].c))
-			*flags |= arg_list[i].flag;
-		else if (ft_strequ(&arg[2], arg_list[i].string))
-			*flags |= arg_list[i].flag;
+		if (arguments == NULL || !ft_isdigit(arguments[1][0]))
+			error(ERRNO_USAGE, NULL); // ERR_WIDTH: "width must be a value between ... and ..."
+		rt->width = ft_atoi(arguments[1]);
+		ignored_arguments = 1;
+	}
+	else if (rt->flags & FLAG_HEIGHT)
+	{
+		if (arguments == NULL || !ft_isdigit(arguments[1][0]))
+			error(ERRNO_USAGE, NULL); // ERR_WIDTH: "width must be a value between ... and ..."
+		rt->height = ft_atoi(arguments[1]);
+		ignored_arguments = 1;
+	}
+	*/
+	return (ignored_arguments);
+}
+
+void		parse_arguments(int count, char **arguments, t_data *data)
+{
+	char		*arg;
+	int			i;
+
+	(void)data;
+	i = 0;
+	data->flags = FLAG_NONE;
+	while (i < count)
+	{
+		arg = arguments[i];
+		if (arg[0] == '-')
+		{
+			match_options(arg, &data->flags);
+			if (i + 1 < count)
+				i += match_flags(&arguments[i], data);
+			else
+				i += match_flags(NULL, data);
+			data->flags = FLAG_NONE;
+		}
 		i++;
 	}
-	return (0);
-}
-
-static int	parse(int argc, char **argv, t_flags *flags, const t_args *arg_list)
-{
-	int		count;
-	int		i;
-
-	i = 0;
-	count = 1;
-	while (++i < argc)
-	{
-		if (parse_arg(argv[i], arg_list, flags))
-			break ;
-		count++;
-	}
-	return (count);
-
-}
-
-int			parse_arguments(int argc, char **argv, t_flags *flags)
-{
-	static const t_args	arg_list[2] =
-	{
-		{ .c = 'c', .string = "colors", .flag = FLAG_COLOR },
-		{ .c = 't', .string = "test", .flag = FLAG_TEST }
-	};
-
-	return (parse(argc, argv, flags, arg_list));
 }

@@ -1,32 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   threads.c                                          :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/15 19:12:53 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/03/22 15:42:21 by tdefresn         ###   ########.fr       */
+/*   Created: 2017/03/22 16:16:47 by tdefresn          #+#    #+#             */
+/*   Updated: 2017/03/22 16:17:29 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
+#include "malloc.h"
 
-#include "philo.h"
-
-void	*thread_start(void *args)
+void		free(void *ptr)
 {
-	t_philo	*philo;
-
-	philo = (t_philo *)args;
-	while(1)
-	{
-		if (pthread_mutex_trylock(&g_mutex) == 0)
-			break ;
-	}
-	ft_putstr("My name is ");
-	ft_putendl(philo->name);
-	g_datas.count++;
-	pthread_mutex_unlock(&g_mutex);
-	return ((void *)1);
+	if (ptr == NULL)
+		return ;
 }
