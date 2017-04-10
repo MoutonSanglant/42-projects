@@ -1,32 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   threads.c                                          :+:      :+:    :+:   */
+/*   internal.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/15 19:12:53 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/03/22 15:42:21 by tdefresn         ###   ########.fr       */
+/*   Created: 2017/03/29 12:21:51 by tdefresn          #+#    #+#             */
+/*   Updated: 2017/03/29 12:21:51 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
+#ifndef INTERNAL_H
+# define INTERNAL_H
 
-#include "philo.h"
+void	ft_bzero(void *s, size_t n);
+void	ft_putstr(char const *s);
+void	ft_putendl(char const *s);
+void	ft_putnbr(int n);
+size_t	ft_strlen(char const *s);
 
-void	*thread_start(void *args)
-{
-	t_philo	*philo;
-
-	philo = (t_philo *)args;
-	while(1)
-	{
-		if (pthread_mutex_trylock(&g_mutex) == 0)
-			break ;
-	}
-	ft_putstr("My name is ");
-	ft_putendl(philo->name);
-	g_datas.count++;
-	pthread_mutex_unlock(&g_mutex);
-	return ((void *)1);
-}
+#endif

@@ -19,6 +19,7 @@ vgcore.*
 
 ### Libraries ###
 *.a
+*.so
 !/lib/*
 
 
