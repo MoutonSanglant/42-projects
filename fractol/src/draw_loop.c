@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:16:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/06 16:45:53 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/05/14 18:34:10 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #ifdef BONUS
 
-static int	get_fps(t_mlx_st *mlx)
+static int	get_fps(t_context *ctx)
 {
 	static int		frames = 0;
 	static double	fps = 0;
@@ -22,14 +22,14 @@ static int	get_fps(t_mlx_st *mlx)
 
 	frames++;
 	gettimeofday(&tval_now, NULL);
-	timersub(&tval_now, &mlx->last_tval, &tval_now);
+	timersub(&tval_now, &ctx->last_tval, &tval_now);
 	if (tval_now.tv_sec * 1000000 + tval_now.tv_usec > 1000000)
 	{
 		fps = (double)frames / (double)tval_now.tv_sec
 			+ (double)tval_now.tv_usec / 1000000;
 		fps = (fps > 60) ? 60 : fps;
-		gettimeofday(&mlx->last_tval, NULL);
-		mlx->need_update = 1;
+		gettimeofday(&ctx->last_tval, NULL);
+		ctx->need_update = 1;
 		frames = 0;
 	}
 	return ((int)fps);
@@ -37,22 +37,22 @@ static int	get_fps(t_mlx_st *mlx)
 
 int			draw_loop(void *p)
 {
-	t_mlx_st	*mlx;
+	t_context	*ctx;
 	char		str[7];
 	int			fps;
 
-	mlx = (t_mlx_st *)p;
-	fps = get_fps(mlx);
-	if (mlx->need_update)
+	ctx = (t_context *)p;
+	fps = get_fps(ctx);
+	if (ctx->need_update)
 	{
-		mlx->draw_fn(mlx);
-		if (mlx->settings.draw_gui)
+		ctx->draw_fn(ctx);
+		if (ctx->settings.draw_gui)
 		{
 			ft_snprintf(str, 7, "%2.2i FPS", fps);
-			mlx_string_put(mlx->sess, mlx->win,
-					mlx->canvas->width - 80, 4, WHITE, str);
+			mlx_string_put(ctx->sess, ctx->win,
+					ctx->canvas->width - 80, 4, WHITE, str);
 		}
-		mlx->need_update = 0;
+		ctx->need_update = 0;
 	}
 	return (0);
 }
@@ -61,13 +61,13 @@ int			draw_loop(void *p)
 
 int			draw_loop(void *p)
 {
-	t_mlx_st		*mlx;
+	t_context		*ctx;
 
-	mlx = (t_mlx_st *)p;
-	if (mlx->need_update)
+	ctx = (t_context *)p;
+	if (ctx->need_update)
 	{
-		mlx->draw_fn(mlx);
-		mlx->need_update = 0;
+		ctx->draw_fn(ctx);
+		ctx->need_update = 0;
 	}
 	return (0);
 }

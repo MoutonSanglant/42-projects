@@ -6,13 +6,13 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/06 16:59:49 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/07 08:17:50 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/05/14 20:28:23 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-static void	draw_ui(t_mlx_st *mlx, int iterations)
+static void	draw_ui(t_context *ctx, int iterations)
 {
 	void			*win;
 	void			*sess;
@@ -20,10 +20,10 @@ static void	draw_ui(t_mlx_st *mlx, int iterations)
 	t_fractol_st	*fractol;
 	char			str[32];
 
-	fractol = (t_fractol_st *)mlx->datas;
-	win = mlx->win;
-	sess = mlx->sess;
-	canvas = mlx->canvas;
+	fractol = (t_fractol_st *)ctx->datas;
+	win = ctx->win;
+	sess = ctx->sess;
+	canvas = ctx->canvas;
 	ft_sprintf(str, "Number of iterations: %i", iterations);
 	mlx_string_put(sess, win, 10, canvas->height - 26, WHITE, str);
 	ft_snprintf(str, 32, "Color scheme: %s", fractol->colorset_name);
@@ -34,26 +34,26 @@ static void	draw_ui(t_mlx_st *mlx, int iterations)
 			WHITE, fractol->fractal->name);
 }
 
-static void	draw_point(t_mlx_st *mlx, t_vec2ui32 *pos, int color,
+static void	draw_point(t_context *ctx, t_vec2ui32 *pos, int color,
 									int (color_fn)(int, t_fractol_st *))
 {
-	if (pos->x >= mlx->canvas->width || pos->y >= mlx->canvas->height)
+	if (pos->x >= ctx->canvas->width || pos->y >= ctx->canvas->height)
 		return ;
-	color = color_fn(color, ((t_fractol_st *)mlx->datas));
-	set_image_pixel(mlx, mlx->canvas, color, pos);
+	color = color_fn(color, ((t_fractol_st *)ctx->datas));
+	set_image_pixel(ctx, ctx->canvas, color, pos);
 }
 
-static int	fract(t_mlx_st *mlx, t_vec2d *c, int max_depth,
+static int	fract(t_context *ctx, t_vec2d *c, int max_depth,
 									int (fn)(t_vec2d *, t_vec2d *, int, int))
 {
 	t_vec2d cc;
 
 	cc.x = c->x;
-	cc.y = c->y / mlx->canvas->aspect;
-	return (fn(&mlx->mouse_pos, &cc, 0, max_depth));
+	cc.y = c->y / ctx->canvas->aspect;
+	return (fn(&ctx->mouse_pos, &cc, 0, max_depth));
 }
 
-static void	draw_view(t_mlx_st *mlx, t_vec2d *min, t_vec2d *max, t_vec2d *step)
+static void	draw_view(t_context *ctx, t_vec2d *min, t_vec2d *max, t_vec2d *step)
 {
 	int			(*fn)(t_vec2d *, t_vec2d *, int, int);
 	int			(*color_fn)(int, t_fractol_st *);
@@ -61,9 +61,9 @@ static void	draw_view(t_mlx_st *mlx, t_vec2d *min, t_vec2d *max, t_vec2d *step)
 	t_vec2ui32	coord;
 	t_vec2d		c;
 
-	fn = ((t_fractol_st *)mlx->datas)->fractal->fn;
-	color_fn = ((t_fractol_st *)mlx->datas)->color_fn;
-	max_depth = ((t_fractol_st *)mlx->datas)->iterations;
+	fn = ((t_fractol_st *)ctx->datas)->fractal->fn;
+	color_fn = ((t_fractol_st *)ctx->datas)->color_fn;
+	max_depth = ((t_fractol_st *)ctx->datas)->iterations;
 	c.x = min->x;
 	coord.x = 0;
 	while (c.x < max->x)
@@ -72,7 +72,7 @@ static void	draw_view(t_mlx_st *mlx, t_vec2d *min, t_vec2d *max, t_vec2d *step)
 		c.y = min->y;
 		while (c.y < max->y)
 		{
-			draw_point(mlx, &coord, fract(mlx, &c, max_depth, fn), color_fn);
+			draw_point(ctx, &coord, fract(ctx, &c, max_depth, fn), color_fn);
 			c.y += step->y;
 			coord.y++;
 		}
@@ -81,16 +81,23 @@ static void	draw_view(t_mlx_st *mlx, t_vec2d *min, t_vec2d *max, t_vec2d *step)
 	}
 }
 
-void		draw(t_mlx_st *mlx)
+void		draw(t_context *ctx)
 {
 	t_viewport *viewport;
 
-	viewport = &mlx->viewport;
-	draw_view(mlx, &viewport->min, &viewport->max, &viewport->step);
-	mlx_put_image_to_window(mlx->sess, mlx->win, mlx->canvas->img, 0, 0);
-	if (mlx->settings.draw_gui)
+	viewport = &ctx->viewport;
+#ifdef FRACTOL_OPENCL
+	cl_draw();
+	if (false)
+		draw_view(ctx, &viewport->min, &viewport->max, &viewport->step);
+
+#else
+	draw_view(ctx, &viewport->min, &viewport->max, &viewport->step);
+#endif
+	mlx_put_image_to_window(ctx->sess, ctx->win, ctx->canvas->img, 0, 0);
+	if (ctx->settings.draw_gui)
 	{
-		draw_ui(mlx, ((t_fractol_st *)mlx->datas)->iterations);
-		draw_gui(mlx);
+		draw_ui(ctx, ((t_fractol_st *)ctx->datas)->iterations);
+		draw_gui(ctx);
 	}
 }

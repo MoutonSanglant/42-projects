@@ -26,7 +26,7 @@
 
 # ifdef LINUX
 #  include <linux/keybindings.h>
-#  include <linux/mlx.h>
+#  include <linux/ctx.h>
 #  include <linux/mlx_int.h>
 # else
 #  include <keybindings.h>
@@ -61,7 +61,7 @@
 # define MIN_WIDTH	100
 # define MAX_WIDTH	1600
 # define MIN_HEIGHT	100
-# define MAX_HEIGHT	900
+# define MAX_HEIGHT	1050
 
 # define GUI_LINE_HEIGHT 18
 # define GUI_COLOR WHITE
@@ -153,13 +153,13 @@ typedef enum	e_key_mod
 	KEY_MODIFIER_CTRL = 0x2
 }				t_key_mod;
 
-typedef struct	s_mlx_st
+typedef struct	s_context
 {
 	void			*name;
 	void			*sess;
 	void			*win;
 	void			*datas;
-	void			(*draw_fn)(struct s_mlx_st *);
+	void			(*draw_fn)(struct s_context *);
 	t_image			*canvas;
 	t_viewport		viewport;
 	t_vec2d			mouse_pos;
@@ -168,12 +168,19 @@ typedef struct	s_mlx_st
 	struct timeval	last_tval;
 	int				need_update;
 	int				system_endian;
-}				t_mlx_st;
+
+# ifdef FRACTOL_OPENCL
+
+	t_gpgpu			gpgpu;
+
+# endif
+
+}				t_context;
 
 typedef struct	s_key
 {
 	int		code;
-	int		(*fn)(t_mlx_st *, int);
+	int		(*fn)(t_context *, int);
 }				t_key;
 
 typedef struct	s_fractal
@@ -209,8 +216,8 @@ struct			s_fractol_st
 /*
 **	DRAWING
 */
-void			draw_gui(t_mlx_st *mlx);
-void			set_image_pixel(t_mlx_st *mlx, t_image *img, int color,
+void			draw_gui(t_context *ctx);
+void			set_image_pixel(t_context *ctx, t_image *img, int color,
 								t_vec2ui32 *xy);
 void			init_fractol(t_fractol_st *fractol);
 
@@ -221,20 +228,20 @@ void			init_fractol(t_fractol_st *fractol);
 */
 
 /*
-**							: init_mlx_st.c :
+**							: init_context.c :
 */
-void			init_mlx_sess(t_mlx_st *mlx);
+void			init_mlx_sess(t_context *ctx);
 /*
-**							: start_mlx_st.c :
+**							: start_context.c :
 */
-void			start_mlx_sess(t_mlx_st *mlx);
+void			start_mlx_sess(t_context *ctx);
 /*
 **						   : destroy_mlx_sess.c :
 */
-void			destroy_mlx_sess(t_mlx_st *mlx);
+void			destroy_mlx_sess(t_context *ctx);
 
-void			new_canvas(t_mlx_st *mlx, t_vec2 screen_size);
-void			new_window(t_mlx_st *mlx, t_vec2 screen_size);
+void			new_canvas(t_context *ctx, t_vec2 screen_size);
+void			new_window(t_context *ctx, t_vec2 screen_size);
 
 /*
 ********************************************************************************
@@ -256,7 +263,7 @@ int				draw_loop(void *p);
 **							   : draw.c :
 */
 int				draw_loop(void *p);
-void			draw(t_mlx_st *mlx);
+void			draw(t_context *ctx);
 
 /*
 ********************************************************************************
@@ -277,12 +284,12 @@ int				keyrelease(int key, void *p);
 /*
 **								: keyevent.c :
 */
-int				keyevent(t_mlx_st *mlx, int key,
-									int (exec)(t_mlx_st *, const t_key *, int));
-int				keyevent_ctrl(t_mlx_st *mlx, int key,
-									int (exec)(t_mlx_st *, const t_key *, int));
-int				keyevent_shift(t_mlx_st *mlx, int key,
-									int (exec)(t_mlx_st *, const t_key *, int));
+int				keyevent(t_context *ctx, int key,
+								int (exec)(t_context *, const t_key *, int));
+int				keyevent_ctrl(t_context *ctx, int key,
+								int (exec)(t_context *, const t_key *, int));
+int				keyevent_shift(t_context *ctx, int key,
+								int (exec)(t_context *, const t_key *, int));
 
 /*
 **								: mouse_event.c :
@@ -305,8 +312,8 @@ void			zoom_viewport(t_viewport *viewport);
 /*
 **								: zoom.c :
 */
-void			zoom_in(t_mlx_st *mlx, double x, double y);
-void			zoom_out(t_mlx_st *mlx, double x, double y);
+void			zoom_in(t_context *ctx, double x, double y);
+void			zoom_out(t_context *ctx, double x, double y);
 
 /*
 ********************************************************************************
@@ -371,5 +378,8 @@ int				help(void);
 
 void			loop_colorschemes(t_fractol_st *fractol, int modifier);
 void			set_colorscheme(t_fractol_st *fractol, int scheme);
+
+void			gpgpu_init(t_context *ctx);
+void			gpgpu_close(t_context *ctx);
 
 #endif

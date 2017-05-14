@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 14:02:46 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/07 09:12:49 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/05/14 18:45:03 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static void		set_fractal(char *name, t_fractal *fractal)
 
 int				main(int argc, char **argv)
 {
-	t_mlx_st		mlx;
+	t_context		context;
 	t_fractol_st	fractol;
 	t_fractal		fractal;
 	t_vec2			win_size;
@@ -85,17 +85,17 @@ int				main(int argc, char **argv)
 	get_size(argc, &argv[2], &win_size);
 	set_fractal(argv[1], &fractal);
 	init_fractol(&fractol);
-	init_mlx_sess(&mlx);
+	init_mlx_sess(&context);
 	fractol.fractal = &fractal;
-	mlx.settings.mouse_capture = fractal.interactive;
-	mlx.draw_fn = &draw;
-	new_window(&mlx, win_size);
-	new_canvas(&mlx, win_size);
-	mlx.viewport.pos.x = -0.6f;
-	mlx.viewport.zoom_level = 0.6f;
-	zoom_viewport(&mlx.viewport);
-	move_viewport(&mlx.viewport, mlx.canvas);
-	mlx.datas = (void *)&fractol;
-	start_mlx_sess(&mlx);
+	context.settings.mouse_capture = fractal.interactive;
+	context.draw_fn = &draw;
+	new_window(&context, win_size);
+	new_canvas(&context, win_size);
+	context.viewport.pos.x = -0.6f;
+	context.viewport.zoom_level = 0.6f;
+	zoom_viewport(&context.viewport);
+	move_viewport(&context.viewport, context.canvas);
+	context.datas = (void *)&fractol;
+	start_mlx_sess(&context);
 	return (0);
 }

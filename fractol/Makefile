@@ -10,13 +10,15 @@ SRC		= main error help \
 		fractol draw draw_gui \
 		julia julia_wave julia_sun mandelbrot burning glynn shell multibrot6 \
 		mandel_spider \
-		colorscheme colorsets colorsets_extra hsl_to_rgb
+		colorscheme colorsets colorsets_extra hsl_to_rgb \
+		gpgpu
 
 CORR_FILES = ./Makefile ./lib ./src ./includes
 
 ifeq ($(BUILD), Bonus)
 	CFLAGS	+= -D BONUS
-	SRC		+=
+	LDLIBS	+= -framework OpenCL
+	SRC		+= bonus/cl
 endif
 
 ifeq ($(BUILD), Debug)

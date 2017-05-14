@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/07 17:59:54 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/07 07:11:50 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/05/14 18:29:01 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,32 +23,32 @@
 **	move back from offset (mouse pos after zoom)
 */
 
-void		zoom_in(t_mlx_st *mlx, double x, double y)
+void		zoom_in(t_context *ctx, double x, double y)
 {
 	t_viewport	*viewport;
 
-	viewport = &mlx->viewport;
-	x = (x / mlx->canvas->width) * 2;
-	y = (y / mlx->canvas->height) * 2;
+	viewport = &ctx->viewport;
+	x = (x / ctx->canvas->width) * 2;
+	y = (y / ctx->canvas->height) * 2;
 	viewport->pos.x += x / viewport->zoom_level;
 	viewport->pos.y += y / viewport->zoom_level;
 	viewport->zoom_level *= 1.1;
-	zoom_viewport(&mlx->viewport);
+	zoom_viewport(&ctx->viewport);
 	viewport->pos.x -= x / viewport->zoom_level;
 	viewport->pos.y -= y / viewport->zoom_level;
 }
 
-void		zoom_out(t_mlx_st *mlx, double x, double y)
+void		zoom_out(t_context *ctx, double x, double y)
 {
 	t_viewport	*viewport;
 
-	viewport = &mlx->viewport;
-	x = (x / mlx->canvas->width) * 2;
-	y = (y / mlx->canvas->height) * 2;
+	viewport = &ctx->viewport;
+	x = (x / ctx->canvas->width) * 2;
+	y = (y / ctx->canvas->height) * 2;
 	viewport->pos.x += x / viewport->zoom_level;
 	viewport->pos.y += y / viewport->zoom_level;
 	viewport->zoom_level *= .9;
-	zoom_viewport(&mlx->viewport);
+	zoom_viewport(&ctx->viewport);
 	viewport->pos.x -= x / viewport->zoom_level;
 	viewport->pos.y -= y / viewport->zoom_level;
 }

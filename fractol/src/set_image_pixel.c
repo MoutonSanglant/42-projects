@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 17:50:22 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/06 22:10:11 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/05/14 18:32:48 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@
 **	(It should help to remove the void cast on 'mlx')
 */
 
-void		set_image_pixel(t_mlx_st *mlx, t_image *img, int color,
+void		set_image_pixel(t_context *ctx, t_image *img, int color,
 							t_vec2ui32 *coord)
 {
 	int				opp;
 	int				dec;
 	unsigned char	*ptr;
 
-	(void)mlx;
+	(void)ctx;
 	opp = img->bpp * 0.125f;
 	dec = opp;
 	ptr = ((unsigned char *)img->data + coord->y * img->sl) + coord->x * opp;

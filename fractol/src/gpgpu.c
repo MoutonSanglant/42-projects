@@ -1,22 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expose.c                                           :+:      :+:    :+:   */
+/*   gpgpu.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/02/04 14:31:10 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/05/14 18:34:16 by tdefresn         ###   ########.fr       */
+/*   Created: 2017/05/14 17:48:25 by tdefresn          #+#    #+#             */
+/*   Updated: 2017/05/14 19:53:01 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-int		expose(void *p)
-{
-	t_context	*ctx;
+#ifdef FRACTOL_OPENCL
 
-	ctx = (t_context *)p;
-	ctx->need_update = 1;
-	return (0);
+void	gpgpu_init(t_context *ctx)
+{
+	ft_bzero(&ctx->gpgpu, sizeof(t_gpgpu));
+	cl_init(&ctx->gpgpu);
 }
+
+void	gpgpu_close(t_context *ctx)
+{
+	cl_close(&ctx->gpgpu);
+}
+
+#else
+
+void	gpgpu_init(t_context *ctx)
+{
+	(void)ctx;
+}
+
+void	gpgpu_close(t_context *ctx)
+{
+	(void)ctx;
+}
+
+#endif

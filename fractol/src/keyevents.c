@@ -6,32 +6,32 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/08 14:56:01 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/11/08 14:56:02 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/05/14 18:33:40 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-static int	keyevent_numpad(t_mlx_st *mlx, int key)
+static int	keyevent_numpad(t_context *ctx, int key)
 {
 	t_fractol_st	*fractol;
 
-	fractol = ((t_fractol_st *)mlx->datas);
+	fractol = ((t_fractol_st *)ctx->datas);
 	if (key == KEY_NUMPAD_STAR)
 		fractol->iterations +=
 			(fractol->iterations < MAX_ITERATIONS - 1) ? 1 : 0;
 	else if (key == KEY_NUMPAD_SLASH)
 		fractol->iterations -= (fractol->iterations > 0) ? 1 : 0;
 	else if (key == KEY_NUMPAD_DOT)
-		mlx->settings.draw_gui = (mlx->settings.draw_gui) ? 0 : 1;
+		ctx->settings.draw_gui = (ctx->settings.draw_gui) ? 0 : 1;
 	return (0);
 }
 
-static int	keyevent_char(t_mlx_st *mlx, int key)
+static int	keyevent_char(t_context *ctx, int key)
 {
 	t_fractol_st	*fractol;
 
-	fractol = ((t_fractol_st *)mlx->datas);
+	fractol = ((t_fractol_st *)ctx->datas);
 	if (key == KEY_N)
 		fractol->negative = (fractol->negative) ? 0 : 1;
 	else if (key == KEY_R)
@@ -51,32 +51,32 @@ static int	keyevent_char(t_mlx_st *mlx, int key)
 	return (0);
 }
 
-static int	keyevent_zoom(t_mlx_st *mlx, int key)
+static int	keyevent_zoom(t_context *ctx, int key)
 {
 	if (key == KEY_NUMPAD_MORE || key == KEY_MORE)
-		zoom_in(mlx, 0, 0);
+		zoom_in(ctx, 0, 0);
 	else if (key == KEY_NUMPAD_LESS || key == KEY_LESS)
-		zoom_out(mlx, 0, 0);
-	move_viewport(&mlx->viewport, mlx->canvas);
+		zoom_out(ctx, 0, 0);
+	move_viewport(&ctx->viewport, ctx->canvas);
 	return (0);
 }
 
-static int	keyevent_arrow(t_mlx_st *mlx, int key)
+static int	keyevent_arrow(t_context *ctx, int key)
 {
 	if (key == KEY_LEFT)
-		mlx->viewport.pos.x -= .1 / mlx->viewport.zoom_level;
+		ctx->viewport.pos.x -= .1 / ctx->viewport.zoom_level;
 	else if (key == KEY_RIGHT)
-		mlx->viewport.pos.x += .1 / mlx->viewport.zoom_level;
+		ctx->viewport.pos.x += .1 / ctx->viewport.zoom_level;
 	else if (key == KEY_UP)
-		mlx->viewport.pos.y -= .1 / mlx->viewport.zoom_level;
+		ctx->viewport.pos.y -= .1 / ctx->viewport.zoom_level;
 	else if (key == KEY_DOWN)
-		mlx->viewport.pos.y += .1 / mlx->viewport.zoom_level;
-	move_viewport(&mlx->viewport, mlx->canvas);
+		ctx->viewport.pos.y += .1 / ctx->viewport.zoom_level;
+	move_viewport(&ctx->viewport, ctx->canvas);
 	return (0);
 }
 
-int			keyevent(t_mlx_st *mlx, int key,
-							int (exec)(t_mlx_st *, const t_key *, int))
+int			keyevent(t_context *ctx, int key,
+							int (exec)(t_context *, const t_key *, int))
 {
 	static const t_key	key_list[20] = {
 		{ KEY_NUMPAD_MORE, &keyevent_zoom },
@@ -101,5 +101,5 @@ int			keyevent(t_mlx_st *mlx, int key,
 		{ 0, NULL }
 	};
 
-	return (exec(mlx, key_list, key));
+	return (exec(ctx, key_list, key));
 }

@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/28 04:37:47 by tdefresn          #+#    #+#             */
-/*   Updated: 2016/12/07 02:02:38 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/05/14 18:44:18 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,42 +24,42 @@ static int	out_of_canvas(t_image *c, int x, int y)
 
 int			mouse_click_event(int button, int x, int y, void *p)
 {
-	t_mlx_st	*mlx;
+	t_context	*ctx;
 	int			mouse_capture;
 
-	mlx = (t_mlx_st *)p;
-	x = x - (int)mlx->canvas->width / 2;
-	y = y - (int)mlx->canvas->height / 2;
-	mouse_capture = mlx->settings.mouse_capture;
+	ctx = (t_context *)p;
+	x = x - (int)ctx->canvas->width / 2;
+	y = y - (int)ctx->canvas->height / 2;
+	mouse_capture = ctx->settings.mouse_capture;
 	if (button == MOUSE_CLICK_LEFT
-			&& ((t_fractol_st *)mlx->datas)->fractal->interactive)
+			&& ((t_fractol_st *)ctx->datas)->fractal->interactive)
 		mouse_capture = (mouse_capture) ? 0 : 1;
 	else if (button == MOUSE_SCROLL_UP)
 	{
-		zoom_out(mlx, (double)x, (double)y);
-		move_viewport(&mlx->viewport, mlx->canvas);
+		zoom_out(ctx, (double)x, (double)y);
+		move_viewport(&ctx->viewport, ctx->canvas);
 	}
 	else if (button == MOUSE_SCROLL_DOWN)
 	{
-		zoom_in(mlx, (double)x, (double)y);
-		move_viewport(&mlx->viewport, mlx->canvas);
+		zoom_in(ctx, (double)x, (double)y);
+		move_viewport(&ctx->viewport, ctx->canvas);
 	}
-	mlx->settings.mouse_capture = mouse_capture;
-	mlx->need_update = 1;
+	ctx->settings.mouse_capture = mouse_capture;
+	ctx->need_update = 1;
 	return (0);
 }
 
 int			mouse_motion_event(int x, int y, void *p)
 {
-	t_mlx_st	*mlx;
+	t_context	*ctx;
 
-	mlx = (t_mlx_st *)p;
-	if (!mlx->settings.mouse_capture || out_of_canvas(mlx->canvas, x, y))
+	ctx = (t_context *)p;
+	if (!ctx->settings.mouse_capture || out_of_canvas(ctx->canvas, x, y))
 		return (0);
-	x -= mlx->canvas->width / 2;
-	y -= mlx->canvas->height / 2;
-	mlx->mouse_pos.x = (double)x / mlx->canvas->width * 4;
-	mlx->mouse_pos.y = (double)y / mlx->canvas->height * 4;
-	mlx->need_update = 1;
+	x -= ctx->canvas->width / 2;
+	y -= ctx->canvas->height / 2;
+	ctx->mouse_pos.x = (double)x / ctx->canvas->width * 4;
+	ctx->mouse_pos.y = (double)y / ctx->canvas->height * 4;
+	ctx->need_update = 1;
 	return (0);
 }
