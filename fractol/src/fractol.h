@@ -58,9 +58,9 @@
 # define BLUE	0x000000ff
 # define DEFAULT_WIDTH	800
 # define DEFAULT_HEIGHT	600
-# define MIN_WIDTH	100
+# define MIN_WIDTH	10
 # define MAX_WIDTH	1600
-# define MIN_HEIGHT	100
+# define MIN_HEIGHT	10
 # define MAX_HEIGHT	1050
 
 # define GUI_LINE_HEIGHT 18

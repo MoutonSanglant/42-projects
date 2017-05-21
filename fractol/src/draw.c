@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/06 16:59:49 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/05/21 13:36:31 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/05/21 18:41:51 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,24 +87,54 @@ void		draw(t_context *ctx)
 
 	viewport = &ctx->viewport;
 #ifdef FRACTOL_OPENCL
-	t_vec2ui32 pos;
+	t_vec2ui32 coord;
+	t_vec2d		c;
 	int color;
-	pos.x = 0;
-	pos.y = 0;
-	cl_draw(&ctx->gpgpu, ctx->canvas->width, 1, ((t_fractol_st *)ctx->datas)->iterations);
-	while(pos.y < ctx->canvas->height)
+	// these malloc shall must done once
+	double	*data_x = malloc(sizeof(double) * ctx->canvas->width * ctx->canvas->height * 2);
+	double	*data_y = malloc(sizeof(double) * ctx->canvas->width * ctx->canvas->height * 2);
+	// this part should move where we redraw viewport
+
+	coord.x = 0;
+	c.x = viewport->min.x;
+	while(c.x < viewport->max.x)
 	{
-		pos.x = 0;
-		while (pos.x < ctx->canvas->width)
+		coord.y = 0;
+		c.y = viewport->min.y;
+		while (c.y < viewport->max.y)
 		{
-			color = ctx->gpgpu.buffer[pos.y * ctx->canvas->width + pos.x];
-			set_image_pixel(ctx, ctx->canvas, color, &pos);
-			pos.x++;
+			data_x[coord.y * ctx->canvas->width + coord.x] = c.x;
+			data_y[coord.y * ctx->canvas->width + coord.x] = c.y;
+			//set_image_pixel(ctx, ctx->canvas, color, &coord);
+			//printf("%4i [%u, %u] -> %i\n", pos.y * ctx->canvas->width + pos.x, pos.x, pos.y, color);
+			c.y += viewport->step.y;
+			coord.y++;
 		}
-		pos.y++;
+		c.x += viewport->step.x;
+		coord.x++;
+	}
+
+	cl_draw(&ctx->gpgpu, ctx->canvas->width, ctx->canvas->height, 1, viewport->step.x, viewport->step.y, ((t_fractol_st *)ctx->datas)->iterations, data_x, data_y);
+	free (data_x);
+	free (data_y);
+	//cl_draw(&ctx->gpgpu, ctx->canvas->width, ctx->canvas->height, 1, viewport->min.x, viewport->max.x, viewport->min.y, viewport->max.y, viewport->step.x, viewport->step.y, ((t_fractol_st *)ctx->datas)->iterations);
+	//while(c.x < viewport->max.x)
+
+	coord.x = 0;
+	while(coord.x < ctx->canvas->width)
+	{
+		coord.y = 0;
+		while(coord.y < ctx->canvas->height)
+		{
+			color = ctx->gpgpu.buffer[coord.y * ctx->canvas->width + coord.x];
+			set_image_pixel(ctx, ctx->canvas, color, &coord);
+			coord.y++;
+		}
+		coord.x++;
 	}
 	if (false)
 		draw_view(ctx, &viewport->min, &viewport->max, &viewport->step);
+	//exit(1);
 
 #else
 	draw_view(ctx, &viewport->min, &viewport->max, &viewport->step);

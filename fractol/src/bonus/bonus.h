@@ -41,7 +41,8 @@ typedef struct	s_gpgpu
 	cl_platform_id		platform_id;
 	cl_command_queue	command_queue;
 	cl_context			context;
-	cl_mem				input;
+	cl_mem				input_x;
+	cl_mem				input_y;
 	cl_mem				output;
 	cl_uint				ret_num_devices;
 	cl_uint				ret_num_platforms;
@@ -52,6 +53,8 @@ typedef struct	s_gpgpu
 void	cl_init(t_gpgpu *gpgpu, int width, int height);
 void	cl_close(t_gpgpu *gpgpu);
 //void	cl_draw();
-void	cl_draw(t_gpgpu *gpgpu, int width, double zoom, int max_depth);
+//void	cl_draw(t_gpgpu *gpgpu, int width, int height, double zoom, int max_depth);
+//void	cl_draw(t_gpgpu *gpgpu, int width, int height, double zoom, double step_x, double step_y, int max_depth);
+void	cl_draw(t_gpgpu *gpgpu, int width, int height, double zoom, double step_x, double step_y, int max_depth, double *data_x, double *data_y);
 
 #endif
