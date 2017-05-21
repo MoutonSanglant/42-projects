@@ -25,9 +25,12 @@
 #  include <CL/cl.h>
 # endif
 
+# include <libft.h>
+
 # define FRACTOL_OPENCL
 
-# define BONUS_STR_OPENCL_KERNEL_MANDELBROT "./mandelbrot.cl"
+# define BONUS_STR_OPENCL_KERNEL_MANDELBROT "./kernels/mandelbrot.cl"
+# define BONUS_STR_ERROR_OPEN "Cannot open kernel file.\n"
 # define BONUS_STR_ERROR_KERNEL "Failed to load kernel.\n"
 
 typedef struct	s_gpgpu
@@ -42,10 +45,13 @@ typedef struct	s_gpgpu
 	cl_mem				output;
 	cl_uint				ret_num_devices;
 	cl_uint				ret_num_platforms;
+	double				*buffer;
+	int					output_size;
 }				t_gpgpu;
 
-void	cl_init(t_gpgpu *gpgpu);
+void	cl_init(t_gpgpu *gpgpu, int width, int height);
 void	cl_close(t_gpgpu *gpgpu);
-void	cl_draw();
+//void	cl_draw();
+void	cl_draw(t_gpgpu *gpgpu, int width, double zoom, int max_depth);
 
 #endif

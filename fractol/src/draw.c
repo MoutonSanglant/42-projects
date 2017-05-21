@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/06 16:59:49 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/05/14 20:28:23 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/05/21 13:36:31 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,22 @@ void		draw(t_context *ctx)
 
 	viewport = &ctx->viewport;
 #ifdef FRACTOL_OPENCL
-	cl_draw();
+	t_vec2ui32 pos;
+	int color;
+	pos.x = 0;
+	pos.y = 0;
+	cl_draw(&ctx->gpgpu, ctx->canvas->width, 1, ((t_fractol_st *)ctx->datas)->iterations);
+	while(pos.y < ctx->canvas->height)
+	{
+		pos.x = 0;
+		while (pos.x < ctx->canvas->width)
+		{
+			color = ctx->gpgpu.buffer[pos.y * ctx->canvas->width + pos.x];
+			set_image_pixel(ctx, ctx->canvas, color, &pos);
+			pos.x++;
+		}
+		pos.y++;
+	}
 	if (false)
 		draw_view(ctx, &viewport->min, &viewport->max, &viewport->step);
 

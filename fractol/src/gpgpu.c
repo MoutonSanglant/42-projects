@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/14 17:48:25 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/05/14 19:53:01 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/05/21 10:42:56 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 void	gpgpu_init(t_context *ctx)
 {
 	ft_bzero(&ctx->gpgpu, sizeof(t_gpgpu));
-	cl_init(&ctx->gpgpu);
+	cl_init(&ctx->gpgpu, ctx->canvas->width, ctx->canvas->height);
 }
 
 void	gpgpu_close(t_context *ctx)
