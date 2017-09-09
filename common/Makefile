@@ -1,5 +1,5 @@
 CC		= gcc
-CFLAGS	= -Wall -Werror -Wextra
+CFLAGS	= -Wall -Werror -Wextra -std=c99 --pedantic
 LDFLAGS	=
 LDLIBS	=
 
@@ -10,7 +10,9 @@ SRC_PREFIX	= ./src/
 OBJ_PREFIX	= ./obj/
 
 SRC	=	main \
-		options
+		options \
+		math/matrix math/matrix_math \
+		math/matrix_inverse math/matrix_projection
 
 SRC := $(addsuffix .c, $(SRC))
 
@@ -28,6 +30,7 @@ $(NAME): $(OBJ)
 $(OBJ_PREFIX)%$(SUFFIX): $(SRC_PREFIX)%.c
 	@echo "making $<"
 	@mkdir -p $(OBJ_PREFIX)
+	@mkdir -p $(OBJ_PREFIX)/math
 	@$(CC) -o $@ -c $< $(CFLAGS)
 
 clean:
