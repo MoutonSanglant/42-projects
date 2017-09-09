@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 18:18:01 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/03/22 01:03:36 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/09/08 21:33:15 by mouton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,7 +277,7 @@ void	rt_render(GLFWwindow *win)
 	// We are loading the scene after the graphic libary is loaded
 	// since we will load scene dynamicaly
 	// Load the scene
-	load_scene("scenes/example.rt");
+	load_scene(FILE_SCENE_EXAMPLE);
 	// Set the scene
 
 	while (!glfwWindowShouldClose(win))

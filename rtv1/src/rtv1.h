@@ -33,12 +33,15 @@
 # define ERRNO_OPEN		0x4
 # define ERRNO_READ		0x5
 
-# define STR_USAGE "rtv1 [-w width] [-h height]\n"
 # define ERR_COLOR "invalid color"
 # define ERR_MEMORY "memory allocation error (%s)\n"
 # define ERR_OPEN "Cannot open file '%s'"
 # define ERR_READ "Read error"
 # define ERR_UNDEFINED "undefined error"
+
+# define STR_USAGE "rtv1 [-w width] [-h height]\n"
+
+# define FILE_SCENE_EXAMPLE "resources/scenes/example.rt"
 
 typedef enum	e_flags
 {
