@@ -4,8 +4,9 @@ LDFLAGS	= -L./libft -L./libftprintf
 LDLIBS	= -lft -lftprintf
 
 SRC		= main errors options \
-		arguments input get_next_line \
-		matrix matrix_math identity_matrix inverse_matrix projection_matrix \
+		input get_next_line \
+		math/matrix math/matrix_math \
+		math/matrix_inverse math/matrix_projection \
 		scene transform
 
 LIBS	= libft libftprintf
@@ -73,6 +74,7 @@ $(NAME): $(OBJ) $(LIBS_A)
 $(OBJ_PREFIX)%$(SUFFIX): $(SRC_PREFIX)%.c
 	@echo "making $<"
 	@mkdir -p $(OBJ_PREFIX)
+	@mkdir -p $(OBJ_PREFIX)/math
 	@$(CC) -o $@ -c $< $(CFLAGS)
 
 clean:

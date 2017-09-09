@@ -19,8 +19,10 @@
 # include <GL/glew.h>
 # include <GLFW/glfw3.h>
 
-# include "vector.h"
-# include "matrix.h"
+# include "options.h"
+
+# include "math/vector.h"
+# include "math/matrix.h"
 
 # define OPTIONS_COUNT 3
 
@@ -43,23 +45,9 @@
 
 # define FILE_SCENE_EXAMPLE "resources/scenes/example.rt"
 
-typedef enum	e_flags
-{
-	FLAG_NONE	= 0x0,
-	FLAG_WIDTH	= 0x1,
-	FLAG_HEIGHT	= 0x2
-}				t_flags;
-
-typedef struct	s_option
-{
-	char	*l;
-	t_flags	f;
-	char	s;
-}				t_option;
-
 typedef struct	s_rt
 {
-	t_flags	flags;
+//	t_flags	flags;
 	int		width;
 	int		height;
 }				t_rt;
@@ -96,7 +84,7 @@ void		error_glfw(int error, const char *description);
 ** == options.c
 */
 
-void		match_options(char *arg, t_flags *flags);
+//void		match_options(char *arg, t_flags *flags);
 
 /*
 ** == arguments.c

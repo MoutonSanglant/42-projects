@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 18:18:01 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/09/08 21:33:15 by mouton           ###   ########.fr       */
+/*   Updated: 2017/09/09 18:17:23 by tdefresn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,16 +202,16 @@ void	gl_render(GLFWwindow *win)
 		//mat4x4_identity(p);
 		//mat4x4_identity(mvp);
 		//mat4x4_rotate_Z(m, m, (float) glfwGetTime());
-		mat4x4_rotate_Z(m, (float)cos((float) glfwGetTime()) * 4);
-		copy_matrix4(c, m);
-		mat4x4_mul(m, c, m);
-		copy_matrix4(c, m);
-		mat4x4_rotate_X(m, (float)sin((float)glfwGetTime()) * 3);
-		mat4x4_mul(m, c, m);
+		mat4x4_rotate_z(m, (float)cos((float) glfwGetTime()) * 4);
+		mat4x4_copy(c, m);
+		mat4x4_multiply(m, c, m);
+		mat4x4_copy(c, m);
+		mat4x4_rotate_x(m, (float)sin((float)glfwGetTime()) * 3);
+		mat4x4_multiply(m, c, m);
 		//mat4x4_rotate_X(m, (float)sin((float) glfwGetTime()) * 3);
 		//mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
 		mat4x4_ortho(p, &camera);
-		mat4x4_mul(mvp, p, m);
+		mat4x4_multiply(mvp, p, m);
 		//camera.angle_of_view = 90.f;
 		//camera.aspect = 1.f;
 		//camera.far = 100.f;
@@ -295,18 +295,34 @@ void	rt_render(GLFWwindow *win)
 	}
 }
 
-int		main(int argc, char **argv)
+static int	fallback(const char *arg)
+{
+	ft_printf("HELLO\n");
+	(void)arg;
+	return (0);
+}
+
+int		main(int argc, const char **argv)
 {
 	GLFWwindow	*win;
 	const char	*version;
 	t_rt		rt;
+
+	static const t_option options[2] =
+	{
+		{ .name = "help", .token = "h", .fn = &fallback, .arg = 0 },
+		{ .token = NULL }
+	};
 
 	if (argc < 1)
 		return (1);
 	ft_bzero(&rt, sizeof(t_rt));
 	rt.width = WIN_WIDTH;
 	rt.height = WIN_HEIGHT;
-	parse_arguments(argc - 1, &argv[1], &rt);
+
+	//parse_arguments(argc - 1, &argv[1], &rt);
+	if (parse_options(argc - 1, &argv[1], options, &fallback))
+		return (1);
 
 	glfwSetErrorCallback((GLFWerrorfun)error_glfw);
 
