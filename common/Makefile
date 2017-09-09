@@ -1,7 +1,7 @@
 CC		= gcc
-CFLAGS	= -Wall -Werror -Wextra -std=c99 --pedantic
+CFLAGS	= -Wall -Werror -Wextra #-std=c99 --pedantic
 LDFLAGS	=
-LDLIBS	=
+LDLIBS	= -lm
 
 NAME	= common_test
 SUFFIX	= .o
@@ -11,8 +11,7 @@ OBJ_PREFIX	= ./obj/
 
 SRC	=	main \
 		options \
-		math/matrix math/matrix_math \
-		math/matrix_inverse math/matrix_projection
+		math/matrix math/matrix_math math/matrix_inverse math/matrix_projection
 
 SRC := $(addsuffix .c, $(SRC))
 

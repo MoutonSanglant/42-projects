@@ -6,13 +6,11 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 18:05:49 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/09/09 17:14:54 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/09/10 00:41:24 by mouton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "matrix.h"
-
-# include <math.h>
 
 /*
 **	Perspective projection

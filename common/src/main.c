@@ -2,44 +2,46 @@
 
 #include <stdio.h>
 
-int color(const char *arg)
+int color(const char *arg, void *user)
 {
-	static int control = 0;
+	static int guard = 0;
 
-	if (control++ > 0)
+	(void)user;
+	if (guard++ > 0)
 	{
-		printf("color multiple times !!\n");
+		printf("\033[31mcolor multiple times !!\033[0m\n");
 		return (0);
 	}
 
-	printf("color callback: %s\n", arg);
+	printf("\033[34mcolor callback: %s\033[0m\n", arg);
 	return (1);
 }
 
-int test(const char *arg)
+int test(const char *arg, void *user)
 {
-	printf("test callback: %s\n", arg);
+	(void)user;
+	printf("\033[33mtest callback: %s\033[0m\n", arg);
 	return (1);
 }
 
-int fallback(const char *arg)
+int fallback(const char *arg, void *user)
 {
-	printf("'%s' fallback\n", arg);
+	(void)user;
+	printf("\033[32m'%s' fallback\033[0m\n", arg);
 	return (0);
 }
 
 void TEST_options(int argc, const char **argv)
 {
-	const t_option	options[3] = {
-		{ .name = "color", .token = "c", .fn = &color, .arg = 0 },
-		{ .name = "test", .token = "t", .fn = &test, .arg = 1 },
+	const t_option	options[] = {
+		{ .name = NULL, .token = NULL, .fn = &fallback, .skip = 0 },
+		{ .name = "color", .token = "c", .fn = &color, .skip = 0 },
+		{ .name = "test", .token = "t", .fn = &test, .skip = 1 },
 		{ .token = NULL }
 	};
 
-	if (parse_options(argc, argv, options, &fallback))
-	{
-		printf("ERROR USAGE !!\n");
-	}
+	if (parse_options(argc - 1, &argv[1], options))
+		printf("\033[31mERROR USAGE !!\033[0m\n");
 }
 
 #include "math/vector.h"
@@ -55,7 +57,7 @@ void TEST_vector()
 	t_vec4	vec4	= { -4, -3, -2, -1 };
 	t_vec4u vec4u	= { 4, 3, 2, 1 };
 	t_vec4f vec4f	= { -4.8f, -3.6f, -2.4f, -1.2f };
-	
+
 	printf("vec2  (%i, %i)\n", vec2.x, vec2.y);
 	printf("vec2u (%u, %u)\n", vec2u.x, vec2u.y);
 	printf("vec2f (%f, %f)\n", vec2f.x, vec2f.y);

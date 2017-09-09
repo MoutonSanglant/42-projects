@@ -13,16 +13,17 @@
 #ifndef OPTIONS_H
 # define OPTIONS_H
 
-typedef		int (*option_fn)(char const *next_arg);
+typedef		int (*option_fn)(char const *next_arg, void *user);
 
 typedef struct	s_option
 {
 	char const	*name;
 	char const	*token;
-	int const	arg;
 	option_fn	fn;
+	int const	skip;
+	void		*user;
 }				t_option;
 
-int		parse_options(int count, const char **args, const t_option *options, option_fn fallback);
+int		parse_options(int count, const char **args, const t_option *options);
 
 #endif

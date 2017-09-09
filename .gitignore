@@ -15,6 +15,7 @@ vgcore.*
 
 ### Object files ###
 *.o
+*.gch
 
 
 ### Libraries ###
