@@ -6,16 +6,18 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 15:34:06 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/03/18 15:49:09 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/09/09 22:03:34 by mouton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
 /*
-** Function is 5 arguments long, yet the signature is imposed by GLFW
-** and I have no control on it thus it shouldn't be considered as cheat.
-** Question has been answered by staff members.
+** README
+** ------
+**
+** Signature is imposed by GLFW, we have no control on the number of
+** arguments. According to 42 staff, it is not cheating.
 ** (see: https://forum.intra.42.fr/topics/1858/messages?page=1#13658)
 */
 

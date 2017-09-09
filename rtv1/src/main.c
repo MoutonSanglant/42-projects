@@ -6,11 +6,13 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 18:18:01 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/09/09 18:17:23 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/09/10 00:31:33 by mouton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
+
+#include "glfw/glfw.h"
 
 static const struct
 {
@@ -295,54 +297,25 @@ void	rt_render(GLFWwindow *win)
 	}
 }
 
-static int	fallback(const char *arg)
-{
-	ft_printf("HELLO\n");
-	(void)arg;
-	return (0);
-}
-
 int		main(int argc, const char **argv)
 {
 	GLFWwindow	*win;
 	const char	*version;
-	t_rt		rt;
+	t_context	context;
 
-	static const t_option options[2] =
-	{
-		{ .name = "help", .token = "h", .fn = &fallback, .arg = 0 },
-		{ .token = NULL }
-	};
+	ft_bzero(&context, sizeof(t_context));
+	context.size.x = WINDOW_WIDTH;
+	context.size.y = WINDOW_HEIGHT;
 
-	if (argc < 1)
+	if (argc < 1 || get_arguments(argc, argv, &context))
 		return (1);
-	ft_bzero(&rt, sizeof(t_rt));
-	rt.width = WIN_WIDTH;
-	rt.height = WIN_HEIGHT;
-
-	//parse_arguments(argc - 1, &argv[1], &rt);
-	if (parse_options(argc - 1, &argv[1], options, &fallback))
+	if (!(win = glfw_window_init(context.size.x, context.size.y, WINDOW_TITLE)))
 		return (1);
-
-	glfwSetErrorCallback((GLFWerrorfun)error_glfw);
-
-	if (!glfwInit())
-		ft_printf("Cannot initialize GLFW\n");
 
 	version = glfwGetVersionString();
 	ft_printf("GLFW %s\n", version);
 	//glfwWindowHint(GLFW_SAMPLES, 4);
 	//glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	win = glfwCreateWindow(rt.width, rt.height, "RTv1", NULL, NULL);
-	if (!win)
-	{
-		glfwTerminate();
-		return (1);
-	}
 
 	glfwMakeContextCurrent(win);
 	init_glew();

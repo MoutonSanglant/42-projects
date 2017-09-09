@@ -3,11 +3,12 @@ CFLAGS	= -Wall -Werror -Wextra -I./includes
 LDFLAGS	= -L./libft -L./libftprintf
 LDLIBS	= -lft -lftprintf
 
-SRC		= main errors options \
-		input get_next_line \
-		math/matrix math/matrix_math \
-		math/matrix_inverse math/matrix_projection \
-		scene transform
+SRC		= main errors options arguments \
+		  arguments_window \
+		  input get_next_line \
+		  math/matrix math/matrix_math math/matrix_inverse math/matrix_projection \
+		  glfw/glfw \
+		  scene transform
 
 LIBS	= libft libftprintf
 LIBS_A	= libft/libft.a libftprintf/libftprintf.a
@@ -75,6 +76,7 @@ $(OBJ_PREFIX)%$(SUFFIX): $(SRC_PREFIX)%.c
 	@echo "making $<"
 	@mkdir -p $(OBJ_PREFIX)
 	@mkdir -p $(OBJ_PREFIX)/math
+	@mkdir -p $(OBJ_PREFIX)/glfw
 	@$(CC) -o $@ -c $< $(CFLAGS)
 
 clean:

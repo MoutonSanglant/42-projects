@@ -6,13 +6,14 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 20:04:48 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/03/21 21:13:50 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/09/10 00:12:16 by mouton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
 
 #include "rtv1.h"
+#include "errors.h"
 #include "get_next_line.h"
 
 /*

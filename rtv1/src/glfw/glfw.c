@@ -6,11 +6,13 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/09 16:09:15 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/09/09 16:10:58 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/09/09 22:37:20 by mouton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "glfw.h"
 
+/*
 #ifdef linux
 
 void set_context()
@@ -53,4 +55,33 @@ void context()
 {
 	set_context();
 	context = clCreateContext(properties, numDevices, devices, func, usr_data, &err);
+}
+*/
+
+static
+void		error_glfw(int error, const char *description)
+{
+	ft_eprintf("Error %i: %s\n", error, description);
+}
+
+GLFWwindow		*glfw_window_init(int width, int height, const char *title)
+{
+	GLFWwindow	*win;
+
+	glfwSetErrorCallback((GLFWerrorfun)error_glfw);
+	if (!glfwInit())
+	{
+		ft_printf(GLFW_INIT);
+		return (NULL);
+	}
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	if (!(win = glfwCreateWindow(width, height, title, NULL, NULL)))
+	{
+		glfwTerminate();
+		return (NULL);
+	}
+	return (win);
 }

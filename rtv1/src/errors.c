@@ -6,34 +6,32 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/13 14:30:12 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/03/21 20:17:24 by tdefresn         ###   ########.fr       */
+/*   Updated: 2017/09/10 00:30:06 by mouton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
+#include "errors.h"
 
-#include "rtv1.h"
+#include <stdlib.h>
+#include <libftprintf.h>
 
-static void	usage(void)
+void		error(t_errno errno, const char *description)
 {
-	ft_eprintf(STR_USAGE);
-	exit(ERRNO_USAGE);
-}
-
-void		error_glfw(int error, const char *description)
-{
-	(void)error;
-	ft_eprintf("Error: %s\n", description);
-}
-
-void		error(int error, const char *description)
-{
-	if (error == ERRNO_USAGE)
-		usage();
-	ft_putstr_fd("Error: ", 2);
-	if (error == ERRNO_COLOR)
-		ft_eprintf("%s (%s)\n", ERR_COLOR, description);
+	if (errno == ERRNO_USAGE)
+		ft_eprintf("%s\n", STR_USAGE);
 	else
-		ft_putendl_fd(ERR_UNDEFINED, 2);
-	exit(error);
+		ft_eprintf("Error: ");
+	if (errno == ERRNO_MEMORY)
+		ft_eprintf("%s (%s)\n", ERR_MEMORY, description);
+	else if (errno == ERRNO_OPEN)
+		ft_eprintf("%s (%s)\n", ERR_OPEN, description);
+	else if (errno == ERRNO_READ)
+		ft_eprintf("%s (%s)\n", ERR_READ, description);
+	else if (errno == ERRNO_MULTIPLE_WIDTH)
+		ft_eprintf("%s\n", ERR_MULTIPLE_WIDTH);
+	else if (errno == ERRNO_MULTIPLE_HEIGHT)
+		ft_eprintf("%s\n", ERR_MULTIPLE_HEIGHT);
+	else
+		ft_eprintf("%s\n", ERR_UNDEFINED);
+	exit(errno);
 }
