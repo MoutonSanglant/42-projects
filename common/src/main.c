@@ -37,7 +37,7 @@ void TEST_options(int argc, const char **argv)
 		{ .name = NULL, .token = NULL, .fn = &fallback, .skip = 0 },
 		{ .name = "color", .token = "c", .fn = &color, .skip = 0 },
 		{ .name = "test", .token = "t", .fn = &test, .skip = 1 },
-		{ .token = NULL }
+		{ .token = NULL, .name = NULL }
 	};
 
 	if (parse_options(argc - 1, &argv[1], options))
