@@ -16,8 +16,8 @@
 # include <libft.h>
 # include <libftprintf.h>
 
-# include <GL/glew.h>
-# include <GLFW/glfw3.h>
+# include "glfw/glfw.h"
+//# include <GLFW/glfw3.h>
 
 # include "options.h"
 
@@ -32,7 +32,8 @@
 
 typedef struct	s_context
 {
-	t_vec2 size;
+	glfw_render_fn	*render_fn;
+	t_vec2			size;
 }				t_context;
 
 typedef enum	e_trans_type
@@ -68,13 +69,6 @@ int			get_arguments(int argc, const char **argv, t_context *context);
 
 int	parse_argument_width(const char *arg, void *user_data);
 int	parse_argument_height(const char *arg, void *user_data);
-
-/*
-** == input.c
-*/
-
-void		key_callback(GLFWwindow *win, int key, int code, int action, int mods);
-
 
 /*
 ** == scene.c

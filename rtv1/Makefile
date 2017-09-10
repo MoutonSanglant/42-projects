@@ -5,9 +5,9 @@ LDLIBS	= -lft -lftprintf
 
 SRC		= main errors options arguments \
 		  arguments_window \
-		  input get_next_line \
+		  get_next_line \
 		  math/matrix math/matrix_math math/matrix_inverse math/matrix_projection \
-		  glfw/glfw \
+		  glfw/glfw glfw/input \
 		  scene transform
 
 LIBS	= libft libftprintf

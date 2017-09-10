@@ -13,7 +13,6 @@
 #ifndef ERRORS_H
 # define ERRORS_H
 
-
 typedef enum e_errno
 {
 	ERRNO_USAGE	= 0x1,
@@ -33,7 +32,6 @@ typedef enum e_errno
 # define ERR_UNDEFINED "undefined error"
 
 # define STR_USAGE "rtv1 [-w width] [-h height]"
-
 
 void		error(t_errno errno, const char *description);
 

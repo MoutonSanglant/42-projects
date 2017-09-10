@@ -6,11 +6,13 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/09 16:09:15 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/09/09 22:37:20 by mouton           ###   ########.fr       */
+/*   Updated: 2017/09/10 23:38:54 by mouton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "glfw.h"
+
+#include <libftprintf.h>
 
 /*
 #ifdef linux
@@ -58,13 +60,55 @@ void context()
 }
 */
 
+void	render(GLFWwindow *win, t_glfw_parameters *parameters)
+{
+	glfw_render_fn	render_fn = parameters->render_fn;
+	void			*context = parameters->context;
+
+	while (!glfwWindowShouldClose(win))
+	{
+		int			width;
+		int			height;
+
+		glfwGetFramebufferSize(win, &width, &height);
+
+		render_fn(context);
+		// Trace rays
+		// t_ray
+
+		glfwSwapBuffers(win);
+		glfwWaitEvents();
+	}
+}
+
 static
 void		error_glfw(int error, const char *description)
 {
 	ft_eprintf("Error %i: %s\n", error, description);
 }
 
-GLFWwindow		*glfw_window_init(int width, int height, const char *title)
+/*
+	const char	*version;
+	version = glfwGetVersionString();
+	ft_printf("GLFW %s\n", version);
+	//glfwWindowHint(GLFW_SAMPLES, 4);
+	//glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+*/
+
+int		init_glew()
+{
+	GLenum err = glewInit();
+
+	if (err != GLEW_OK)
+	{
+		ft_eprintf("Error: %s\n", glewGetErrorString(err));
+		return (0);
+	}
+	ft_printf("GLEW %s\n", glewGetString(GLEW_VERSION));
+	return (1);
+}
+
+GLFWwindow		*glfw_window_init(t_glfw_parameters *parameters)
 {
 	GLFWwindow	*win;
 
@@ -78,10 +122,21 @@ GLFWwindow		*glfw_window_init(int width, int height, const char *title)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	if (!(win = glfwCreateWindow(width, height, title, NULL, NULL)))
+	if (!(win = glfwCreateWindow(parameters->width, parameters->height, parameters->title, NULL, NULL)))
 	{
 		glfwTerminate();
 		return (NULL);
 	}
+	glfwMakeContextCurrent(win);
+	if (!init_glew())
+	{
+		glfwTerminate();
+		return (NULL);
+	}
+	glfwSwapInterval(1);
+	ft_printf("OpenGL %s\n", (char *)glGetString(GL_VERSION));
+	glfwSetKeyCallback(win, key_callback);
+	render(win, parameters);
+	glfwTerminate();
 	return (win);
 }
