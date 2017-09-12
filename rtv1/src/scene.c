@@ -6,13 +6,15 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 20:04:48 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/09/10 00:12:16 by mouton           ###   ########.fr       */
+/*   Updated: 2017/09/12 22:13:07 by mouton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
+#include "scene.h"
 
-#include "rtv1.h"
+#include <fcntl.h>
+#include <libftprintf.h>
+
 #include "errors.h"
 #include "get_next_line.h"
 
@@ -28,6 +30,8 @@ list[] =
 }
 */
 
+/*
+static
 void	parse_line(const char *line)
 {
 	if (line[0] == '#')
@@ -35,7 +39,8 @@ void	parse_line(const char *line)
 	ft_printf("%s\n", line);
 }
 
-void	load_scene(const char *path)
+static
+void	open_scene_file(const char *path)
 {
 	char	*line;
 	int		ret;
@@ -52,4 +57,15 @@ void	load_scene(const char *path)
 	if (ret < 0)
 		error(ERRNO_READ, path);
 	ft_strdel(&line);
+}
+*/
+
+t_scene	*new_scene(const char *path)
+{
+	t_scene *scene;
+
+	scene = (t_scene *)ft_memalloc(sizeof(t_scene));
+	scene->path = path;
+
+	return (scene);
 }

@@ -13,6 +13,15 @@
 #ifndef ERRORS_H
 # define ERRORS_H
 
+# define ERR_MEMORY "memory allocation error (%s)"
+# define ERR_OPEN "cannot open file '%s'"
+# define ERR_READ "read error"
+# define ERR_MULTIPLE_WIDTH "multiple widths specified"
+# define ERR_MULTIPLE_HEIGHT "multiple heights specified"
+# define ERR_UNDEFINED "undefined error"
+
+# define STR_USAGE "rtv1 [-w width] [-h height]"
+
 typedef enum e_errno
 {
 	ERRNO_USAGE	= 0x1,
@@ -23,15 +32,6 @@ typedef enum e_errno
 	ERRNO_MULTIPLE_HEIGHT,
 	ERRNO_UNDEFINED
 }			t_errno;
-
-# define ERR_MEMORY "memory allocation error (%s)"
-# define ERR_OPEN "cannot open file '%s'"
-# define ERR_READ "read error"
-# define ERR_MULTIPLE_WIDTH "multiple widths specified"
-# define ERR_MULTIPLE_HEIGHT "multiple heights specified"
-# define ERR_UNDEFINED "undefined error"
-
-# define STR_USAGE "rtv1 [-w width] [-h height]"
 
 void		error(t_errno errno, const char *description);
 

@@ -17,45 +17,29 @@
 # include <libftprintf.h>
 
 # include "glfw/glfw.h"
-//# include <GLFW/glfw3.h>
-
-# include "options.h"
-
-# include "math/vector.h"
 # include "math/matrix.h"
 
-# define WINDOW_TITLE "RTv1"
+# include "scene.h"
+
+//# include "math/vector.h"
+
+# define WINDOW_TITLE	"RTv1"
 # define WINDOW_WIDTH	640
 # define WINDOW_HEIGHT	480
 
 # define FILE_SCENE_EXAMPLE "resources/scenes/example.rt"
 
+typedef struct	s_window
+{
+	t_vec2		size;
+}				t_window;
+
 typedef struct	s_context
 {
+	t_scene			*scene;
+	t_window		window;
 	glfw_render_fn	*render_fn;
-	t_vec2			size;
 }				t_context;
-
-typedef enum	e_trans_type
-{
-	TRANS_TYPE_PLANE,
-	TRANS_TYPE_SPHERE
-}				t_trans_type;
-
-typedef struct	s_trans
-{
-//	void			*object;
-	t_trans_type	type;
-	t_vec3f			location;
-	t_vec4f			rotation;
-	t_vec3f			scale;
-}				t_trans;
-
-/*
-typedef struct	s_plane
-{
-}				t_plane;
-*/
 
 /*
 ** == arguments.c
@@ -67,19 +51,14 @@ int			get_arguments(int argc, const char **argv, t_context *context);
 ** == arguments_window.c
 */
 
-int	parse_argument_width(const char *arg, void *user_data);
-int	parse_argument_height(const char *arg, void *user_data);
+int			parse_argument_width(const char *arg, void *user_data);
+int			parse_argument_height(const char *arg, void *user_data);
 
 /*
-** == scene.c
-*/
-void		load_scene(const char *path);
-
-/*
-** == transform.c
+** == render.c
 */
 
-t_trans		*new_transform(t_vec3f pos, t_trans_type type);
+void		render(void *context);
 
 //t_plane		*new_plane(t_vec3 pos);
 //t_sphere	*new_sphere(t_vec3 pos);

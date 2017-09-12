@@ -6,7 +6,7 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/09 16:09:15 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/09/10 23:38:54 by mouton           ###   ########.fr       */
+/*   Updated: 2017/09/12 21:27:29 by mouton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,15 @@ void context()
 }
 */
 
+/*
+	const char	*version;
+	version = glfwGetVersionString();
+	ft_printf("GLFW %s\n", version);
+	//glfwWindowHint(GLFW_SAMPLES, 4);
+	//glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+*/
+
+static
 void	render(GLFWwindow *win, t_glfw_parameters *parameters)
 {
 	glfw_render_fn	render_fn = parameters->render_fn;
@@ -87,14 +96,7 @@ void		error_glfw(int error, const char *description)
 	ft_eprintf("Error %i: %s\n", error, description);
 }
 
-/*
-	const char	*version;
-	version = glfwGetVersionString();
-	ft_printf("GLFW %s\n", version);
-	//glfwWindowHint(GLFW_SAMPLES, 4);
-	//glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-*/
-
+static
 int		init_glew()
 {
 	GLenum err = glewInit();

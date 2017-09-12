@@ -4,11 +4,11 @@ LDFLAGS	= -L./libft -L./libftprintf
 LDLIBS	= -lft -lftprintf
 
 SRC		= main errors options arguments \
-		  arguments_window \
 		  get_next_line \
-		  math/matrix math/matrix_math math/matrix_inverse math/matrix_projection \
+		  arguments_window \
+		  math/vector math/matrix math/matrix_math math/matrix_inverse math/matrix_projection \
 		  glfw/glfw glfw/input \
-		  scene transform
+		  render scene transform
 
 LIBS	= libft libftprintf
 LIBS_A	= libft/libft.a libftprintf/libftprintf.a
