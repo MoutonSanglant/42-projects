@@ -78,4 +78,15 @@ typedef struct	s_vec4f
 	float		w;
 }				t_vec4f;
 
+void vec2(t_vec2 *vector, int x, int y);
+void vec3(t_vec3 *vector, int x, int y, int z);
+
+void vec2f(t_vec2f *vector, float x, float y);
+void vec3f(t_vec3f *vector, float x, float y, float z);
+
+/*
+void vec2u(uint32_t x, uint32_t y);
+void vec3u(uint32_t x, uint32_t y, uint32_t z);
+*/
+
 #endif
