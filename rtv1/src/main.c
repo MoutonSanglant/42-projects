@@ -6,13 +6,16 @@
 /*   By: tdefresn <tdefresn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/17 18:18:01 by tdefresn          #+#    #+#             */
-/*   Updated: 2017/09/12 22:47:00 by mouton           ###   ########.fr       */
+/*   Updated: 2017/09/15 22:08:36 by mouton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 #include "errors.h"
+#include "render.h"
 #include "scene.h"
+
+#include "cl/cl.h"
 
 int		main(int argc, const char **argv)
 {
@@ -30,7 +33,13 @@ int		main(int argc, const char **argv)
 	glfw_parameters.context = &context;
 	// Create a new scene from file
 	new_scene(FILE_SCENE_EXAMPLE);
-	if (!(glfw_window_init(&glfw_parameters)))
-		return (1);
+
+	(void)glfw_parameters;
+	t_gpgpu_handler gpgpu = NULL;
+	gpgpu = cl_init(context.window.size.x, context.window.size.y);
+	(void)gpgpu;
+	//cl_init(&gpgpu, context.window.size.x, context.window.size.y);
+	//if (!(glfw_window_init(&glfw_parameters)))
+	//	return (1);
 	return (0);
 }

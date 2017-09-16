@@ -54,13 +54,4 @@ int			get_arguments(int argc, const char **argv, t_context *context);
 int			parse_argument_width(const char *arg, void *user_data);
 int			parse_argument_height(const char *arg, void *user_data);
 
-/*
-** == render.c
-*/
-
-void		render(void *context);
-
-//t_plane		*new_plane(t_vec3 pos);
-//t_sphere	*new_sphere(t_vec3 pos);
-
 #endif

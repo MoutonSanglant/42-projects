@@ -40,4 +40,6 @@ typedef struct	s_ray
 
 }				t_ray;
 
+void		render(void *context);
+
 #endif

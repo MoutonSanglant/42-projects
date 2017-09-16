@@ -8,6 +8,7 @@ SRC		= main errors options arguments \
 		  arguments_window \
 		  math/vector math/matrix math/matrix_math math/matrix_inverse math/matrix_projection \
 		  glfw/glfw glfw/input \
+		  cl/cl \
 		  render scene transform
 
 LIBS	= libft libftprintf
@@ -38,7 +39,7 @@ OS		= $(shell uname -s)
 ifeq ($(OS), Darwin)
 	LDFLAGS	+= -L./glew/lib -L./glfw3
 	LDLIBS	+= ./glew/lib/libGLEW.a -lglfw3 -framework Cocoa -framework OpenGL \
-			-framework IOKit -framework CoreVideo
+			-framework IOKit -framework CoreVideo -framework OpenCL
 	LIBS	+= glfw3
 	LIBS_A	+= glew/lib/libGLEW.a glfw3/libglfw3.a
 endif
@@ -46,11 +47,11 @@ endif
 ifeq ($(OS)_$(ARCH), Linux_x86_64)
 	CFLAGS	+= `pkg-config --cflags glfw3` -D LINUX
 	LDFLAGS	+=
-	LDLIBS	+= -lGLEW -lGL `pkg-config --static --libs glfw3`
+	LDLIBS	+= -lGLEW -lGL -lOpenCL `pkg-config --static --libs glfw3`
 else ifeq ($(OS), Linux)
 	CFLAGS	+= `pkg-config --cflags glfw3` -D LINUX
 	LDFLAGS	+=
-	LDLIBS	+= `pkg-config --static --libs glfw3` -lGL
+	LDLIBS	+= -lGL `pkg-config --static --libs glfw3`
 endif
 
 SRC_PREFIX = ./src/
@@ -74,9 +75,7 @@ $(NAME): $(OBJ) $(LIBS_A)
 
 $(OBJ_PREFIX)%$(SUFFIX): $(SRC_PREFIX)%.c
 	@echo "making $<"
-	@mkdir -p $(OBJ_PREFIX)
-	@mkdir -p $(OBJ_PREFIX)/math
-	@mkdir -p $(OBJ_PREFIX)/glfw
+	@mkdir -p $(OBJ_PREFIX) $(OBJ_PREFIX)/math $(OBJ_PREFIX)/glfw $(OBJ_PREFIX)/cl
 	@$(CC) -o $@ -c $< $(CFLAGS)
 
 clean:
