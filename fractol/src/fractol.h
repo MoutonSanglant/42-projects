@@ -26,7 +26,7 @@
 
 # ifdef LINUX
 #  include <linux/keybindings.h>
-#  include <linux/ctx.h>
+#  include <linux/mlx.h>
 #  include <linux/mlx_int.h>
 # else
 #  include <keybindings.h>
