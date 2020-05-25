@@ -89,12 +89,15 @@ static void	init_terminal(void)
 {
 	char	*termtype;
 	int		success;
-	char	term_buffer[2048];
+	//char	term_buffer[2048];
+	char	term_buffer[4096];
 
 	termtype = getenv("TERM");
+	ft_printf("termtype: %s\n", termtype);
 	if (termtype == 0)
 		fatal(ERR_TERM_NOT_DEFINED);
 	success = tgetent(term_buffer, termtype);
+	//ft_printf(term_buffer);
 	if (success < 0)
 		fatal(ERR_NO_TERM_DB);
 	if (success == 0)
@@ -147,7 +150,41 @@ int			main(int argc, char **argv)
 	select.nb_elem = argc - args_count;
 	select.list = &argv[args_count];
 	select.col_width = compute_col_width(select.list, select.nb_elem);
+	//ft_printf("\nwidth: %i\n", select.col_width);
+
+/*	
 	refresh(&select);
+
+/*/	
+	char* buffer = malloc(2048);
+	tputs(tgetstr("cr", &buffer), 1, &ft_put);
+	ft_printf("Flag: %i\n", tgetflag("am"));
+	tputs(tgetstr("cr", &buffer), 1, &ft_put);
+	ft_printf("Numeric: %i\n", tgetnum("it"));
+	tputs(tgetstr("cr", &buffer), 1, &ft_put);
+	char* cap1 = tgetstr("us", &buffer);
+	char* cap2 = tgetstr("ue", &buffer);
+	char* cap3 = tgetstr("ke", &buffer);
+	ft_printf("String: %s (%p), %s (%p), %s (%p)\n", cap1, cap1, cap3, cap3, cap2, cap2);
+	int fd = ((t_termios *)termios_if(&termios_get))->fd;
+	tputs(tgetstr("kh", &buffer), 1, &ft_put);
+	tputs(tgetstr("ve", &buffer), 1, &ft_put);
+	tputs(tgetstr("cr", &buffer), 1, &ft_put);
+	tputs(cap1, 1, &ft_put);
+	write(fd, "hello", 5);
+	tputs(tgetstr("nd", &buffer), 1, &ft_put);
+	tputs(tgetstr("nd", &buffer), 1, &ft_put);
+	tputs(tgetstr("nd", &buffer), 1, &ft_put);
+	tputs(tgetstr("nd", &buffer), 1, &ft_put);
+	tputs(tgetstr("nd", &buffer), 1, &ft_put);
+	write(fd, "hello", 5);
+	tputs(cap2, 1, &ft_put);
+	ft_printf("\n-----------\n");
+	//clear(&select);
+	termios_if(&termios_release);
+	return (0);
+//*/
+ 
 	listen_input(&select);
 	clear(&select);
 	termios_if(&termios_release);

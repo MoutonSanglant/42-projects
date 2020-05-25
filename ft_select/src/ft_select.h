@@ -13,6 +13,7 @@
 #ifndef FT_SELECT_H
 # define FT_SELECT_H
 
+# include <signal.h>
 # include <term.h>
 
 # include <libft.h>
